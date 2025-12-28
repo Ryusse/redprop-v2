@@ -10,7 +10,6 @@
 		"build:frontend": "cd frontend && npm run build",
 		"build:backend": "cd backend && npm run build",
 		"dev:backend": "npm --prefix backend run dev",
-		"start:backend": "npm --prefix backend run start",
 		"db:migrate": "npm --prefix backend run db:migrate",
 		"db:setup": "npm --prefix backend run db:setup",
 		"db:reset": "npm --prefix backend run db:reset",
@@ -21,6 +20,8 @@
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"format": "biome format --write .",
+		"format:backend": "biome check --write backend",
+		"format:frontend": "biome check --write frontend",
 		"release": "standard-version"
 	},
 	"lint-staged": {

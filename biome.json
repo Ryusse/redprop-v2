@@ -62,6 +62,18 @@
 			"react": "recommended"
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["backend/**/*"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noStaticOnlyClass": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"
