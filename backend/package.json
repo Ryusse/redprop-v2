@@ -1,6 +1,6 @@
 {
-	"name": "Equipo2-tarde-sp7",
-	"version": "1.0.0",
+	"name": "redprop-backend",
+	"version": "0.0.1",
 	"description": "",
 	"main": "index.js",
 	"scripts": {

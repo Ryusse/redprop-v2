@@ -1,6 +1,6 @@
 {
 	"name": "redprop",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"prepare": "husky install",
@@ -20,7 +20,8 @@
 		"test:backend": "npm --prefix backend test",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
-		"format": "biome format --write ."
+		"format": "biome format --write .",
+		"release": "standard-version"
 	},
 	"lint-staged": {
 		"frontend/**/*.{js,jsx,ts,tsx,json,css}": [
@@ -35,6 +36,7 @@
 		"@commitlint/cli": "^20.1.0",
 		"@commitlint/config-conventional": "^20.0.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^16.2.6"
+		"lint-staged": "^16.2.6",
+		"standard-version": "^9.5.0"
 	}
 }
