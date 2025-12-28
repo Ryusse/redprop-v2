@@ -4,30 +4,24 @@ This project uses **[Standard Version](https://github.com/conventional-changelog
 
 ## Current Version: `v0.0.1`
 
-### 🚀 How to Release (The Automatic Way)
+### 🚀 How to Release (The Enterprise Way)
 
-Instead of manually calculating versions, follow this simple workflow:
+In this project, **Releases are Fully Automated**. You do not run commands manually.
 
-1.  **Commit your work** following [Conventional Commits](https://www.conventionalcommits.org/):
-    *   `feat: add new map component` (Triggers MINOR version)
-    *   `fix: resolve broken login link` (Triggers PATCH version)
-    *   `chore: update dependencies` (No version bump usually)
-    *   `feat!: rewrite API to v2` (Triggers MAJOR version)
+#### Reference Workflow:
+1.  **Develop:** Work on your `feature/` branch.
+2.  **Commit:** Use [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`). This is crucial!
+    *   *Bad:* `update styles` (No version bump)
+    *   *Good:* `fix: correct primary button color hex` (Triggers v0.0.X)
+3.  **Pull Request:** Open a PR to `main`. Wait for Review and CI checks.
+4.  **Merge:**
+    *   Once merged, the **Release GitHub Action** kicks in.
+    *   It analyzes your commits.
+    *   It bumps the version (if needed).
+    *   It pushes the new Tag and Changelog back to `main`.
+5.  **Deploy:** Vercel/Render will detect the new commit/tag and deploy to production.
 
-2.  **Run the release command:**
-    ```bash
-    npm run release
-    ```
-    *This magic command will automatically:*
-    1.  Bump the version in `package.json` based on your commits.
-    2.  Generate/Update `CHANGELOG.md` with a list of changes.
-    3.  Create a Git Tag (e.g., `v0.0.2`).
-    4.  Commit these changes.
-
-3.  **Push to GitHub:**
-    ```bash
-    git push --follow-tags
-    ```
+*(Manual `npm run release` is now deprecated and should only be used for local debugging or emergency overrides).*
 
 ### Optional: Manual Override
 If you specifically want to force a version (e.g., jump to 1.0.0):
