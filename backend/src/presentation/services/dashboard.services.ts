@@ -1,17 +1,22 @@
-import { PostgresDatabase } from '../../data/postgres/database';
-import { CustomError } from '../../domain';
-import { SqlParams } from '../../data/types/sql.types';
+import { PostgresDatabase } from "../../data/postgres/database";
 import {
 	ClientConsultationModel,
+	ClientModel,
 	PropertyModel,
 	VisibilityStatusModel,
-	ClientModel,
-} from '../../data/postgres/models';
+} from "../../data/postgres/models";
+import type { SqlParams } from "../../data/types/sql.types";
 
 export class DashboardServices {
 	async getDashboardData() {
 		const consultations = await this.getLatestConsultations(5);
-		const [activeProperties, inactiveProperties, unansweredConsultations, unreadConsultations, newLeadsToday] = await Promise.all([
+		const [
+			activeProperties,
+			inactiveProperties,
+			unansweredConsultations,
+			unreadConsultations,
+			newLeadsToday,
+		] = await Promise.all([
 			this.countActiveProperties(),
 			this.countInactiveProperties(),
 			this.countUnansweredConsultations(),
@@ -65,7 +70,7 @@ export class DashboardServices {
 						consultation.consultant_last_name,
 					]
 						.filter(Boolean)
-						.join(' ');
+						.join(" ");
 					consultantEmail = consultation.consultant_email || null;
 					consultantPhone = consultation.consultant_phone || null;
 				}
@@ -74,7 +79,7 @@ export class DashboardServices {
 					id: consultation.id,
 					consultation_date: consultation.consultation_date,
 					is_read: consultation.is_read || false,
-					message: consultation.message || '',
+					message: consultation.message || "",
 					consultant_name: consultantName,
 					consultant_email: consultantEmail,
 					consultant_phone: consultantPhone,
@@ -92,50 +97,50 @@ export class DashboardServices {
 	}
 
 	private async countActiveProperties(): Promise<number> {
-		const archivedStatus = await VisibilityStatusModel.findByName('Archivada');
+		const archivedStatus = await VisibilityStatusModel.findByName("Archivada");
 		const archivedStatusId = archivedStatus?.id;
 
 		let query = `SELECT COUNT(*) as count FROM properties`;
 		const values: SqlParams = [];
-		
+
 		if (archivedStatusId) {
 			query += ` WHERE visibility_status_id != $1`;
 			values.push(archivedStatusId);
 		}
 
 		const result = await PostgresDatabase.query(query, values);
-		return parseInt(result.rows[0]?.count || '0', 10);
+		return parseInt(result.rows[0]?.count || "0", 10);
 	}
 
 	private async countInactiveProperties(): Promise<number> {
-		const archivedStatus = await VisibilityStatusModel.findByName('Archivada');
-		
+		const archivedStatus = await VisibilityStatusModel.findByName("Archivada");
+
 		if (!archivedStatus?.id) {
 			return 0;
 		}
 
 		const query = `SELECT COUNT(*) as count FROM properties WHERE visibility_status_id = $1`;
 		const result = await PostgresDatabase.query(query, [archivedStatus.id]);
-		return parseInt(result.rows[0]?.count || '0', 10);
+		return parseInt(result.rows[0]?.count || "0", 10);
 	}
 
 	private async countUnansweredConsultations(): Promise<number> {
 		const query = `SELECT COUNT(*) as count FROM client_consultations WHERE responded_by_user_id IS NULL`;
 		const result = await PostgresDatabase.query(query);
-		return parseInt(result.rows[0]?.count || '0', 10);
+		return parseInt(result.rows[0]?.count || "0", 10);
 	}
 
 	private async countUnreadConsultations(): Promise<number> {
 		const query = `SELECT COUNT(*) as count FROM client_consultations WHERE is_read = false`;
 		const result = await PostgresDatabase.query(query);
-		return parseInt(result.rows[0]?.count || '0', 10);
+		return parseInt(result.rows[0]?.count || "0", 10);
 	}
 
 	private async countNewLeadsToday(): Promise<number> {
-		const { ContactCategoryModel } = await import('../../data/postgres/models');
-		
-		const leadCategory = await ContactCategoryModel.findByName('Lead');
-		
+		const { ContactCategoryModel } = await import("../../data/postgres/models");
+
+		const leadCategory = await ContactCategoryModel.findByName("Lead");
+
 		if (!leadCategory?.id) {
 			return 0;
 		}
@@ -148,6 +153,6 @@ export class DashboardServices {
 			AND deleted = false
 		`;
 		const result = await PostgresDatabase.query(query, [leadCategory.id]);
-		return parseInt(result.rows[0]?.count || '0', 10);
+		return parseInt(result.rows[0]?.count || "0", 10);
 	}
 }

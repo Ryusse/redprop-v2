@@ -1,2 +1,1 @@
-export * from './property-sale.model';
-
+export * from "./property-sale.model";

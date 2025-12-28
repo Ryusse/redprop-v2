@@ -1,5 +1,3 @@
-export * from './value-comparison.util';
-export * from './client-validation.util';
-export * from './phone-normalization.util';
-
-
+export * from "./client-validation.util";
+export * from "./phone-normalization.util";
+export * from "./value-comparison.util";

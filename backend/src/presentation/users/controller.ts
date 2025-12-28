@@ -1,134 +1,136 @@
-import { Request, Response } from 'express';
-import { CustomError, UpdateUserDto } from '../../domain';
-import { UserServices } from '../services/user.services';
+import type { Request, Response } from "express";
+
+import { CustomError, UpdateUserDto } from "../../domain";
+import type { UserServices } from "../services/user.services";
 
 export class UserController {
-    constructor(
-        private readonly userServices: UserServices
-    ) {}
+	constructor(private readonly userServices: UserServices) {}
 
-    private handleError = (error: unknown, res: Response) => {
-        if (error instanceof CustomError) {
-            return res.status(error.statusCode).json({
-                message: error.message
-            });
-        }
-        console.error('User Controller Error:', error);
-        return res.status(500).json({
-            message: 'Internal server error'
-        });
-    }
+	private handleError = (error: unknown, res: Response) => {
+		if (error instanceof CustomError) {
+			return res.status(error.statusCode).json({
+				message: error.message,
+			});
+		}
+		console.error("User Controller Error:", error);
+		return res.status(500).json({
+			message: "Internal server error",
+		});
+	};
 
-    /**
-     * Lists all users
-     */
-    listUsers = async (req: Request, res: Response) => {
-        try {
-            const result = await this.userServices.listUsers();
-            return res.json(result);
-        } catch (error) {
-            this.handleError(error, res);
-        }
-    }
+	/**
+	 * Lists all users
+	 */
+	listUsers = async (_req: Request, res: Response) => {
+		try {
+			const result = await this.userServices.listUsers();
+			return res.json(result);
+		} catch (error) {
+			this.handleError(error, res);
+		}
+	};
 
-    /**
-     * Gets a single user by ID
-     */
-    getUserById = async (req: Request, res: Response) => {
-        try {
-            const { id } = req.params;
-            
-            if (!id) {
-                return res.status(400).json({
-                    message: 'User ID is required'
-                });
-            }
+	/**
+	 * Gets a single user by ID
+	 */
+	getUserById = async (req: Request, res: Response) => {
+		try {
+			const { id } = req.params;
 
-            const userId = Number(id);
-            if (isNaN(userId)) {
-                return res.status(400).json({
-                    message: 'Invalid user ID'
-                });
-            }
+			if (!id) {
+				return res.status(400).json({
+					message: "User ID is required",
+				});
+			}
 
-            const user = await this.userServices.getUserById(userId);
-            return res.json({ user });
-        } catch (error) {
-            this.handleError(error, res);
-        }
-    }
+			const userId = Number(id);
+			if (Number.isNaN(userId)) {
+				return res.status(400).json({
+					message: "Invalid user ID",
+				});
+			}
 
-    /**
-     * Updates a user
-     * Admin can update any user, users can only update themselves
-     */
-    updateUser = async (req: Request, res: Response) => {
-        try {
-            const { id } = req.params;
-            const user = req.user;
-            
-            if (!user) {
-                return res.status(401).json({
-                    message: 'User not authenticated'
-                });
-            }
-            
-            if (!id) {
-                return res.status(400).json({
-                    message: 'User ID is required'
-                });
-            }
+			const user = await this.userServices.getUserById(userId);
+			return res.json({ user });
+		} catch (error) {
+			this.handleError(error, res);
+		}
+	};
 
-            const userId = Number(id);
-            if (isNaN(userId)) {
-                return res.status(400).json({
-                    message: 'Invalid user ID'
-                });
-            }
+	/**
+	 * Updates a user
+	 * Admin can update any user, users can only update themselves
+	 */
+	updateUser = async (req: Request, res: Response) => {
+		try {
+			const { id } = req.params;
+			const user = req.user;
 
-            const [error, updateUserDto] = UpdateUserDto.create(req.body);
-            if (error || !updateUserDto) {
-                return res.status(400).json({
-                    message: error || 'Invalid user data'
-                });
-            }
+			if (!user) {
+				return res.status(401).json({
+					message: "User not authenticated",
+				});
+			}
 
-            const isAdmin = user.isAdmin === true;
-            const updatedUser = await this.userServices.updateUser(userId, updateUserDto, isAdmin);
-            return res.json({
-                message: 'User updated successfully',
-                user: updatedUser
-            });
-        } catch (error) {
-            this.handleError(error, res);
-        }
-    }
+			if (!id) {
+				return res.status(400).json({
+					message: "User ID is required",
+				});
+			}
 
-    /**
-     * Soft deletes a user (Admin only)
-     */
-    deleteUser = async (req: Request, res: Response) => {
-        try {
-            const { id } = req.params;
-            
-            if (!id) {
-                return res.status(400).json({
-                    message: 'User ID is required'
-                });
-            }
+			const userId = Number(id);
+			if (Number.isNaN(userId)) {
+				return res.status(400).json({
+					message: "Invalid user ID",
+				});
+			}
 
-            const userId = Number(id);
-            if (isNaN(userId)) {
-                return res.status(400).json({
-                    message: 'Invalid user ID'
-                });
-            }
+			const [error, updateUserDto] = UpdateUserDto.create(req.body);
+			if (error || !updateUserDto) {
+				return res.status(400).json({
+					message: error || "Invalid user data",
+				});
+			}
 
-            const result = await this.userServices.deleteUser(userId);
-            return res.json(result);
-        } catch (error) {
-            this.handleError(error, res);
-        }
-    }
+			const isAdmin = user.isAdmin === true;
+			const updatedUser = await this.userServices.updateUser(
+				userId,
+				updateUserDto,
+				isAdmin,
+			);
+			return res.json({
+				message: "User updated successfully",
+				user: updatedUser,
+			});
+		} catch (error) {
+			this.handleError(error, res);
+		}
+	};
+
+	/**
+	 * Soft deletes a user (Admin only)
+	 */
+	deleteUser = async (req: Request, res: Response) => {
+		try {
+			const { id } = req.params;
+
+			if (!id) {
+				return res.status(400).json({
+					message: "User ID is required",
+				});
+			}
+
+			const userId = Number(id);
+			if (Number.isNaN(userId)) {
+				return res.status(400).json({
+					message: "Invalid user ID",
+				});
+			}
+
+			const result = await this.userServices.deleteUser(userId);
+			return res.json(result);
+		} catch (error) {
+			this.handleError(error, res);
+		}
+	};
 }
-

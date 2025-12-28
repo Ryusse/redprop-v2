@@ -5,15 +5,12 @@ import { ClientConsultationModel } from "../../data/postgres/models/crm/client-c
 import { ConsultationTypeModel } from "../../data/postgres/models/crm/consultation-type.model";
 import { PropertyModel } from "../../data/postgres/models/properties/property.model";
 import { CustomError } from "../../domain";
-import type { CreatePropertyConsultationDto } from "../../domain/dtos/consultations/create-property-consultation.dto";
 import type { CreateGeneralConsultationDto } from "../../domain/dtos/consultations/create-general-consultation.dto";
+import type { CreatePropertyConsultationDto } from "../../domain/dtos/consultations/create-property-consultation.dto";
+import type { ConsultationQueryRow } from "../../domain/interfaces/enriched-data";
 import { ClientCreationHelper } from "./helpers/client-creation.helper";
-import type { ConsultationRow } from '../../domain/interfaces/database-rows';
-import type { ConsultationQueryRow } from '../../domain/interfaces/enriched-data';
 
 export class PropertyConsultationServices {
-	constructor() {}
-
 	async createPropertyConsultation(dto: CreatePropertyConsultationDto) {
 		try {
 			const property = await PropertyModel.findById(dto.property_id);
@@ -110,7 +107,7 @@ export class PropertyConsultationServices {
 			const dbClient = PostgresDatabase.getClient();
 
 			let query = `
-                SELECT 
+                SELECT
                     cc.id,
                     cc.consultation_date,
                     cc.message,
@@ -222,7 +219,7 @@ export class PropertyConsultationServices {
 				countQuery,
 				values.slice(0, values.length - 2),
 			);
-			const total = parseInt(countResult.rows[0].total);
+			const total = parseInt(countResult.rows[0].total, 10);
 
 			return {
 				consultations,
@@ -418,10 +415,14 @@ export class PropertyConsultationServices {
 				console.log(`Created new lead with ID: ${client.id}`);
 			}
 
+			if (!client.id) {
+				throw CustomError.internalServerError("Client creation failed: No ID");
+			}
+
 			const updatedConsultation = await ClientConsultationModel.update(
 				consultationId,
 				{
-					client_id: client.id!,
+					client_id: client.id,
 					assigned_user_id: assignedUserId,
 				},
 			);
@@ -430,12 +431,12 @@ export class PropertyConsultationServices {
 			if (consultation.property_id) {
 				try {
 					await ClientPropertyInterestModel.create({
-						client_id: client.id!,
+						client_id: client.id,
 						property_id: consultation.property_id,
 						notes: `Converted from consultation #${consultationId}`,
 					});
 					propertyInterestCreated = true;
-				} catch (error) {
+				} catch {
 					console.log(
 						`Property interest already exists for client ${client.id} and property ${consultation.property_id}`,
 					);
@@ -466,7 +467,6 @@ export class PropertyConsultationServices {
 		}
 	}
 
-	
 	async createGeneralConsultation(dto: CreateGeneralConsultationDto) {
 		try {
 			const consultationType =

@@ -1,8 +1,9 @@
-import { Router } from 'express';
-import { jwtAdapter } from '../../config';
-import { AuthMiddleware } from '../middlewares/auth.middleware';
-import { DashboardServices } from '../services/dashboard.services';
-import { DashboardController } from './controller';
+import { Router } from "express";
+
+import { jwtAdapter } from "../../config";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { DashboardServices } from "../services/dashboard.services";
+import { DashboardController } from "./controller";
 
 export class DashboardRoutes {
 	static get routes(): Router {
@@ -107,11 +108,10 @@ export class DashboardRoutes {
 		 *       500:
 		 *         description: Internal server error
 		 */
-		router.get('/', authMiddleware.authenticate, (req, res) =>
+		router.get("/", authMiddleware.authenticate, (req, res) =>
 			controller.getDashboard(req, res),
 		);
 
 		return router;
 	}
 }
-

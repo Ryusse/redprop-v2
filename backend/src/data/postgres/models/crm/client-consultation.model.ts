@@ -1,9 +1,9 @@
-import { PostgresDatabase } from '../../database';
-import { SqlParams } from '../../../types/sql.types';
+import type { SqlParams } from "../../../types/sql.types";
+import { PostgresDatabase } from "../../database";
 
 export interface ClientConsultation {
 	id?: number;
-	client_id?: number; 
+	client_id?: number;
 	property_id?: number;
 	consultation_date?: Date;
 	consultation_type_id: number;
@@ -21,7 +21,7 @@ export interface ClientConsultation {
 }
 
 export interface CreateClientConsultationDto {
-	client_id?: number; 
+	client_id?: number;
 	property_id?: number;
 	consultation_type_id: number;
 	assigned_user_id?: number;
@@ -31,7 +31,7 @@ export interface CreateClientConsultationDto {
 	responded_by_user_id?: number;
 	response_date?: Date;
 	is_read?: boolean;
-	
+
 	consultant_first_name?: string;
 	consultant_last_name?: string;
 	consultant_phone?: string;
@@ -60,7 +60,7 @@ export class ClientConsultationModel {
 
 		const query = `
             INSERT INTO ${ClientConsultationModel.TABLE_NAME} (
-                client_id, property_id, consultation_type_id, assigned_user_id, 
+                client_id, property_id, consultation_type_id, assigned_user_id,
                 consultation_date, message, response, responded_by_user_id, response_date, is_read,
                 consultant_first_name, consultant_last_name, consultant_phone, consultant_email
             )

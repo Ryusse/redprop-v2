@@ -3,8 +3,8 @@ import type { Request, Response } from "express";
 import {
 	CreatePropertyDto,
 	CreatePropertyGroupedDto,
-	UpdatePropertyGroupedDto,
 	CustomError,
+	UpdatePropertyGroupedDto,
 } from "../../domain";
 import type { PropertyServices } from "../services/property.services";
 
@@ -33,7 +33,7 @@ export class PropertyController {
 			}
 
 			const capturedByUserId = parseInt(user.id, 10);
-			if (isNaN(capturedByUserId)) {
+			if (Number.isNaN(capturedByUserId)) {
 				return res.status(400).json({
 					message: "Invalid user ID",
 				});
@@ -86,7 +86,7 @@ export class PropertyController {
 			const { id } = req.params;
 			const includeArchived = req.query.includeArchived === "true";
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -156,7 +156,7 @@ export class PropertyController {
 		try {
 			const { id } = req.params;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -166,7 +166,7 @@ export class PropertyController {
 			if (typeof req.body.propertyDetails === "string") {
 				try {
 					updateData = JSON.parse(req.body.propertyDetails);
-				} catch (error) {
+				} catch {
 					return res.status(400).json({
 						message: "Invalid propertyDetails JSON format",
 					});
@@ -190,7 +190,7 @@ export class PropertyController {
 		try {
 			const { id } = req.params;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -207,7 +207,7 @@ export class PropertyController {
 		try {
 			const { id } = req.params;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -252,45 +252,54 @@ export class PropertyController {
 					} else if (Array.isArray(req.body.documentNames)) {
 						documentNames = req.body.documentNames;
 					}
-				} catch (error) {
+				} catch {
 					console.warn("Could not parse documentNames, using defaults");
 				}
 			}
 
 			const bodyWithArchive: Record<string, unknown> = { ...req.body };
-			let basicData: Record<string, unknown> = { visibility_status: "Archivada" };
+			let basicData: Record<string, unknown> = {
+				visibility_status: "Archivada",
+			};
 			if (bodyWithArchive.basic) {
 				try {
-					const parsedBasic = typeof bodyWithArchive.basic === 'string' 
-						? JSON.parse(bodyWithArchive.basic) 
-						: bodyWithArchive.basic;
+					const parsedBasic =
+						typeof bodyWithArchive.basic === "string"
+							? JSON.parse(bodyWithArchive.basic)
+							: bodyWithArchive.basic;
 					basicData = { ...parsedBasic, visibility_status: "Archivada" };
-				} catch (error) {
+				} catch {
 					basicData = { visibility_status: "Archivada" };
 				}
 			}
 			bodyWithArchive.basic = JSON.stringify(basicData);
 
-			const [error, initialDto] = UpdatePropertyGroupedDto.create(
-				bodyWithArchive,
-			);
-			
+			const [error, initialDto] =
+				UpdatePropertyGroupedDto.create(bodyWithArchive);
+
 			let updatePropertyGroupedDto = initialDto;
 
 			if (error || !initialDto) {
-				if (!req.body.basic && !req.body.geography && !req.body.address &&
-					!req.body.values && !req.body.characteristics && !req.body.surface &&
-					!req.body.services && !req.body.internal) {
+				if (
+					!req.body.basic &&
+					!req.body.geography &&
+					!req.body.address &&
+					!req.body.values &&
+					!req.body.characteristics &&
+					!req.body.surface &&
+					!req.body.services &&
+					!req.body.internal
+				) {
 					const [archiveError, archiveDto] = UpdatePropertyGroupedDto.create({
-						basic: JSON.stringify({ visibility_status: "Archivada" })
+						basic: JSON.stringify({ visibility_status: "Archivada" }),
 					});
-					
+
 					if (archiveError || !archiveDto) {
 						return res.status(400).json({
 							message: "Failed to create archive DTO",
 						});
 					}
-					
+
 					const result = await this.propertyServices.updatePropertyGrouped(
 						Number(id),
 						archiveDto,
@@ -304,7 +313,7 @@ export class PropertyController {
 						data: result,
 					});
 				}
-				
+
 				return res.status(400).json({
 					message: error || "Invalid property update data",
 				});
@@ -316,7 +325,10 @@ export class PropertyController {
 				});
 			}
 
-			if (!updatePropertyGroupedDto.basic || Object.keys(updatePropertyGroupedDto.basic).length === 0) {
+			if (
+				!updatePropertyGroupedDto.basic ||
+				Object.keys(updatePropertyGroupedDto.basic).length === 0
+			) {
 				const newDto = new UpdatePropertyGroupedDto(
 					{ visibility_status: "Archivada" },
 					updatePropertyGroupedDto.geography,
@@ -329,9 +341,9 @@ export class PropertyController {
 				);
 				updatePropertyGroupedDto = newDto;
 			} else {
-				const mergedBasic = { 
-					...updatePropertyGroupedDto.basic, 
-					visibility_status: "Archivada" 
+				const mergedBasic = {
+					...updatePropertyGroupedDto.basic,
+					visibility_status: "Archivada",
 				};
 				const newDto = new UpdatePropertyGroupedDto(
 					mergedBasic,
@@ -368,7 +380,7 @@ export class PropertyController {
 			const { id } = req.params;
 			const { visibility_status_id } = req.body;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -389,7 +401,7 @@ export class PropertyController {
 			const { id } = req.params;
 			const { featured_web } = req.body;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -419,7 +431,7 @@ export class PropertyController {
 		try {
 			const { id } = req.params;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -432,7 +444,6 @@ export class PropertyController {
 		}
 	};
 
-
 	createPropertyGrouped = async (req: Request, res: Response) => {
 		try {
 			const user = req.user;
@@ -443,7 +454,7 @@ export class PropertyController {
 			}
 
 			const capturedByUserId = parseInt(user.id, 10);
-			if (isNaN(capturedByUserId)) {
+			if (Number.isNaN(capturedByUserId)) {
 				return res.status(400).json({
 					message: "Invalid user ID",
 				});
@@ -499,20 +510,25 @@ export class PropertyController {
 					} else if (Array.isArray(req.body.documentNames)) {
 						documentNames = req.body.documentNames;
 					}
-				} catch (error) {
+				} catch {
 					console.warn("Could not parse documentNames, using defaults");
 				}
 			}
 
-			console.log('[PropertyController] req.body.basic (raw):', req.body.basic);
-			console.log('[PropertyController] req.body.basic (raw):', req.body.basic);
-			if (req.body.basic && typeof req.body.basic === 'string') {
+			console.log("[PropertyController] req.body.basic (raw):", req.body.basic);
+			console.log("[PropertyController] req.body.basic (raw):", req.body.basic);
+			if (req.body.basic && typeof req.body.basic === "string") {
 				try {
 					const parsed = JSON.parse(req.body.basic);
-					console.log('[PropertyController] req.body.basic (parsed):', parsed);
-					console.log('[PropertyController] parsed.owner_id:', parsed.owner_id, 'type:', typeof parsed.owner_id);
+					console.log("[PropertyController] req.body.basic (parsed):", parsed);
+					console.log(
+						"[PropertyController] parsed.owner_id:",
+						parsed.owner_id,
+						"type:",
+						typeof parsed.owner_id,
+					);
 				} catch (e) {
-					console.error('[PropertyController] Error parsing basic JSON:', e);
+					console.error("[PropertyController] Error parsing basic JSON:", e);
 				}
 			}
 
@@ -547,7 +563,7 @@ export class PropertyController {
 		try {
 			const { id } = req.params;
 
-			if (!id || isNaN(Number(id))) {
+			if (!id || Number.isNaN(Number(id))) {
 				return res.status(400).json({
 					message: "Invalid property ID",
 				});
@@ -592,7 +608,7 @@ export class PropertyController {
 					} else if (Array.isArray(req.body.documentNames)) {
 						documentNames = req.body.documentNames;
 					}
-				} catch (error) {
+				} catch {
 					console.warn("Could not parse documentNames, using defaults");
 				}
 			}
@@ -607,17 +623,17 @@ export class PropertyController {
 				});
 			}
 
-			const user = (req as any).user;
+			const user = (req as unknown as { user?: { id: string } }).user;
 			const userId = user?.id ? parseInt(user.id, 10) : undefined;
 
 			const result = await this.propertyServices.updatePropertyGrouped(
-			Number(id),
-			updatePropertyGroupedDto,
-			images.length > 0 ? images : undefined,
-			documents.length > 0 ? documents : undefined,
-			documentNames.length > 0 ? documentNames : undefined,
-			userId,
-		);
+				Number(id),
+				updatePropertyGroupedDto,
+				images.length > 0 ? images : undefined,
+				documents.length > 0 ? documents : undefined,
+				documentNames.length > 0 ? documentNames : undefined,
+				userId,
+			);
 
 			return res.status(200).json({
 				message: "Property updated successfully",
@@ -631,7 +647,7 @@ export class PropertyController {
 	getDocumentDownloadUrl = async (req: Request, res: Response) => {
 		try {
 			const { documentId } = req.params;
-			if (!documentId || isNaN(Number(documentId))) {
+			if (!documentId || Number.isNaN(Number(documentId))) {
 				return res.status(400).json({
 					message: "Invalid document ID",
 				});

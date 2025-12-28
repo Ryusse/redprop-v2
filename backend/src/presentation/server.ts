@@ -1,8 +1,8 @@
 import express, { type Router } from "express";
-import type { Server as HttpServer } from "http";
-import path from "path";
 
 import { PostgresDatabase } from "../data/postgres/database";
+import type { Server as HttpServer } from "node:http";
+import path from "node:path";
 
 interface Options {
 	port: number;
@@ -25,18 +25,16 @@ export class Server {
 	}
 
 	async start() {
-		this.app.use(express.json()); 
+		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
-		this.app.disable("x-powered-by"); 
+		this.app.disable("x-powered-by");
 
 		const { CorsMiddleware } = await import("./middlewares/cors.middleware");
-		this.app.use(CorsMiddleware.configure(["*"])); 
+		this.app.use(CorsMiddleware.configure(["*"]));
 
 		this.app.use(express.static(this.publicPath));
 
-		const { swaggerSpec, generateSwaggerSpec } = await import(
-			"../config/swagger"
-		);
+		const { generateSwaggerSpec } = await import("../config/swagger");
 		const swaggerUi = await import("swagger-ui-express");
 
 		const swaggerUiOptions = {
@@ -45,9 +43,9 @@ export class Server {
 			swaggerOptions: {
 				persistAuthorization: true,
 				displayRequestDuration: true,
-				filter: true, 
+				filter: true,
 				tryItOutEnabled: true,
-				docExpansion: "list", 
+				docExpansion: "list",
 			},
 		};
 
@@ -63,7 +61,7 @@ export class Server {
 		this.app.use("/docs", swaggerUi.serve, swaggerSetup);
 		this.app.use("/api-docs", swaggerUi.serve, swaggerSetup);
 
-		this.app.get("/health", (req, res) => {
+		this.app.get("/health", (_req, res) => {
 			res.status(200).json({
 				status: "ok",
 				timestamp: new Date().toISOString(),
@@ -88,7 +86,7 @@ export class Server {
 				return next();
 			}
 			const indexPath = path.join(
-				__dirname + `../../../${this.publicPath}/index.html`,
+				`${__dirname}../../../${this.publicPath}/index.html`,
 			);
 			res.sendFile(indexPath);
 		});

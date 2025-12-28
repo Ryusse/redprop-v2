@@ -10,9 +10,9 @@ export class CreatePropertyConsultationDto {
 		public readonly email?: string,
 	) {}
 
-	static create(object: {
-		[key: string]: any;
-	}): [string?, CreatePropertyConsultationDto?] {
+	static create(
+		object: Record<string, unknown>,
+	): [string?, CreatePropertyConsultationDto?] {
 		const { property_id, first_name, last_name, phone, email, message } =
 			object;
 

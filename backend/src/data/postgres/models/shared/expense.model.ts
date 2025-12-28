@@ -1,160 +1,162 @@
-import { PostgresDatabase } from '../../database';
-import { SqlParams } from '../../../types/sql.types';
+import type { SqlParams } from "../../../types/sql.types";
+import { PostgresDatabase } from "../../database";
 
 export interface Expense {
-    id?: number;
-    property_id: number;
-    amount: number;
-    currency_type_id: number;
-    registered_date?: Date;
-    frequency?: string;
+	id?: number;
+	property_id: number;
+	amount: number;
+	currency_type_id: number;
+	registered_date?: Date;
+	frequency?: string;
 }
 
 export interface CreateExpenseDto {
-    property_id: number;
-    amount: number;
-    currency_type_id: number;
-    registered_date?: Date;
-    frequency?: string;
+	property_id: number;
+	amount: number;
+	currency_type_id: number;
+	registered_date?: Date;
+	frequency?: string;
 }
 
 export interface ExpenseFilters {
-    property_id?: number;
-    currency_type_id?: number;
-    start_date?: Date;
-    end_date?: Date;
-    limit?: number;
-    offset?: number;
+	property_id?: number;
+	currency_type_id?: number;
+	start_date?: Date;
+	end_date?: Date;
+	limit?: number;
+	offset?: number;
 }
 
 export class ExpenseModel {
-    private static readonly TABLE_NAME = 'expenses';
+	private static readonly TABLE_NAME = "expenses";
 
-    static async create(expenseData: CreateExpenseDto): Promise<Expense> {
-        const client = PostgresDatabase.getClient();
-        
-        const query = `
-            INSERT INTO ${this.TABLE_NAME} (property_id, amount, currency_type_id, registered_date, frequency)
+	static async create(expenseData: CreateExpenseDto): Promise<Expense> {
+		const client = PostgresDatabase.getClient();
+
+		const query = `
+            INSERT INTO ${ExpenseModel.TABLE_NAME} (property_id, amount, currency_type_id, registered_date, frequency)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *
         `;
-        
-        const result = await client.query(query, [
-            expenseData.property_id,
-            expenseData.amount,
-            expenseData.currency_type_id,
-            expenseData.registered_date || new Date(),
-            expenseData.frequency || null,
-        ]);
 
-        return result.rows[0];
-    }
+		const result = await client.query(query, [
+			expenseData.property_id,
+			expenseData.amount,
+			expenseData.currency_type_id,
+			expenseData.registered_date || new Date(),
+			expenseData.frequency || null,
+		]);
 
-    static async findById(id: number): Promise<Expense | null> {
-        const client = PostgresDatabase.getClient();
-        const query = `SELECT * FROM ${this.TABLE_NAME} WHERE id = $1`;
-        const result = await client.query(query, [id]);
-        return result.rows[0] || null;
-    }
+		return result.rows[0];
+	}
 
-    static async findByPropertyId(propertyId: number): Promise<Expense[]> {
-        const client = PostgresDatabase.getClient();
-        const query = `SELECT * FROM ${this.TABLE_NAME} WHERE property_id = $1 ORDER BY registered_date DESC`;
-        const result = await client.query(query, [propertyId]);
-        return result.rows;
-    }
+	static async findById(id: number): Promise<Expense | null> {
+		const client = PostgresDatabase.getClient();
+		const query = `SELECT * FROM ${ExpenseModel.TABLE_NAME} WHERE id = $1`;
+		const result = await client.query(query, [id]);
+		return result.rows[0] || null;
+	}
 
-    static async findAll(filters?: ExpenseFilters): Promise<Expense[]> {
-        const client = PostgresDatabase.getClient();
-        let query = `SELECT * FROM ${this.TABLE_NAME}`;
-        const conditions: string[] = [];
-        const values: SqlParams = [];
-        let paramIndex = 1;
+	static async findByPropertyId(propertyId: number): Promise<Expense[]> {
+		const client = PostgresDatabase.getClient();
+		const query = `SELECT * FROM ${ExpenseModel.TABLE_NAME} WHERE property_id = $1 ORDER BY registered_date DESC`;
+		const result = await client.query(query, [propertyId]);
+		return result.rows;
+	}
 
-        if (filters) {
-            if (filters.property_id !== undefined) {
-                conditions.push(`property_id = $${paramIndex++}`);
-                values.push(filters.property_id);
-            }
-            if (filters.currency_type_id !== undefined) {
-                conditions.push(`currency_type_id = $${paramIndex++}`);
-                values.push(filters.currency_type_id);
-            }
-            if (filters.start_date) {
-                conditions.push(`registered_date >= $${paramIndex++}`);
-                values.push(filters.start_date);
-            }
-            if (filters.end_date) {
-                conditions.push(`registered_date <= $${paramIndex++}`);
-                values.push(filters.end_date);
-            }
-        }
+	static async findAll(filters?: ExpenseFilters): Promise<Expense[]> {
+		const client = PostgresDatabase.getClient();
+		let query = `SELECT * FROM ${ExpenseModel.TABLE_NAME}`;
+		const conditions: string[] = [];
+		const values: SqlParams = [];
+		let paramIndex = 1;
 
-        if (conditions.length > 0) {
-            query += ` WHERE ${conditions.join(' AND ')}`;
-        }
+		if (filters) {
+			if (filters.property_id !== undefined) {
+				conditions.push(`property_id = $${paramIndex++}`);
+				values.push(filters.property_id);
+			}
+			if (filters.currency_type_id !== undefined) {
+				conditions.push(`currency_type_id = $${paramIndex++}`);
+				values.push(filters.currency_type_id);
+			}
+			if (filters.start_date) {
+				conditions.push(`registered_date >= $${paramIndex++}`);
+				values.push(filters.start_date);
+			}
+			if (filters.end_date) {
+				conditions.push(`registered_date <= $${paramIndex++}`);
+				values.push(filters.end_date);
+			}
+		}
 
-        query += ` ORDER BY registered_date DESC`;
+		if (conditions.length > 0) {
+			query += ` WHERE ${conditions.join(" AND ")}`;
+		}
 
-        if (filters?.limit) {
-            query += ` LIMIT $${paramIndex++}`;
-            values.push(filters.limit);
-            if (filters.offset) {
-                query += ` OFFSET $${paramIndex++}`;
-                values.push(filters.offset);
-            }
-        }
+		query += ` ORDER BY registered_date DESC`;
 
-        const result = await client.query(query, values);
-        return result.rows;
-    }
+		if (filters?.limit) {
+			query += ` LIMIT $${paramIndex++}`;
+			values.push(filters.limit);
+			if (filters.offset) {
+				query += ` OFFSET $${paramIndex++}`;
+				values.push(filters.offset);
+			}
+		}
 
-    static async update(id: number, updateData: Partial<CreateExpenseDto>): Promise<Expense | null> {
-        const client = PostgresDatabase.getClient();
-        
-        const fields: string[] = [];
-        const values: SqlParams = [];
-        let paramIndex = 1;
+		const result = await client.query(query, values);
+		return result.rows;
+	}
 
-        if (updateData.amount !== undefined) {
-            fields.push(`amount = $${paramIndex++}`);
-            values.push(updateData.amount);
-        }
-        if (updateData.currency_type_id !== undefined) {
-            fields.push(`currency_type_id = $${paramIndex++}`);
-            values.push(updateData.currency_type_id);
-        }
-        if (updateData.registered_date) {
-            fields.push(`registered_date = $${paramIndex++}`);
-            values.push(updateData.registered_date);
-        }
-        if (updateData.frequency !== undefined) {
-            fields.push(`frequency = $${paramIndex++}`);
-            values.push(updateData.frequency || null);
-        }
+	static async update(
+		id: number,
+		updateData: Partial<CreateExpenseDto>,
+	): Promise<Expense | null> {
+		const client = PostgresDatabase.getClient();
 
-        if (fields.length === 0) {
-            return await this.findById(id);
-        }
+		const fields: string[] = [];
+		const values: SqlParams = [];
+		let paramIndex = 1;
 
-        values.push(id);
+		if (updateData.amount !== undefined) {
+			fields.push(`amount = $${paramIndex++}`);
+			values.push(updateData.amount);
+		}
+		if (updateData.currency_type_id !== undefined) {
+			fields.push(`currency_type_id = $${paramIndex++}`);
+			values.push(updateData.currency_type_id);
+		}
+		if (updateData.registered_date) {
+			fields.push(`registered_date = $${paramIndex++}`);
+			values.push(updateData.registered_date);
+		}
+		if (updateData.frequency !== undefined) {
+			fields.push(`frequency = $${paramIndex++}`);
+			values.push(updateData.frequency || null);
+		}
 
-        const query = `
-            UPDATE ${this.TABLE_NAME}
-            SET ${fields.join(', ')}
+		if (fields.length === 0) {
+			return await ExpenseModel.findById(id);
+		}
+
+		values.push(id);
+
+		const query = `
+            UPDATE ${ExpenseModel.TABLE_NAME}
+            SET ${fields.join(", ")}
             WHERE id = $${paramIndex}
             RETURNING *
         `;
 
-        const result = await client.query(query, values);
-        return result.rows[0] || null;
-    }
+		const result = await client.query(query, values);
+		return result.rows[0] || null;
+	}
 
-    static async delete(id: number): Promise<boolean> {
-        const client = PostgresDatabase.getClient();
-        const query = `DELETE FROM ${this.TABLE_NAME} WHERE id = $1`;
-        const result = await client.query(query, [id]);
-        return (result.rowCount ?? 0) > 0;
-    }
+	static async delete(id: number): Promise<boolean> {
+		const client = PostgresDatabase.getClient();
+		const query = `DELETE FROM ${ExpenseModel.TABLE_NAME} WHERE id = $1`;
+		const result = await client.query(query, [id]);
+		return (result.rowCount ?? 0) > 0;
+	}
 }
-
