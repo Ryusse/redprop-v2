@@ -40,5 +40,8 @@
 		"lint-staged": "^16.2.6",
 		"standard-version": "^9.5.0",
 		"typescript": "^5.9.3"
+	},
+	"optionalDependencies": {
+		"@biomejs/cli-linux-x64": "^2.3.10"
 	}
 }
