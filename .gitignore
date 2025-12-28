@@ -31,3 +31,6 @@ yarn-error.log*
 
 .claude
 nvm-link.ps1
+
+# docs
+/docs/planning
