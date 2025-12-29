@@ -89,7 +89,7 @@ export class PropertyEntity {
 			Number(visibility_status_id),
 			Number(captured_by_user_id),
 			owner_id ? Number(owner_id) : undefined,
-			description?.trim(),
+			description ? String(description).trim() : undefined,
 			bedrooms_count !== undefined ? Number(bedrooms_count) : undefined,
 			bathrooms_count !== undefined ? Number(bathrooms_count) : undefined,
 			rooms_count !== undefined ? Number(rooms_count) : undefined,
@@ -99,8 +99,10 @@ export class PropertyEntity {
 			land_area !== undefined ? Number(land_area) : undefined,
 			covered_area !== undefined ? Number(covered_area) : undefined,
 			total_area !== undefined ? Number(total_area) : undefined,
-			publication_date ? new Date(publication_date) : undefined,
-			updated_at ? new Date(updated_at) : undefined,
+			publication_date
+				? new Date(publication_date as string | number | Date)
+				: undefined,
+			updated_at ? new Date(updated_at as string | number | Date) : undefined,
 		);
 	}
 

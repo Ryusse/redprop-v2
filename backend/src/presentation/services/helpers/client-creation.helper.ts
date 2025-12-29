@@ -93,7 +93,9 @@ export class ClientCreationHelper {
 
 		console.log(`New client created with ID: ${newClient.id}`);
 		return {
-			client: ClientEntity.fromDatabaseObject(newClient),
+			client: ClientEntity.fromDatabaseObject(
+				newClient as unknown as Record<string, unknown>,
+			),
 			wasCreated: true,
 		};
 	}

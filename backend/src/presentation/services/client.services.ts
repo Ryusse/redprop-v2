@@ -55,7 +55,9 @@ export class ClientServices {
 		);
 		const enrichedClients = await Promise.all(
 			clients.map(async (client) => {
-				const clientEntity = ClientEntity.fromDatabaseObject(client);
+				const clientEntity = ClientEntity.fromDatabaseObject(
+					client as unknown as Record<string, unknown>,
+				);
 				const category = await ContactCategoryModel.findById(
 					clientEntity.contact_category_id,
 				);
@@ -88,7 +90,9 @@ export class ClientServices {
 			throw CustomError.notFound(`Client with ID ${id} not found`);
 		}
 
-		const clientEntity = ClientEntity.fromDatabaseObject(client);
+		const clientEntity = ClientEntity.fromDatabaseObject(
+			client as unknown as Record<string, unknown>,
+		);
 
 		const { ContactCategoryModel } = await import(
 			"../../data/postgres/models/clients/contact-category.model"
@@ -386,27 +390,29 @@ export class ClientServices {
 			const properties = await PropertyModel.findAll({ owner_id: clientId });
 
 			ownedProperties = await Promise.all(
-				properties.map(async (property: PropertyRow) => {
-					const [propertyType, propertyStatus, enrichedDetails] =
-						await Promise.all([
-							PropertyTypeModel.findById(property.property_type_id),
-							PropertyStatusModel.findById(property.property_status_id),
-							this.enrichPropertyDetails(property as PropertyRow),
-						]);
+				(properties as unknown as PropertyRow[]).map(
+					async (property: PropertyRow) => {
+						const [propertyType, propertyStatus, enrichedDetails] =
+							await Promise.all([
+								PropertyTypeModel.findById(property.property_type_id),
+								PropertyStatusModel.findById(property.property_status_id),
+								this.enrichPropertyDetails(property as PropertyRow),
+							]);
 
-					return {
-						id: property.id,
-						title: property.title,
-						...enrichedDetails,
-						property_type: propertyType
-							? { id: propertyType.id, name: propertyType.name }
-							: null,
-						property_status: propertyStatus
-							? { id: propertyStatus.id, name: propertyStatus.name }
-							: null,
-						publication_date: property.publication_date,
-					};
-				}),
+						return {
+							id: property.id!,
+							title: property.title,
+							...enrichedDetails,
+							property_type: propertyType
+								? { id: propertyType.id, name: propertyType.name }
+								: null,
+							property_status: propertyStatus
+								? { id: propertyStatus.id, name: propertyStatus.name }
+								: null,
+							publication_date: property.publication_date,
+						};
+					},
+				),
 			);
 		}
 
@@ -536,7 +542,7 @@ export class ClientServices {
 
 	private async getClientConsultations(
 		clientId: number,
-	): Promise<Record<string, unknown>[]> {
+	): Promise<EnrichedConsultation[]> {
 		const { ClientConsultationModel } = await import(
 			"../../data/postgres/models/crm/client-consultation.model"
 		);
@@ -564,22 +570,22 @@ export class ClientServices {
 					);
 					if (propertyData) {
 						property = {
-							id: propertyData.id,
+							id: propertyData.id!,
 							title: propertyData.title,
 						};
 					}
 				}
 
 				return {
-					id: consultation.id,
-					consultation_date: consultation.consultation_date,
+					id: consultation.id!,
+					consultation_date: consultation.consultation_date!,
 					message: consultation.message,
 					response: consultation.response || null,
 					response_date: consultation.response_date || null,
 					is_read: consultation.is_read || false,
 					consultation_type: consultationType
 						? {
-								id: consultationType.id,
+								id: consultationType.id!,
 								name: consultationType.name,
 							}
 						: null,
@@ -597,7 +603,9 @@ export class ClientServices {
 			throw CustomError.notFound(`Client with ID ${id} not found`);
 		}
 
-		const clientEntity = ClientEntity.fromDatabaseObject(existingClient);
+		const clientEntity = ClientEntity.fromDatabaseObject(
+			existingClient as unknown as Record<string, unknown>,
+		);
 
 		if (!clientEntity.canBeUpdated()) {
 			throw CustomError.badRequest("Cannot update deleted client");
@@ -746,7 +754,9 @@ export class ClientServices {
 			throw CustomError.internalServerError("Failed to update client");
 		}
 
-		const updatedClientEntity = ClientEntity.fromDatabaseObject(updatedClient);
+		const updatedClientEntity = ClientEntity.fromDatabaseObject(
+			updatedClient as unknown as Record<string, unknown>,
+		);
 
 		return { client: updatedClientEntity.toPublicObject() };
 	}

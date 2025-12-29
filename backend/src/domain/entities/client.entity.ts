@@ -64,7 +64,9 @@ export class ClientEntity {
 		let registeredDate: Date | undefined;
 		if (registered_at) {
 			registeredDate =
-				registered_at instanceof Date ? registered_at : new Date(registered_at);
+				registered_at instanceof Date
+					? registered_at
+					: new Date(registered_at as string | number | Date);
 			if (Number.isNaN(registeredDate.getTime())) {
 				registeredDate = undefined;
 			}
@@ -183,7 +185,9 @@ export class ClientEntity {
 		let registeredDate: Date | undefined;
 		if (registered_at) {
 			registeredDate =
-				registered_at instanceof Date ? registered_at : new Date(registered_at);
+				registered_at instanceof Date
+					? registered_at
+					: new Date(registered_at as string | number | Date);
 			if (Number.isNaN(registeredDate.getTime())) {
 				throw CustomError.badRequest("Invalid registered_at date");
 			}

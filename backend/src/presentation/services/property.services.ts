@@ -499,91 +499,95 @@ export class PropertyServices {
 			disposition,
 			situation,
 		] = await Promise.all([
-			PropertyTypeModel.findById(property.property_type_id),
-			PropertyStatusModel.findById(property.property_status_id),
-			VisibilityStatusModel.findById(property.visibility_status_id),
+			PropertyTypeModel.findById(Number(property.property_type_id)),
+			PropertyStatusModel.findById(Number(property.property_status_id)),
+			VisibilityStatusModel.findById(Number(property.visibility_status_id)),
 			property.age_id
-				? PropertyAgeModel.findById(property.age_id)
+				? PropertyAgeModel.findById(Number(property.age_id))
 				: Promise.resolve(null),
 			property.orientation_id
-				? OrientationModel.findById(property.orientation_id)
+				? OrientationModel.findById(Number(property.orientation_id))
 				: Promise.resolve(null),
 			property.disposition_id
-				? DispositionModel.findById(property.disposition_id)
+				? DispositionModel.findById(Number(property.disposition_id))
 				: Promise.resolve(null),
 			property.situation_id
-				? PropertySituationModel.findById(property.situation_id)
+				? PropertySituationModel.findById(Number(property.situation_id))
 				: Promise.resolve(null),
 		]);
 
 		const enrichedPrices = await Promise.all(
-			(property.prices || []).map(async (price: PropertyPriceRow) => {
-				const [currency, operationType] = await Promise.all([
-					CurrencyTypeModel.findById(price.currency_type_id),
-					PropertyOperationTypeModel.findById(price.operation_type_id),
-				]);
+			((property.prices as PropertyPriceRow[]) || []).map(
+				async (price: PropertyPriceRow) => {
+					const [currency, operationType] = await Promise.all([
+						CurrencyTypeModel.findById(price.currency_type_id),
+						PropertyOperationTypeModel.findById(price.operation_type_id),
+					]);
 
-				return {
-					id: price.id,
-					property_id: price.property_id,
-					price: price.price,
-					currency: currency
-						? {
-								id: currency.id,
-								name: currency.name,
-								symbol: currency.symbol,
-							}
-						: null,
-					operation_type: operationType
-						? {
-								id: operationType.id,
-								name: operationType.name,
-							}
-						: null,
-					updated_at: price.updated_at,
-				};
-			}),
+					return {
+						id: price.id,
+						property_id: price.property_id,
+						price: price.price,
+						currency: currency
+							? {
+									id: currency.id,
+									name: currency.name,
+									symbol: currency.symbol,
+								}
+							: null,
+						operation_type: operationType
+							? {
+									id: operationType.id,
+									name: operationType.name,
+								}
+							: null,
+						updated_at: price.updated_at,
+					};
+				},
+			),
 		);
 
 		const enrichedAddresses = await Promise.all(
-			(property.addresses || []).map(async (address: PropertyAddressRow) => {
-				if (!address || !address.city_id) return null;
+			((property.addresses as PropertyAddressRow[]) || []).map(
+				async (address: PropertyAddressRow) => {
+					if (!address || !address.city_id) return null;
 
-				const city = await CityModel.findById(address.city_id);
-				if (!city) return address;
+					const city = await CityModel.findById(address.city_id);
+					if (!city) return address;
 
-				const province = await ProvinceModel.findById(city.province_id);
-				const country = province
-					? await CountryModel.findById(province.country_id)
-					: null;
+					const province = await ProvinceModel.findById(city.province_id);
+					const country = province
+						? await CountryModel.findById(province.country_id)
+						: null;
 
-				return {
-					id: address.id,
-					street: address.street || null,
-					number: address.number || null,
-					full_address: address.full_address,
-					...(address.neighborhood && { neighborhood: address.neighborhood }),
-					...(address.postal_code && { postal_code: address.postal_code }),
-					...(address.latitude && { latitude: address.latitude }),
-					...(address.longitude && { longitude: address.longitude }),
-					city: {
-						id: city.id,
-						name: city.name,
-						province: province
-							? {
-									id: province.id,
-									name: province.name,
-									country: country
-										? {
-												id: country.id,
-												name: country.name,
-											}
-										: null,
-								}
-							: null,
-					},
-				};
-			}),
+					return {
+						id: address.id,
+						street: address.street || null,
+						number: address.number || null,
+						full_address: address.full_address,
+						...(address.neighborhood && { neighborhood: address.neighborhood }),
+						...(address.postal_code && { postal_code: address.postal_code }),
+						...(address.latitude && { latitude: address.latitude }),
+						...(address.longitude && { longitude: address.longitude }),
+						city: {
+							id: city.id,
+							name: city.name,
+							province: province
+								? {
+										id: province.id,
+										name: province.name,
+										country: country
+											? {
+													id: country.id,
+													name: country.name,
+												}
+											: null,
+									}
+								: null,
+						},
+					};
+				},
+			),
 		);
 
 		const propertyServices = await PropertyServiceModel.findByPropertyId(id);
@@ -626,7 +630,7 @@ export class PropertyServices {
 
 		let owner = null;
 		if (property.owner_id) {
-			const ownerClient = await ClientModel.findById(property.owner_id);
+			const ownerClient = await ClientModel.findById(Number(property.owner_id));
 			if (ownerClient) {
 				const { ContactCategoryModel } = await import(
 					"../../data/postgres/models/clients/contact-category.model"
@@ -783,17 +787,20 @@ export class PropertyServices {
 				})),
 				addresses: enrichedAddresses
 					.filter((a) => a !== null)
-					.map((addr: EnrichedPropertyAddress) => ({
-						id: addr.id,
-						street: addr.street || null,
-						number: addr.number || null,
-						full_address: addr.full_address,
-						neighborhood: addr.neighborhood || null,
-						postal_code: addr.postal_code || null,
-						latitude: addr.latitude || null,
-						longitude: addr.longitude || null,
-						city: addr.city || null,
-					})),
+					.map(
+						(addr: any) =>
+							({
+								id: addr.id,
+								street: addr.street || null,
+								number: addr.number || null,
+								full_address: addr.full_address,
+								neighborhood: addr.neighborhood || null,
+								postal_code: addr.postal_code || null,
+								latitude: addr.latitude || null,
+								longitude: addr.longitude || null,
+								city: addr.city || null,
+							}) as EnrichedPropertyAddress,
+					),
 				images: property.images || [],
 				services: enrichedServices.filter((s) => s !== null),
 				documents: documents,
@@ -834,117 +841,119 @@ export class PropertyServices {
 		);
 
 		const enrichedProperties = await Promise.all(
-			properties.map(async (property: PropertyListItem) => {
-				let mainPriceInfo = null;
-				if (
-					property.main_price &&
-					property.main_currency_type_id &&
-					property.main_operation_type_id
-				) {
-					const [currency, operationType] = await Promise.all([
-						CurrencyTypeModel.findById(property.main_currency_type_id),
-						PropertyOperationTypeModel.findById(
-							property.main_operation_type_id,
-						),
-					]);
+			(properties as unknown as PropertyListItem[]).map(
+				async (property: PropertyListItem) => {
+					let mainPriceInfo = null;
+					if (
+						property.main_price &&
+						property.main_currency_type_id &&
+						property.main_operation_type_id
+					) {
+						const [currency, operationType] = await Promise.all([
+							CurrencyTypeModel.findById(property.main_currency_type_id),
+							PropertyOperationTypeModel.findById(
+								property.main_operation_type_id,
+							),
+						]);
 
-					mainPriceInfo = {
-						price: property.main_price,
-						currency: currency
+						mainPriceInfo = {
+							price: property.main_price,
+							currency: currency
+								? {
+										id: currency.id,
+										name: currency.name,
+										symbol: currency.symbol,
+									}
+								: null,
+							operation_type: operationType
+								? {
+										id: operationType.id,
+										name: operationType.name,
+									}
+								: null,
+						};
+					}
+
+					return {
+						id: property.id,
+						title: property.title,
+						description: property.description,
+						publication_date: property.publication_date,
+						featured_web: property.featured_web,
+						property_type: {
+							id: property.property_type_id,
+							name: property.property_type_name,
+						},
+						property_status: {
+							id: property.property_status_id,
+							name: property.property_status_name,
+						},
+						visibility_status: {
+							id: property.visibility_status_id,
+							name: property.visibility_status_name,
+						},
+						owner_id: property.owner_id || null,
+						age: property.age_id
 							? {
-									id: currency.id,
-									name: currency.name,
-									symbol: currency.symbol,
+									id: property.age_id,
+									name: property.property_age_name,
 								}
 							: null,
-						operation_type: operationType
+						orientation: property.orientation_id
 							? {
-									id: operationType.id,
-									name: operationType.name,
+									id: property.orientation_id,
+									name: property.orientation_name,
 								}
 							: null,
+						disposition: property.disposition_id
+							? {
+									id: property.disposition_id,
+									name: property.disposition_name,
+								}
+							: null,
+						situation: property.situation_id
+							? {
+									id: property.situation_id,
+									name: property.situation_name,
+								}
+							: null,
+						bedrooms_count: property.bedrooms_count,
+						bathrooms_count: property.bathrooms_count,
+						rooms_count: property.rooms_count,
+						parking_spaces_count: property.parking_spaces_count,
+						land_area: property.land_area,
+						covered_area: property.covered_area,
+						total_area: property.total_area,
+						main_price: mainPriceInfo,
+						main_address: property.main_address
+							? {
+									full_address: property.main_address,
+									neighborhood: property.main_neighborhood,
+									city: property.main_city_name
+										? {
+												id: property.main_city_id,
+												name: property.main_city_name,
+												province: property.main_province_name
+													? {
+															name: property.main_province_name,
+														}
+													: null,
+											}
+										: null,
+								}
+							: null,
+						primary_image: property.primary_image_path
+							? {
+									id: property.primary_image_id,
+									file_path: property.primary_image_path,
+									is_primary: true,
+								}
+							: null,
+						images_count: property.images_count || 0,
+						updated_at: property.updated_at,
 					};
-				}
-
-				return {
-					id: property.id,
-					title: property.title,
-					description: property.description,
-					publication_date: property.publication_date,
-					featured_web: property.featured_web,
-					property_type: {
-						id: property.property_type_id,
-						name: property.property_type_name,
-					},
-					property_status: {
-						id: property.property_status_id,
-						name: property.property_status_name,
-					},
-					visibility_status: {
-						id: property.visibility_status_id,
-						name: property.visibility_status_name,
-					},
-					owner_id: property.owner_id || null,
-					age: property.age_id
-						? {
-								id: property.age_id,
-								name: property.property_age_name,
-							}
-						: null,
-					orientation: property.orientation_id
-						? {
-								id: property.orientation_id,
-								name: property.orientation_name,
-							}
-						: null,
-					disposition: property.disposition_id
-						? {
-								id: property.disposition_id,
-								name: property.disposition_name,
-							}
-						: null,
-					situation: property.situation_id
-						? {
-								id: property.situation_id,
-								name: property.situation_name,
-							}
-						: null,
-					bedrooms_count: property.bedrooms_count,
-					bathrooms_count: property.bathrooms_count,
-					rooms_count: property.rooms_count,
-					parking_spaces_count: property.parking_spaces_count,
-					land_area: property.land_area,
-					covered_area: property.covered_area,
-					total_area: property.total_area,
-					main_price: mainPriceInfo,
-					main_address: property.main_address
-						? {
-								full_address: property.main_address,
-								neighborhood: property.main_neighborhood,
-								city: property.main_city_name
-									? {
-											id: property.main_city_id,
-											name: property.main_city_name,
-											province: property.main_province_name
-												? {
-														name: property.main_province_name,
-													}
-												: null,
-										}
-									: null,
-							}
-						: null,
-					primary_image: property.primary_image_path
-						? {
-								id: property.primary_image_id,
-								file_path: property.primary_image_path,
-								is_primary: true,
-							}
-						: null,
-					images_count: property.images_count || 0,
-					updated_at: property.updated_at,
-				};
-			}),
+				},
+			),
 		);
 
 		return { properties: enrichedProperties, count: enrichedProperties.length };

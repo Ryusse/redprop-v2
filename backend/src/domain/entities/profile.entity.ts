@@ -43,12 +43,16 @@ export class ProfileEntity {
 		const profilePhone = phone || telefono;
 		const profileRole = role_id || id_rol;
 		const profileActive =
-			active !== undefined ? active : activo !== undefined ? activo : true;
+			active !== undefined && active !== null
+				? Boolean(active)
+				: activo !== undefined && activo !== null
+					? Boolean(activo)
+					: true;
 		const profileDeleted =
-			deleted !== undefined
-				? deleted
-				: borrado_logico !== undefined
-					? borrado_logico
+			deleted !== undefined && deleted !== null
+				? Boolean(deleted)
+				: borrado_logico !== undefined && borrado_logico !== null
+					? Boolean(borrado_logico)
 					: false;
 		const profileCreatedAt = created_at || fecha_creacion;
 

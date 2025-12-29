@@ -52,7 +52,9 @@ export class AuthServices {
 				role_id: roleId,
 			});
 
-			const profileEntity = ProfileEntity.fromObject(profile);
+			const profileEntity = ProfileEntity.fromObject(
+				profile as unknown as Record<string, unknown>,
+			);
 			const role = await RoleModel.findById(profileEntity.role_id);
 
 			const token = await this.jwtAdapter.generateToken({
@@ -99,7 +101,9 @@ export class AuthServices {
 			);
 		}
 
-		const profileEntity = ProfileEntity.fromObject(profile);
+		const profileEntity = ProfileEntity.fromObject(
+			profile as unknown as Record<string, unknown>,
+		);
 		const role = await RoleModel.findById(profileEntity.role_id);
 
 		const token = await this.jwtAdapter.generateToken({
@@ -126,7 +130,9 @@ export class AuthServices {
 				throw CustomError.notFound("Profile not found");
 			}
 
-			const profileEntity = ProfileEntity.fromObject(profile);
+			const profileEntity = ProfileEntity.fromObject(
+				profile as unknown as Record<string, unknown>,
+			);
 			const role = await RoleModel.findById(profileEntity.role_id);
 
 			const publicUser = profileEntity.toPublicObject();
