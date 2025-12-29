@@ -39,13 +39,13 @@ export default function RecentActivityCard() {
 			<div className="space-y-6">
 				{activities.map((activity) => (
 					<div key={activity.id} className="flex gap-4">
-						<div className="mt-1 h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+						<div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100">
 							<activity.icon className="h-4 w-4 text-gray-600" />
 						</div>
 						<div>
 							<p className="font-medium text-gray-900">{activity.title}</p>
-							<p className="text-sm text-gray-500">{activity.description}</p>
-							<p className="text-xs text-gray-400 mt-1">
+							<p className="text-gray-500 text-sm">{activity.description}</p>
+							<p className="mt-1 text-gray-400 text-xs">
 								{activity.date} • {activity.user}
 							</p>
 						</div>

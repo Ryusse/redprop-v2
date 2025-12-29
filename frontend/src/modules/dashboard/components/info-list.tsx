@@ -7,13 +7,13 @@ export async function InfoList() {
 	const data = await getDashboardInfo();
 
 	return (
-		<ul className="grid max-[480px]:grid-cols-1 grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-center">
+		<ul className="grid grid-cols-2 items-center gap-4 max-[480px]:grid-cols-1 md:gap-6 lg:grid-cols-4">
 			<li>
 				<InfoAgentsCard
 					icon={House}
 					title={data?.active_properties || 0}
 					description="Propiedades activas"
-					className="[&>svg]:text-success-foreground [&>svg]:bg-success"
+					className="[&>svg]:bg-success [&>svg]:text-success-foreground"
 				/>
 			</li>
 			<li>
@@ -29,7 +29,7 @@ export async function InfoList() {
 					icon={MessageSquare}
 					title={data?.unanswered_consultations || 0}
 					description="Consultas no leídas"
-					className="[&>svg]:text-blue-normal [&>svg]:bg-success"
+					className="[&>svg]:bg-success [&>svg]:text-blue-normal"
 				/>
 			</li>
 			<li>
@@ -37,7 +37,7 @@ export async function InfoList() {
 					icon={UserCheck}
 					title={data?.new_leads_today || 0}
 					description="Nuevos leads"
-					className="[&>svg]:text-header [&>svg]:bg-muted"
+					className="[&>svg]:bg-muted [&>svg]:text-header"
 				/>
 			</li>
 		</ul>

@@ -48,11 +48,11 @@ export function DeleteUserAlert({ id, open, onOpenChange }: DeleteUserProps) {
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle className="text-secondary sm:text-lg md:text-xl items-center">
+					<AlertDialogTitle className="items-center text-secondary sm:text-lg md:text-xl">
 						¿Estás seguro de eliminar este agente?
 					</AlertDialogTitle>
 				</AlertDialogHeader>
-				<AlertDialogDescription className="text-gray-800 ">
+				<AlertDialogDescription className="text-gray-800">
 					Esta acción no se puede deshacer. Esto eliminará permanentemente esta
 					cuenta y se borrará de la base de datos.
 				</AlertDialogDescription>

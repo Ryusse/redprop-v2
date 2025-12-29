@@ -31,17 +31,17 @@ export default function RelatedInquiriesCard() {
 		<Section title="Consultas relacionadas">
 			<div className="-m-6 divide-y">
 				{inquiries.map((inquiry) => (
-					<div key={inquiry.id} className="p-4 space-y-2">
-						<div className="flex justify-between items-start">
+					<div key={inquiry.id} className="space-y-2 p-4">
+						<div className="flex items-start justify-between">
 							<p className="font-medium text-gray-900">{inquiry.name}</p>
-							<span className="text-xs text-gray-500">{inquiry.date}</span>
+							<span className="text-gray-500 text-xs">{inquiry.date}</span>
 						</div>
 						<div className="space-y-1">
-							<div className="flex items-center gap-2 text-xs text-gray-600">
+							<div className="flex items-center gap-2 text-gray-600 text-xs">
 								<PhoneIcon className="h-3 w-3" />
 								<span>{inquiry.phone}</span>
 							</div>
-							<div className="flex items-center gap-2 text-xs text-gray-600">
+							<div className="flex items-center gap-2 text-gray-600 text-xs">
 								<EnvelopeIcon className="h-3 w-3" />
 								<span>{inquiry.email}</span>
 							</div>

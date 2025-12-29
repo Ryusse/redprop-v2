@@ -28,7 +28,7 @@ type Props = {
 
 export default function PropertyValuesForm({ form }: Props) {
 	return (
-		<div className="grid lg:grid-cols-2 gap-4 lg:gap-10 items-start">
+		<div className="grid items-start gap-4 lg:grid-cols-2 lg:gap-10">
 			<FormField
 				control={form.control}
 				name="values.prices.0.price"
@@ -48,7 +48,7 @@ export default function PropertyValuesForm({ form }: Props) {
 											>
 												<SelectTrigger
 													size="default"
-													className=" border-t-0 border-b-0 border-l-0 rounded-t-none rounded-b-none bg-transparent! rounded-r-none shadow-none"
+													className="rounded-t-none rounded-r-none rounded-b-none border-t-0 border-b-0 border-l-0 bg-transparent! shadow-none"
 												>
 													<InputGroupButton
 														asChild
@@ -98,7 +98,7 @@ export default function PropertyValuesForm({ form }: Props) {
 											>
 												<SelectTrigger
 													size="default"
-													className=" border-t-0 border-b-0 border-l-0 rounded-t-none rounded-b-none bg-transparent! rounded-r-none shadow-none"
+													className="rounded-t-none rounded-r-none rounded-b-none border-t-0 border-b-0 border-l-0 bg-transparent! shadow-none"
 												>
 													<InputGroupButton
 														variant="ghost"

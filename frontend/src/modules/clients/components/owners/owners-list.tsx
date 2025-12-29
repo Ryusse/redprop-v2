@@ -88,7 +88,7 @@ export function OwnersList({ owners, itemsPerPage = 10 }: OwnersListProps) {
 
 	if (filteredOwners.length === 0) {
 		return (
-			<div className="text-center py-8 text-slate-500">
+			<div className="py-8 text-center text-slate-500">
 				No hay propietarios disponibles
 			</div>
 		);

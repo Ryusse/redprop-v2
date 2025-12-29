@@ -56,13 +56,13 @@ export function TenantsCard({ tenant, onEdit, onDelete }: TenantsCardProps) {
 
 	return (
 		<Card
-			className="mb-3 cursor-pointer hover:bg-slate-50 transition-colors"
+			className="mb-3 cursor-pointer transition-colors hover:bg-slate-50"
 			onClick={handleCardClick}
 		>
-			<CardContent className="p-0 w-full">
+			<CardContent className="w-full p-0">
 				<div className="flex items-start justify-between px-4 lg:py-4">
 					<div className="flex items-center gap-4">
-						<div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-semibold text-slate-700">
+						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 font-semibold text-slate-700">
 							{tenant.first_name.charAt(0)}
 						</div>
 						<div className="text-left">
@@ -72,12 +72,12 @@ export function TenantsCard({ tenant, onEdit, onDelete }: TenantsCardProps) {
 								</span>
 								<StatusBadge
 									status="inquilino"
-									className="text-xs hidden lg:inline-flex"
+									className="hidden text-xs lg:inline-flex"
 								>
 									Inquilino
 								</StatusBadge>
 							</div>
-							<div className="text-sm text-slate-500 mt-1">
+							<div className="mt-1 text-slate-500 text-sm">
 								<div>
 									<span className="hidden lg:inline-flex">Tel: </span>
 									{tenant.phone} ·
@@ -86,10 +86,10 @@ export function TenantsCard({ tenant, onEdit, onDelete }: TenantsCardProps) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col lg:flex-row items-end lg:items-center lg:gap-4">
-						<div className="text-right mr-2 order-2 lg:-order-1">
-							<div className="text-xs text-slate-500">Alquiler</div>
-							<div className="lg:text-2xl font-semibold text-slate-900">
+					<div className="flex flex-col items-end lg:flex-row lg:items-center lg:gap-4">
+						<div className="order-2 mr-2 text-right lg:-order-1">
+							<div className="text-slate-500 text-xs">Alquiler</div>
+							<div className="font-semibold text-slate-900 lg:text-2xl">
 								{monthlyAmount
 									? `$${monthlyAmount.toLocaleString("es-AR")}`
 									: "N/A"}
@@ -100,7 +100,7 @@ export function TenantsCard({ tenant, onEdit, onDelete }: TenantsCardProps) {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="h-8 w-8 -mt-1 lg:-mt-5"
+									className="-mt-1 h-8 w-8 lg:-mt-5"
 								>
 									<MoreHorizontal className="h-4 w-4 text-slate-500" />
 								</Button>

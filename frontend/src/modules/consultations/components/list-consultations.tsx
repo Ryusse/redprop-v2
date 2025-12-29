@@ -123,7 +123,7 @@ export default function ListConsultations({
 		<div className="w-full">
 			<div className="space-y-4">
 				{consultations.length === 0 ? (
-					<div className="text-center py-12">
+					<div className="py-12 text-center">
 						<p className="text-gray-500">No hay consultas para mostrar</p>
 					</div>
 				) : (

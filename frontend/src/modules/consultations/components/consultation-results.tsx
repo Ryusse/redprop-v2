@@ -68,12 +68,12 @@ export default function ConsultationResults({
 	return (
 		<div className="w-full">
 			{isSelectionMode && (
-				<div className="flex items-center lg:justify-between gap-4 lg:gap-0 mb-4">
+				<div className="mb-4 flex items-center gap-4 lg:justify-between lg:gap-0">
 					<div className="flex items-center gap-2">
 						<Button variant="outline" size="sm" onClick={handleCancelSelection}>
 							Cancelar
 						</Button>
-						<span className="text-sm text-muted-foreground">
+						<span className="text-muted-foreground text-sm">
 							{selectedIds.size} consulta(s) seleccionada(s)
 						</span>
 					</div>

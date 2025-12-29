@@ -64,8 +64,8 @@ export default function PropertySelect({
 					role="combobox"
 					aria-expanded={open}
 					className={cn(
-						"w-full justify-between border-input-border/70 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg py-2 shadow-input-border",
-						value && "border-input-active border-2 text-primary-normal-active",
+						"w-full justify-between rounded-lg border-input-border/70 py-2 shadow-input-border focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0",
+						value && "border-2 border-input-active text-primary-normal-active",
 						!value && "text-grey-light",
 						className,
 					)}
@@ -91,8 +91,8 @@ export default function PropertySelect({
 										setOpen(false);
 									}}
 								>
-									<div className="flex flex-col items-start min-w-0 flex-1">
-										<span className="font-medium truncate">
+									<div className="flex min-w-0 flex-1 flex-col items-start">
+										<span className="truncate font-medium">
 											{property.main_address.full_address}
 										</span>
 									</div>

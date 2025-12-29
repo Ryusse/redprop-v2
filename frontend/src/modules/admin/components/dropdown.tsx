@@ -24,7 +24,7 @@ export function Dropdown({ id, user, onUserUpdated }: DropdownProps) {
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost">
-						<Ellipsis className="text-input-border stroke-1.5" />
+						<Ellipsis className="stroke-1.5 text-input-border" />
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="mx-3">

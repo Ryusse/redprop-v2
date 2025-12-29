@@ -32,10 +32,10 @@ export function ConsultationContactInfo({
 			<h3 className="font-semibold text-base">{name}</h3>
 
 			{consultation.property && (
-				<p className="text-sm text-slate-600">{consultation.property.title}</p>
+				<p className="text-slate-600 text-sm">{consultation.property.title}</p>
 			)}
 
-			<div className="space-y-2 text-sm text-slate-700">
+			<div className="space-y-2 text-slate-700 text-sm">
 				{email !== "No disponible" && (
 					<div className="flex items-center gap-2">
 						<MailIcon className="h-4 w-4 text-slate-400" />
@@ -51,7 +51,7 @@ export function ConsultationContactInfo({
 				)}
 			</div>
 
-			<p className="text-xs text-slate-500">{formattedDate}</p>
+			<p className="text-slate-500 text-xs">{formattedDate}</p>
 		</div>
 	);
 }

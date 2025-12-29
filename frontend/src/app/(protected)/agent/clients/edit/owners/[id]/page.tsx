@@ -20,7 +20,7 @@ export default async function Page({
 	const clientResponse = await getClientById<OwnerApiResponse>(id);
 	if (!clientResponse || !clientResponse.client) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
+			<div className="flex min-h-screen items-center justify-center">
 				<p className="text-lg text-slate-600">
 					No se encontró el propietario solicitado
 				</p>

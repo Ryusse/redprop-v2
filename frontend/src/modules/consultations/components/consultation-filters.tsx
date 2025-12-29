@@ -56,7 +56,7 @@ export default function ConsultationFilters({
 		isRead === "false" ? "unread" : startDate && endDate ? "last7" : "all";
 
 	return (
-		<div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-3 lg:mt-2">
+		<div className="flex flex-col items-start gap-2 lg:mt-2 lg:flex-row lg:items-center lg:gap-3">
 			<div className="flex gap-3">
 				<Button
 					variant={activeFilter === "last7" ? "tertiary" : "outline"}
@@ -75,7 +75,7 @@ export default function ConsultationFilters({
 					<Mail className="size-4" />
 					No leídos
 					{unreadCount > 0 && (
-						<Badge className="ml-1 bg-[#3B82F6] text-white text-xs rounded-full min-w-6 h-6 px-0.5 flex items-center justify-center leading-none">
+						<Badge className="ml-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-[#3B82F6] px-0.5 text-white text-xs leading-none">
 							{unreadCount}
 						</Badge>
 					)}

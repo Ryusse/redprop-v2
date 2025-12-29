@@ -4,7 +4,7 @@ import { cn } from "@src/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const MainLayoutVariants = cva(
-	"mx-auto block w-full px-4 xxl:w-[calc(100%-120px)] lg:w-[calc(100%-80px)] md:w-[calc(100%-80px)] md:px-0",
+	"mx-auto block w-full xxl:w-[calc(100%-120px)] px-4 md:w-[calc(100%-80px)] md:px-0 lg:w-[calc(100%-80px)]",
 	{
 		variants: {
 			size: {

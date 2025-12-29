@@ -17,7 +17,7 @@ export default function PropertySearch({ className }: Props) {
 
 	return (
 		<div className={cn("relative w-full", className)}>
-			<MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+			<MagnifyingGlassIcon className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 			<Input
 				type="search"
 				placeholder="Buscar propiedades..."

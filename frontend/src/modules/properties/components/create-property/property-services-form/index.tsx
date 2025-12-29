@@ -31,7 +31,7 @@ const SERVICES_OPTIONS: Option[] = [
 
 export default function PropertyServicesForm({ form }: Props) {
 	return (
-		<div className="grid gap-4 max-w-xl mx-auto w-full">
+		<div className="mx-auto grid w-full max-w-xl gap-4">
 			<FormField
 				control={form.control}
 				name="services.services"

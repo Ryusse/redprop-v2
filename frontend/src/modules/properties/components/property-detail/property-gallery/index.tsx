@@ -51,17 +51,17 @@ export default function PropertyGallery({ images }: Props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col gap-3">
+		<div className="flex w-full flex-col gap-3">
 			<Carousel setApi={setApi} className="w-full">
 				<CarouselContent>
 					{images.map((image, index) => (
 						<CarouselItem key={image.id}>
-							<figure className="border-0 shadow-none flex items-center justify-center p-0 relative overflow-hidden rounded-lg aspect-video h-[295px] xl:h-[400px] w-full">
+							<figure className="relative flex aspect-video h-[295px] w-full items-center justify-center overflow-hidden rounded-lg border-0 p-0 shadow-none xl:h-[400px]">
 								<Image
 									src={image.file_path}
 									alt={`Property image ${index + 1}`}
 									fill
-									className="object-cover w-full h-full"
+									className="h-full w-full object-cover"
 									priority={index === 0}
 								/>
 							</figure>
@@ -85,7 +85,7 @@ export default function PropertyGallery({ images }: Props) {
 						>
 							<figure
 								className={cn(
-									"shadow-none bg-transparent flex items-center justify-center relative overflow-hidden rounded-lg w-full aspect-video border border-transparent",
+									"relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg border border-transparent bg-transparent shadow-none",
 									index === current && "border-2 border-tertiary",
 								)}
 							>
@@ -93,7 +93,7 @@ export default function PropertyGallery({ images }: Props) {
 									src={image.file_path}
 									alt={`Thumbnail ${index + 1}`}
 									fill
-									className="object-cover w-full"
+									className="w-full object-cover"
 								/>
 							</figure>
 						</CarouselItem>

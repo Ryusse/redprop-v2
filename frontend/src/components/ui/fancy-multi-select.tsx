@@ -145,8 +145,8 @@ export function FancyMultiSelect({
 			<div className="relative mt-2">
 				<CommandList>
 					{open && selectables.length > 0 ? (
-						<div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-							<CommandGroup className="h-full overflow-auto max-h-60">
+						<div className="absolute top-0 z-10 w-full animate-in rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
+							<CommandGroup className="h-full max-h-60 overflow-auto">
 								{selectables.map((option) => {
 									return (
 										<CommandItem

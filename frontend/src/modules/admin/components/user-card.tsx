@@ -12,16 +12,16 @@ export function UserCard({ user }: UserProp) {
 	};
 
 	return (
-		<div className="p-4 border-outline-hover border shadow-user-border rounded-md flex items-center gap-3 sm:gap-4 mt-4">
+		<div className="mt-4 flex items-center gap-3 rounded-md border border-outline-hover p-4 shadow-user-border sm:gap-4">
 			<Heading
-				className="text-secondary w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-muted flex items-center justify-center"
+				className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-secondary sm:h-12 sm:w-12"
 				variant="subtitle2"
 				weight="semibold"
 				align="center"
 			>
 				{user.first_name[0]}
 			</Heading>
-			<div className="flex flex-col gap-3 md:gap-2 flex-1">
+			<div className="flex flex-1 flex-col gap-3 md:gap-2">
 				<div className="flex items-center gap-3">
 					<Heading
 						variant="subtitle3"
@@ -31,13 +31,13 @@ export function UserCard({ user }: UserProp) {
 						{user.first_name} {user.last_name}
 					</Heading>
 					<Text
-						className="rounded-4xl text-secondary-dark-active bg-muted border border-secondary-light px-2 py-1 sm:px-3 sm:py-2"
+						className="rounded-4xl border border-secondary-light bg-muted px-2 py-1 text-secondary-dark-active sm:px-3 sm:py-2"
 						variant="tiny"
 					>
 						{user.active ? "Activo" : "Inactivo"}
 					</Text>
 				</div>
-				<div className="flex flex-col sm:flex-row gap-3 md:gap-4 md:items-center text-grey-dark-active">
+				<div className="flex flex-col gap-3 text-grey-dark-active sm:flex-row md:items-center md:gap-4">
 					<Text
 						variant="small"
 						className="max-[400px]:text-[12px] max-[450px]:text-[13px]"

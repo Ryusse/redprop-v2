@@ -25,7 +25,7 @@ export default function PropertyFeaturesForm({
 	form,
 }: PropertyCharacteristicsProps) {
 	return (
-		<div className="grid lg:grid-cols-2 gap-4 lg:gap-10 items-start">
+		<div className="grid items-start gap-4 lg:grid-cols-2 lg:gap-10">
 			<div className="grid gap-4">
 				<FormField
 					control={form.control}
@@ -94,7 +94,7 @@ export default function PropertyFeaturesForm({
 				/>
 			</div>
 
-			<div className="grid gap-4 items-start">
+			<div className="grid items-start gap-4">
 				<FormField
 					control={form.control}
 					name="characteristics.floors_count"

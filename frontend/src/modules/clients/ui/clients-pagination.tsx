@@ -79,7 +79,7 @@ export function ClientsPagination({
 								onClick={() => onPageChange(page)}
 								className={
 									page === currentPage
-										? "bg-tertiary hover:bg-tertiary-light cursor-pointer text-white border-none"
+										? "cursor-pointer border-none bg-tertiary text-white hover:bg-tertiary-light"
 										: "cursor-pointer"
 								}
 							>

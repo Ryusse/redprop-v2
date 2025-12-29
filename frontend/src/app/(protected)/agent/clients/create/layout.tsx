@@ -48,16 +48,16 @@ export default function CreateClientLayout({ children }: ClientsLayoutProps) {
 		}
 	}
 	return (
-		<div className="w-full mx-auto">
+		<div className="mx-auto w-full">
 			<SectionHeading title="Nuevo cliente" />
 
 			{/* Search and Navigation Tabs */}
 			<div className="w-full">
-				<div className="flex items-center my-4">
-					<div className="justify-start gap-2 rounded-none bg-transparent text-black flex">
+				<div className="my-4 flex items-center">
+					<div className="flex justify-start gap-2 rounded-none bg-transparent text-black">
 						<Link
 							href={paths.agent.clients.leads.new()}
-							className={`px-3 py-1.5 rounded-md transition-colors ${
+							className={`rounded-md px-3 py-1.5 transition-colors ${
 								activeTab === "leads"
 									? "bg-tertiary text-primary-foreground"
 									: "bg-tertiary-light hover:bg-tertiary/30 hover:text-primary-foreground"
@@ -67,7 +67,7 @@ export default function CreateClientLayout({ children }: ClientsLayoutProps) {
 						</Link>
 						<Link
 							href={paths.agent.clients.inquilinos.new()}
-							className={`px-3 py-1.5 rounded-md transition-colors ${
+							className={`rounded-md px-3 py-1.5 transition-colors ${
 								activeTab === "inquilinos"
 									? "bg-tertiary text-primary-foreground"
 									: "bg-tertiary-light hover:bg-tertiary/30 hover:text-primary-foreground"
@@ -77,7 +77,7 @@ export default function CreateClientLayout({ children }: ClientsLayoutProps) {
 						</Link>
 						<Link
 							href={paths.agent.clients.owners.new()}
-							className={`px-3 py-1.5 rounded-md transition-colors ${
+							className={`rounded-md px-3 py-1.5 transition-colors ${
 								activeTab === "propietarios"
 									? "bg-tertiary text-primary-foreground"
 									: "bg-tertiary-light hover:bg-tertiary/30 hover:text-primary-foreground"

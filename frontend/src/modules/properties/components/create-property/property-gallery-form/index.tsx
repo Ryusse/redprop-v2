@@ -66,7 +66,7 @@ export default function PropertyGalleryForm({ form }: Props) {
 								}}
 								orientation="mixed"
 							>
-								<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+								<div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
 									<Sortable.Content asChild>
 										<FileUploadList className="contents">
 											{field.value?.map((file, index) => {
@@ -81,7 +81,7 @@ export default function PropertyGalleryForm({ form }: Props) {
 															className={cn(
 																"group relative aspect-square size-full overflow-hidden rounded-lg p-0",
 																index === 0
-																	? "border-tertiary border-4"
+																	? "border-4 border-tertiary"
 																	: "border",
 															)}
 														>
@@ -113,12 +113,12 @@ export default function PropertyGalleryForm({ form }: Props) {
 																	Imagen principal
 																</Badge>
 															)}
-															<div className="absolute right-0 bottom-0 left-0 grid grid-cols-2 items-center justify-between bg-sidebar-accent h-8 transition-opacity opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
+															<div className="absolute right-0 bottom-0 left-0 grid h-8 grid-cols-2 items-center justify-between bg-sidebar-accent opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
 																<Sortable.ItemHandle asChild>
 																	<Button
 																		variant="ghost"
 																		size="icon"
-																		className="w-full  hover:transparent h-full rounded-none cursor-grab data-dragging:cursor-grabbing"
+																		className="hover:transparent h-full w-full cursor-grab rounded-none data-dragging:cursor-grabbing"
 																	>
 																		<Move className="size-4" />
 																		<span className="sr-only">
@@ -130,7 +130,7 @@ export default function PropertyGalleryForm({ form }: Props) {
 																	<Button
 																		variant="ghost"
 																		size="icon"
-																		className="w-full hover:transparent h-full rounded-none"
+																		className="hover:transparent h-full w-full rounded-none"
 																	>
 																		<Trash2 className="size-4" />
 																		<span className="sr-only">Delete</span>
@@ -152,7 +152,7 @@ export default function PropertyGalleryForm({ form }: Props) {
 												>
 													<Plus className="size-8 text-muted-foreground" />
 													<p className="font-normal text-xs">
-														<span className="text-tertiary font-semibold underline">
+														<span className="font-semibold text-tertiary underline">
 															Click para subir
 														</span>
 														<br /> o arrastra y suelta

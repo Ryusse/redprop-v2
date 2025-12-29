@@ -96,8 +96,8 @@ export function ClientProperties({
 	return (
 		<Card>
 			<CardContent className="px-4 py-1">
-				<div className="flex items-center justify-between mb-6">
-					<h3 className="font-semibold text-lg text-slate-900 flex items-center gap-2">
+				<div className="mb-6 flex items-center justify-between">
+					<h3 className="flex items-center gap-2 font-semibold text-lg text-slate-900">
 						<Building2 className="h-5 w-5" />
 						{title ?? `Propiedades (${normalizedProperties.length})`}
 					</h3>
@@ -117,7 +117,7 @@ export function ClientProperties({
 								side="bottom"
 								align="start"
 								sideOffset={10}
-								className="rounded-xl p-4 text-sm shadow-lg max-w-[420px] bg-sidebar"
+								className="max-w-[420px] rounded-xl bg-sidebar p-4 text-sm shadow-lg"
 								style={{ width: 420 }}
 							>
 								<div className="space-y-3">
@@ -162,8 +162,8 @@ export function ClientProperties({
 						</Popover>
 					) : (
 						<div className="text-end lg:mr-2">
-							<div className="text-xs text-slate-500">Alquiler</div>
-							<div className="lg:text-2xl font-semibold text-slate-900">
+							<div className="text-slate-500 text-xs">Alquiler</div>
+							<div className="font-semibold text-slate-900 lg:text-2xl">
 								{hasRent ? `$${monthlyAmount.toLocaleString("es-AR")}` : "N/A"}
 							</div>
 						</div>

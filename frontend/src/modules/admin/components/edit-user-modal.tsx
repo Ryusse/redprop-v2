@@ -50,12 +50,12 @@ export function EditUserModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-2xl bg-white max-h-[85vh] overflow-y-auto">
+			<DialogContent className="max-h-[85vh] overflow-y-auto bg-white sm:max-w-2xl">
 				<DialogHeader>
-					<DialogTitle className="text-secondary max-sm:text-2xl text-3xl">
+					<DialogTitle className="text-3xl text-secondary max-sm:text-2xl">
 						Editar agente
 					</DialogTitle>
-					<DialogDescription className="text-muted-foreground font-medium max-sm:text-sm text-base">
+					<DialogDescription className="font-medium text-base text-muted-foreground max-sm:text-sm">
 						Modifique los detalles del agente {user.first_name} {user.last_name}
 					</DialogDescription>
 				</DialogHeader>
@@ -64,13 +64,13 @@ export function EditUserModal({
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-3 sm:space-y-4"
 					>
-						<div className="grid min-[480px]:grid-cols-2 gap-4 gap-x-8">
+						<div className="grid gap-4 gap-x-8 min-[480px]:grid-cols-2">
 							<FormField
 								control={form.control}
 								name="first_name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className="max-sm:text-sm text-secondary-dark">
+										<FormLabel className="text-secondary-dark max-sm:text-sm">
 											Nombre
 										</FormLabel>
 										<FormControl>
@@ -78,7 +78,7 @@ export function EditUserModal({
 												placeholder="Ej: Juan"
 												{...field}
 												value={field.value || ""}
-												className="max-sm:text-sm placeholder:text-pagination-border border border-input-border shadow-input-border h-10"
+												className="h-10 border border-input-border shadow-input-border placeholder:text-pagination-border max-sm:text-sm"
 											/>
 										</FormControl>
 										<FormMessage />
@@ -91,7 +91,7 @@ export function EditUserModal({
 								name="last_name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className="max-sm:text-sm text-secondary-dark">
+										<FormLabel className="text-secondary-dark max-sm:text-sm">
 											Apellido
 										</FormLabel>
 										<FormControl>
@@ -99,7 +99,7 @@ export function EditUserModal({
 												placeholder="Ej: Pérez"
 												{...field}
 												value={field.value || ""}
-												className="max-sm:text-sm placeholder:text-pagination-border border border-input-border shadow-input-border h-10"
+												className="h-10 border border-input-border shadow-input-border placeholder:text-pagination-border max-sm:text-sm"
 											/>
 										</FormControl>
 										<FormMessage />
@@ -112,7 +112,7 @@ export function EditUserModal({
 								name="email"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className="max-sm:text-sm text-secondary-dark">
+										<FormLabel className="text-secondary-dark max-sm:text-sm">
 											Correo electrónico
 										</FormLabel>
 										<FormControl>
@@ -121,7 +121,7 @@ export function EditUserModal({
 												placeholder="correo@ejemplo.com"
 												{...field}
 												value={field.value || ""}
-												className="max-sm:text-sm placeholder:text-pagination-border border border-input-border shadow-input-border h-10"
+												className="h-10 border border-input-border shadow-input-border placeholder:text-pagination-border max-sm:text-sm"
 											/>
 										</FormControl>
 										<FormMessage />
@@ -134,7 +134,7 @@ export function EditUserModal({
 								name="phone"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className="max-sm:text-sm text-secondary-dark">
+										<FormLabel className="text-secondary-dark max-sm:text-sm">
 											Teléfono
 										</FormLabel>
 										<FormControl>
@@ -142,7 +142,7 @@ export function EditUserModal({
 												placeholder="04121234567"
 												{...field}
 												value={field.value || ""}
-												className="max-sm:text-sm placeholder:text-pagination-border border border-input-border shadow-input-border h-10"
+												className="h-10 border border-input-border shadow-input-border placeholder:text-pagination-border max-sm:text-sm"
 											/>
 										</FormControl>
 										<FormMessage />
@@ -155,7 +155,7 @@ export function EditUserModal({
 								name="password"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className="max-sm:text-sm text-secondary-dark">
+										<FormLabel className="text-secondary-dark max-sm:text-sm">
 											Contraseña
 										</FormLabel>
 										<div className="relative">
@@ -165,12 +165,12 @@ export function EditUserModal({
 													placeholder="Jane Doe"
 													{...field}
 													value={field.value || ""}
-													className="max-sm:text-sm placeholder:text-pagination-border border border-input-border shadow-input-border h-10"
+													className="h-10 border border-input-border shadow-input-border placeholder:text-pagination-border max-sm:text-sm"
 												/>
 											</FormControl>
 											<button
 												type="button"
-												className="absolute right-2 top-1/2 -translate-y-1/2"
+												className="absolute top-1/2 right-2 -translate-y-1/2"
 												onClick={() => setShowPassword(!showPassword)}
 											>
 												{showPassword ? <EyeOff /> : <Eye />}
@@ -186,7 +186,7 @@ export function EditUserModal({
 								name="confirmPassword"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className="max-sm:text-sm text-secondary-dark">
+										<FormLabel className="text-secondary-dark max-sm:text-sm">
 											Confirmar contraseña
 										</FormLabel>
 										<div className="relative">
@@ -196,12 +196,12 @@ export function EditUserModal({
 													placeholder="Jane Doe"
 													{...field}
 													value={field.value || ""}
-													className="max-sm:text-sm placeholder:text-pagination-border border border-input-border shadow-input-border h-10"
+													className="h-10 border border-input-border shadow-input-border placeholder:text-pagination-border max-sm:text-sm"
 												/>
 											</FormControl>
 											<button
 												type="button"
-												className="absolute right-2 top-1/2 -translate-y-1/2"
+												className="absolute top-1/2 right-2 -translate-y-1/2"
 												onClick={() => setShowPassword(!showPassword)}
 											>
 												{showPassword ? <EyeOff /> : <Eye />}
@@ -222,7 +222,7 @@ export function EditUserModal({
 												<FormLabel>Rol</FormLabel>
 												<FormControl>
 													<div className="flex gap-4">
-														<label className="max-sm:text-sm flex items-center gap-2">
+														<label className="flex items-center gap-2 max-sm:text-sm">
 															<input
 																type="radio"
 																value="admin"
@@ -232,7 +232,7 @@ export function EditUserModal({
 															/>
 															Administrador
 														</label>
-														<label className="max-sm:text-sm flex items-center gap-2">
+														<label className="flex items-center gap-2 max-sm:text-sm">
 															<input
 																type="radio"
 																value="agent"

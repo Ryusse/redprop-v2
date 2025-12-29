@@ -42,7 +42,7 @@ export default function UserMenuTrigger({ user }: Props) {
 			<DropdownMenuTrigger asChild>
 				<SidebarMenuButton
 					size="lg"
-					className="data-[state=open]:bg-sidebar-accent gap-2 data-[state=open]:text-sidebar-accent-foreground"
+					className="gap-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 				>
 					<Avatar className="h-8 w-8 rounded-full">
 						<AvatarImage
@@ -52,7 +52,7 @@ export default function UserMenuTrigger({ user }: Props) {
 						/>
 						<AvatarFallback className="rounded-lg">CN</AvatarFallback>
 					</Avatar>
-					<div className="hidden md:grid flex-1 text-left text-sm leading-tight">
+					<div className="hidden flex-1 text-left text-sm leading-tight md:grid">
 						<p className="truncate font-medium text-lg">{`${user.first_name} ${user.last_name}`}</p>
 					</div>
 				</SidebarMenuButton>

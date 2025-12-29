@@ -7,12 +7,12 @@ import { cn } from "@src/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const switchVariants = cva(
-	"peer inline-flex shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-normal data-[state=unchecked]:bg-grey-light",
+	"peer inline-flex shrink-0 items-center rounded-full border border-transparent shadow-xs outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-normal data-[state=unchecked]:bg-grey-light",
 	{
 		variants: {
 			size: {
-				default: "w-12 h-7",
-				sm: "w-7 h-[14px]",
+				default: "h-7 w-12",
+				sm: "h-[14px] w-7",
 			},
 		},
 		defaultVariants: {

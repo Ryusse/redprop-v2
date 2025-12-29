@@ -46,7 +46,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 		<MainLayout
 			as="section"
 			size="lg"
-			className="py-10 lg:py-20 flex flex-col gap-8"
+			className="flex flex-col gap-8 py-10 lg:py-20"
 		>
 			<Button variant="text" asChild className="mr-auto">
 				<Link href={paths.public.landing()}>
@@ -54,14 +54,14 @@ export default async function PropertyDetailPage({ params }: Props) {
 					Volver atrás
 				</Link>
 			</Button>
-			<div className="flex flex-col lg:flex-row justify-between gap-5">
+			<div className="flex flex-col justify-between gap-5 lg:flex-row">
 				<div className="flex flex-col gap-2.5">
 					<Heading variant="subtitle1" weight="semibold">
 						{property.title}
 					</Heading>
 					<div className="flex items-center gap-1.5 text-muted-foreground">
 						<MapPin className="size-5" />
-						<p className="text-base font-medium">
+						<p className="font-medium text-base">
 							{property.addresses[0].city.name}
 						</p>
 					</div>
@@ -69,7 +69,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 
 				<Heading
 					variant="subtitle1"
-					className=" tracking-tight"
+					className="tracking-tight"
 					weight="semibold"
 				>
 					{property.expenses[0].currency?.symbol || "USD"}{" "}
@@ -80,16 +80,16 @@ export default async function PropertyDetailPage({ params }: Props) {
 			<div className="grid gap-4 lg:grid-cols-[1fr_460px]">
 				<div className="flex flex-col gap-8">
 					<Section title="Descripción">
-						<p className="text-muted-foreground whitespace-pre-wrap">
+						<p className="whitespace-pre-wrap text-muted-foreground">
 							{property.description || "Sin descripción."}
 						</p>
 					</Section>
 					<Section title="Detalles de la propiedad">
-						<div className="grid grid-cols-1 flex-col gap-6 md:grid-cols-2 gap-y-8 gap-x-">
+						<div className="grid grid-cols-1 flex-col gap-6 gap-x- gap-y-8 md:grid-cols-2">
 							<div className="flex items-start gap-3">
 								<MapPinIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Dirección</p>
+									<p className="text-sm">Dirección</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.addresses[0].full_address || "-"}
 									</Heading>
@@ -98,7 +98,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 							<div className="flex items-start gap-3">
 								<MapPinIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Barrio</p>
+									<p className="text-sm">Barrio</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.addresses[0].neighborhood ||
 											property.addresses[0].city?.name ||
@@ -109,7 +109,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 							<div className="flex items-start gap-3">
 								<TagIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Tipo de operación</p>
+									<p className="text-sm">Tipo de operación</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.prices
 											.map((p) => p.operation_type.name)
@@ -120,7 +120,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 							<div className="flex items-start gap-3">
 								<HomeIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Tipo de propiedad</p>
+									<p className="text-sm">Tipo de propiedad</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.property_type.name}
 									</Heading>
@@ -129,7 +129,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 							<div className="flex items-start gap-3">
 								<HomeIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Ambientes</p>
+									<p className="text-sm">Ambientes</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.rooms_count} ambientes ({property.bedrooms_count}{" "}
 										dormitorios)
@@ -139,7 +139,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 							<div className="flex items-start gap-3">
 								<Square2StackIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Superficie total</p>
+									<p className="text-sm">Superficie total</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.total_area} m²
 									</Heading>
@@ -148,7 +148,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 							<div className="flex items-start gap-3">
 								<Square2StackIcon className="h-6 w-6 text-tertiary" />
 								<div>
-									<p className="text-sm ">Superficie cubierta</p>
+									<p className="text-sm">Superficie cubierta</p>
 									<Heading variant="subtitle4" weight="medium">
 										{property.covered_area} m²
 									</Heading>
@@ -157,7 +157,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 						</div>
 					</Section>
 					<Section title="Información básica">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+						<div className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
 							<div className="space-y-2">
 								<InfoRow label="Ambientes" value={property.rooms_count} />
 								<InfoRow label="Dormitorios" value={property.bedrooms_count} />
@@ -193,7 +193,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 						</div>
 					</Section>
 					<Section title="Superficies">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+						<div className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
 							<InfoRow label="Terreno" value={property.land_area} />
 							<InfoRow
 								label="Semicubierta"
@@ -210,7 +210,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 					</Section>
 					<Section title="Servicios">
 						{property.services && property.services.length > 0 ? (
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+							<div className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
 								{property.services.map((service) => (
 									<div key={service.id} className="flex items-center gap-2">
 										<span className="text-foreground">{service.name}</span>
@@ -240,9 +240,9 @@ function InfoRow({
 	value: string | number | null | undefined;
 }) {
 	return (
-		<div className="flex gap-2 items-center py-1">
+		<div className="flex items-center gap-2 py-1">
 			<span className="text-foreground">{label}:</span>
-			<span className="text-muted-foreground font-semibold">
+			<span className="font-semibold text-muted-foreground">
 				{value || "--"}
 			</span>
 		</div>

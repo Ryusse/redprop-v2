@@ -46,7 +46,7 @@ export default async function PropertiesPage({ searchParams }: Props) {
 	return (
 		<>
 			<SectionHeading title="Propiedades" />
-			<div className="flex justify-between items-center gap-4">
+			<div className="flex items-center justify-between gap-4">
 				<PropertySearch className="w-full lg:max-w-[400px]" />
 				<PropertyFilterSheet />
 			</div>
@@ -59,7 +59,7 @@ export default async function PropertiesPage({ searchParams }: Props) {
 				variant="fab"
 				size="fab"
 				asChild
-				className="w-fit fixed bottom-4 right-4 md:hidden"
+				className="fixed right-4 bottom-4 w-fit md:hidden"
 			>
 				<Link href={paths.agent.properties.new()}>
 					<Plus /> Crear

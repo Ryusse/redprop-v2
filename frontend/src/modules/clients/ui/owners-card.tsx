@@ -49,13 +49,13 @@ export function OwnersCard({ owner, onEdit, onDelete }: OwnersCardProps) {
 
 	return (
 		<Card
-			className="mb-3 cursor-pointer hover:bg-slate-50 transition-colors"
+			className="mb-3 cursor-pointer transition-colors hover:bg-slate-50"
 			onClick={handleCardClick}
 		>
-			<CardContent className="p-0 w-full">
+			<CardContent className="w-full p-0">
 				<div className="flex items-start justify-between px-4 lg:py-4">
 					<div className="flex items-center gap-4">
-						<div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-semibold text-slate-700">
+						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 font-semibold text-slate-700">
 							{owner.first_name.charAt(0)}
 						</div>
 						<div className="text-left">
@@ -65,12 +65,12 @@ export function OwnersCard({ owner, onEdit, onDelete }: OwnersCardProps) {
 								</span>
 								<StatusBadge
 									status="propietario"
-									className="text-xs hidden lg:inline-flex"
+									className="hidden text-xs lg:inline-flex"
 								>
 									Propietario
 								</StatusBadge>
 							</div>
-							<div className="text-sm text-slate-500 mt-1">
+							<div className="mt-1 text-slate-500 text-sm">
 								<div>
 									<span className="hidden lg:inline-flex">Tel: </span>
 									{owner.phone} ·
@@ -81,13 +81,13 @@ export function OwnersCard({ owner, onEdit, onDelete }: OwnersCardProps) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col lg:flex-row items-end lg:items-center lg:gap-4">
-						<div className="text-right mr-2 order-2 lg:-order-1">
-							<div className="text-xs text-slate-500 hidden lg:block">
+					<div className="flex flex-col items-end lg:flex-row lg:items-center lg:gap-4">
+						<div className="order-2 mr-2 text-right lg:-order-1">
+							<div className="hidden text-slate-500 text-xs lg:block">
 								Propiedades
 							</div>
-							<div className="lg:text-2xl font-semibold lg:font-bold text-slate-900">
-								<Badge className="border-[#FFE9C1] bg-[#FFF8EB] text-[#BF8B2A] rounded-full lg:hidden mr-1">
+							<div className="font-semibold text-slate-900 lg:font-bold lg:text-2xl">
+								<Badge className="mr-1 rounded-full border-[#FFE9C1] bg-[#FFF8EB] text-[#BF8B2A] lg:hidden">
 									<House className="h-4 w-4" />
 								</Badge>
 								{propertiesCount}
@@ -98,7 +98,7 @@ export function OwnersCard({ owner, onEdit, onDelete }: OwnersCardProps) {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="h-8 w-8 -mt-1 lg:-mt-7"
+									className="-mt-1 h-8 w-8 lg:-mt-7"
 								>
 									<MoreHorizontal className="h-4 w-4 text-slate-500" />
 								</Button>

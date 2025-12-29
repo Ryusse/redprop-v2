@@ -60,7 +60,7 @@ export function ConsultationActions({
 			{existingContact && consultation.client?.id ? (
 				<Button variant={"outline"} asChild className="w-full" size="lg">
 					<Link href={paths.agent.clients.leads.detail(consultation.client.id)}>
-						<UserPlusIcon className="h-4 w-4 mr-2" />
+						<UserPlusIcon className="mr-2 h-4 w-4" />
 						Ver Contacto
 					</Link>
 				</Button>
@@ -72,7 +72,7 @@ export function ConsultationActions({
 					className="w-full"
 					size="lg"
 				>
-					<UserPlusIcon className="h-4 w-4 mr-2" />
+					<UserPlusIcon className="mr-2 h-4 w-4" />
 					{isProcessing ? "Procesando..." : "Agregar Contacto"}
 				</Button>
 			)}

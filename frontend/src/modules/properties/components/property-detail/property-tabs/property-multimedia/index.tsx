@@ -11,14 +11,14 @@ type Props = {
 export default function PropertyMultimedia({ property }: Props) {
 	if (!property.images || property.images.length === 0) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center bg-card">
+			<div className="flex flex-col items-center justify-center rounded-lg border border-border border-dashed bg-card py-16 text-center">
 				<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted text-muted-foreground">
 					<ImageIcon className="h-8 w-8" />
 				</div>
-				<h3 className="mb-1 text-lg font-medium text-foreground">
+				<h3 className="mb-1 font-medium text-foreground text-lg">
 					Sin imágenes
 				</h3>
-				<p className="text-sm text-muted-foreground max-w-sm">
+				<p className="max-w-sm text-muted-foreground text-sm">
 					Esta propiedad aún no tiene contenido multimedia disponible para
 					mostrar.
 				</p>

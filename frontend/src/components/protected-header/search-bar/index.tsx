@@ -5,28 +5,28 @@ import { HomeIcon, Search, UserIcon } from "lucide-react";
 
 export default function SearchBar() {
 	return (
-		<div className="relative bg-card mx-auto foreground max-w-xl w-full rounded-lg overflow-hidden">
+		<div className="foreground relative mx-auto w-full max-w-xl overflow-hidden rounded-lg bg-card">
 			<Button
 				variant="link"
-				className=" p-0 absolute left-2 top-1/2 -translate-y-1/2 px-0! h-auto"
+				className="absolute top-1/2 left-2 h-auto -translate-y-1/2 p-0 px-0!"
 				tabIndex={-1}
 			>
-				<Search className="w-5 h-5" />
+				<Search className="h-5 w-5" />
 			</Button>
 			<Input
 				placeholder=""
-				className="pl-8 pr-28 h-9 text-foreground"
+				className="h-9 pr-28 pl-8 text-foreground"
 				type="text"
 			/>
-			<div className="absolute right-2 bg-card top-1/2 text-foreground -translate-y-1/2 grid items-center grid-cols-3 w-fit">
-				<Button variant="ghost" className="px-2! h-[30px] w-[30px]">
-					<UserIcon className="w-5 h-5" />
+			<div className="absolute top-1/2 right-2 grid w-fit -translate-y-1/2 grid-cols-3 items-center bg-card text-foreground">
+				<Button variant="ghost" className="h-[30px] w-[30px] px-2!">
+					<UserIcon className="h-5 w-5" />
 				</Button>
-				<Button variant="ghost" className="px-2! h-[30px] w-[30px]">
-					<BuildingOfficeIcon className="w-5 h-5" />
+				<Button variant="ghost" className="h-[30px] w-[30px] px-2!">
+					<BuildingOfficeIcon className="h-5 w-5" />
 				</Button>
-				<Button variant="ghost" className="px-2! h-[30px] w-[30px]">
-					<HomeIcon className="w-5 h-5" />
+				<Button variant="ghost" className="h-[30px] w-[30px] px-2!">
+					<HomeIcon className="h-5 w-5" />
 				</Button>
 			</div>
 		</div>

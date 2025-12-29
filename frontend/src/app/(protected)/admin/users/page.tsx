@@ -9,8 +9,8 @@ export default async function AdminUsersPage() {
 		const { users } = await api.get<ListUserProps>("/users");
 
 		return (
-			<section className="grid min-h-dvh max-h-fit grid-rows-[auto_1fr]">
-				<header className="flex justify-between border-b border-border pb-4 sm:pb-8">
+			<section className="grid max-h-fit min-h-dvh grid-rows-[auto_1fr]">
+				<header className="flex justify-between border-border border-b pb-4 sm:pb-8">
 					<UserHeader />
 				</header>
 				<main>
@@ -27,13 +27,13 @@ export default async function AdminUsersPage() {
 				: "Ocurrió un error al cargar los agentes";
 
 		return (
-			<section className="grid min-h-dvh max-h-fit grid-rows-[auto_1fr_auto]">
-				<header className="flex justify-between border-b border-border pb-4 sm:pb-8">
+			<section className="grid max-h-fit min-h-dvh grid-rows-[auto_1fr_auto]">
+				<header className="flex justify-between border-border border-b pb-4 sm:pb-8">
 					<UserHeader />
 				</header>
-				<main className="flex flex-col items-center justify-center h-full">
-					<div className="text-center p-4 sm:p-8">
-						<p className="text-red-500 text-lg font-medium mb-4">
+				<main className="flex h-full flex-col items-center justify-center">
+					<div className="p-4 text-center sm:p-8">
+						<p className="mb-4 font-medium text-lg text-red-500">
 							❌ {errorMessage}
 						</p>
 						<p className="text-gray-600">

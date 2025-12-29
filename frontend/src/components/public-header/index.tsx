@@ -8,7 +8,7 @@ export default async function PublicHeader() {
 	const settings = await getCompanySettings();
 
 	return (
-		<header className="px-4 bg-sidebar sticky top-0 z-50 min-h-(--admin-header-height) max-h-(--admin-header-height) grid  justify-center items-center gap-4">
+		<header className="sticky top-0 z-50 grid max-h-(--admin-header-height) min-h-(--admin-header-height) items-center justify-center gap-4 bg-sidebar px-4">
 			{settings?.logo_url ? (
 				<Link href={paths.public.landing()}>
 					<Image
@@ -16,13 +16,13 @@ export default async function PublicHeader() {
 						width={400}
 						height={100}
 						alt={settings.company_name || "Company Logo"}
-						className="object-contain max-h-[100px] w-full"
+						className="max-h-[100px] w-full object-contain"
 						priority
 					/>
 				</Link>
 			) : (
 				<svg
-					className="w-full! h-full!"
+					className="h-full! w-full!"
 					width="271"
 					height="64"
 					viewBox="0 0 271 64"

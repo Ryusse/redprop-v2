@@ -79,12 +79,12 @@ export function ClientHeader({
 					<CardContent className="px-6 py-2 lg:py-4">
 						<div className="flex items-start justify-between">
 							<div className="flex items-center gap-4">
-								<div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center font-semibold text-slate-700 text-2xl uppercase">
+								<div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-200 font-semibold text-2xl text-slate-700 uppercase">
 									{initial}
 								</div>
 								<div>
-									<div className="flex items-center gap-2 mb-1">
-										<h1 className="text-xl lg:text-2xl font-semibold lg:font-bold text-slate-900">
+									<div className="mb-1 flex items-center gap-2">
+										<h1 className="font-semibold text-slate-900 text-xl lg:font-bold lg:text-2xl">
 											{firstName} {lastName}
 										</h1>
 										<StatusBadge
@@ -95,13 +95,13 @@ export function ClientHeader({
 										</StatusBadge>
 									</div>
 									{status === "lead" && (
-										<div className="text-xs text-balance lg:text-sm text-slate-600">
+										<div className="text-balance text-slate-600 text-xs lg:text-sm">
 											Tipo de consulta:{" "}
 											{consultationTypeName || "Consulta general"}
 										</div>
 									)}
 									{dni && (
-										<div className="text-sm text-slate-500">DNI: {dni}</div>
+										<div className="text-slate-500 text-sm">DNI: {dni}</div>
 									)}
 								</div>
 							</div>

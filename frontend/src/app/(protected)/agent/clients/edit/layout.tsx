@@ -10,7 +10,7 @@ interface ClientsLayoutProps {
 
 export default function CreateClientLayout({ children }: ClientsLayoutProps) {
 	return (
-		<div className="w-full mx-auto">
+		<div className="mx-auto w-full">
 			<SectionHeading title="Editar cliente" />
 
 			<div className="mt-0">{children}</div>

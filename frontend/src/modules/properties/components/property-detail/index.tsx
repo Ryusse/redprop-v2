@@ -17,13 +17,13 @@ export default function PropertyDetailView({ property }: Props) {
 		<div className="grid gap-5">
 			<div className="grid grid-cols-1 gap-10 lg:grid-cols-4">
 				<div className="lg:col-span-3">
-					<figure className="border-0 shadow-none flex items-center justify-center p-0 relative overflow-hidden rounded-lg aspect-video h-[295px] xl:h-[400px] w-full">
+					<figure className="relative flex aspect-video h-[295px] w-full items-center justify-center overflow-hidden rounded-lg border-0 p-0 shadow-none xl:h-[400px]">
 						{property.images?.[0]?.file_path ? (
 							<Image
 								src={property.images[0].file_path}
 								alt={property.title}
 								fill
-								className="object-cover w-full h-full"
+								className="h-full w-full object-cover"
 								priority={true}
 							/>
 						) : (

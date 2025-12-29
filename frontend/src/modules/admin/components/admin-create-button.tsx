@@ -8,9 +8,9 @@ export function AdminCreateAgentLink() {
 	return (
 		<Link
 			href={paths.admin.users.create()}
-			className="bg-sidebar-accent-foreground px-6 py-3 cursor-pointer text-white gap-2 rounded-lg hover:bg-outline-foreground transition-colors duration-300 flex items-center min-w-max!"
+			className="flex min-w-max! cursor-pointer items-center gap-2 rounded-lg bg-sidebar-accent-foreground px-6 py-3 text-white transition-colors duration-300 hover:bg-outline-foreground"
 		>
-			<Plus className="text-white stroke-white inline" size={14} />
+			<Plus className="inline stroke-white text-white" size={14} />
 			<Text weight="normal" variant="body" className="inline">
 				Crear usuario
 			</Text>

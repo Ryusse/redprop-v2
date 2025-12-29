@@ -70,26 +70,26 @@ export function ConsultationDetailSheet({
 		<Sheet open={open} onOpenChange={onOpenChange}>
 			<SheetContent
 				side="right"
-				className="w-full sm:max-w-md p-0 flex flex-col border-none rounded-none"
+				className="flex w-full flex-col rounded-none border-none p-0 sm:max-w-md"
 			>
 				{consultation ? (
 					<>
-						<SheetHeader className="px-6 py-4 border-b">
-							<SheetTitle className="text-lg font-semibold">
+						<SheetHeader className="border-b px-6 py-4">
+							<SheetTitle className="font-semibold text-lg">
 								Detalle de Consulta
 							</SheetTitle>
 						</SheetHeader>
 
-						<div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+						<div className="flex-1 space-y-6 overflow-y-auto px-6 py-4">
 							<MemoConsultationContactInfo consultation={consultation} />
 
 							{consultation.consultation_type?.name && (
 								<div>
-									<h3 className="font-semibold text-sm mb-2">
+									<h3 className="mb-2 font-semibold text-sm">
 										Tipo de consulta
 									</h3>
-									<div className="bg-slate-50 rounded-lg p-3">
-										<p className="text-sm text-slate-700 font-medium">
+									<div className="rounded-lg bg-slate-50 p-3">
+										<p className="font-medium text-slate-700 text-sm">
 											{consultation.consultation_type.name}
 										</p>
 									</div>
@@ -98,14 +98,14 @@ export function ConsultationDetailSheet({
 
 							{hasProperty && (
 								<div>
-									<div className="flex items-center justify-between mb-2">
+									<div className="mb-2 flex items-center justify-between">
 										<h3 className="font-semibold text-sm">
 											Propiedad consultada
 										</h3>
 										{contactId &&
 											(isLoading ? (
-												<span className="h-8 flex items-center justify-center px-4">
-													<Loader2 className="animate-spin h-5 w-5 text-muted-foreground" />
+												<span className="flex h-8 items-center justify-center px-4">
+													<Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
 												</span>
 											) : (
 												<Button
@@ -129,13 +129,13 @@ export function ConsultationDetailSheet({
 												</Button>
 											))}
 									</div>
-									<div className="bg-slate-50 rounded-lg p-3 flex items-center justify-between">
+									<div className="flex items-center justify-between rounded-lg bg-slate-50 p-3">
 										<div className="flex items-center gap-2">
-											<p className="text-sm text-slate-700 font-medium">
+											<p className="font-medium text-slate-700 text-sm">
 												{property?.title}
 											</p>
 										</div>
-										<div className="flex items-center gap-2 ml-4">
+										<div className="ml-4 flex items-center gap-2">
 											{propertyUrl && (
 												<Button variant="link" asChild size="sm">
 													<Link
@@ -153,9 +153,9 @@ export function ConsultationDetailSheet({
 							)}
 
 							<div>
-								<h3 className="font-semibold text-sm mb-2">Mensaje</h3>
-								<div className="bg-slate-50 rounded-lg p-4">
-									<p className="text-sm text-slate-700 leading-relaxed">
+								<h3 className="mb-2 font-semibold text-sm">Mensaje</h3>
+								<div className="rounded-lg bg-slate-50 p-4">
+									<p className="text-slate-700 text-sm leading-relaxed">
 										{consultation.message}
 									</p>
 								</div>
@@ -163,13 +163,13 @@ export function ConsultationDetailSheet({
 
 							{consultation.response && (
 								<div>
-									<h3 className="font-semibold text-sm mb-2">Tu Respuesta</h3>
-									<div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
-										<p className="text-sm text-slate-700 leading-relaxed">
+									<h3 className="mb-2 font-semibold text-sm">Tu Respuesta</h3>
+									<div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+										<p className="text-slate-700 text-sm leading-relaxed">
 											{consultation.response}
 										</p>
 										{consultation.response_date && (
-											<p className="text-xs text-slate-500 mt-2">
+											<p className="mt-2 text-slate-500 text-xs">
 												Enviado el{" "}
 												{format(
 													new Date(consultation.response_date),
@@ -190,7 +190,7 @@ export function ConsultationDetailSheet({
 						/>
 					</>
 				) : (
-					<div className="flex-1 overflow-y-auto px-6 py-6 text-sm text-slate-600">
+					<div className="flex-1 overflow-y-auto px-6 py-6 text-slate-600 text-sm">
 						Selecciona una consulta para ver el detalle.
 					</div>
 				)}

@@ -23,17 +23,17 @@ export default function PropertyValueCard({ prices, className }: Props) {
 
 	return (
 		<Card className={cn("gap-0 py-0", className)}>
-			<CardHeader className="px-4 py-3 gap-0">
-				<CardTitle className="text-secondary text-base font-semibold">
+			<CardHeader className="gap-0 px-4 py-3">
+				<CardTitle className="font-semibold text-base text-secondary">
 					Valor de propiedad
 				</CardTitle>
 			</CardHeader>
 			<Separator />
-			<CardContent className="space-y-6 py-6 px-4">
+			<CardContent className="space-y-6 px-4 py-6">
 				{salePrice && (
 					<div className="grid gap-3">
 						<span className="font-medium text-secondary">Venta</span>
-						<div className="flex items-center justify-center rounded-md text-secondary bg-muted py-3 text-xl font-bold ">
+						<div className="flex items-center justify-center rounded-md bg-muted py-3 font-bold text-secondary text-xl">
 							{formatPrice(salePrice.price, salePrice.currency)}
 						</div>
 					</div>
@@ -42,7 +42,7 @@ export default function PropertyValueCard({ prices, className }: Props) {
 				{rentPrice && (
 					<div className="space-y-2">
 						<span className="font-medium">Alquiler</span>
-						<div className="flex items-center justify-center rounded-md  py-3 text-xl font-bold ">
+						<div className="flex items-center justify-center rounded-md py-3 font-bold text-xl">
 							{formatPrice(rentPrice.price, rentPrice.currency)}
 						</div>
 					</div>

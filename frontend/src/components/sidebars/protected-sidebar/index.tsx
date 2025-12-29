@@ -142,15 +142,15 @@ export default function ProtectedSidebar({ role }: Props) {
 	}
 	return (
 		<Sidebar className="border-r-0!">
-			<SidebarHeader className="pt-8 pb-0 gap-[30px]">
-				<Avatar className="rounded-md relative aspect-video w-full max-w-[180px] mx-auto h-[130px] border-primary border p-3">
+			<SidebarHeader className="gap-[30px] pt-8 pb-0">
+				<Avatar className="relative mx-auto aspect-video h-[130px] w-full max-w-[180px] rounded-md border border-primary p-3">
 					{isLoading ? (
-						<div className="w-full h-full bg-gray-200 animate-pulse rounded" />
+						<div className="h-full w-full animate-pulse rounded bg-gray-200" />
 					) : (
 						<AvatarImage
 							src={logoUrl || defaultLogoUrl}
 							alt={`Logo de ${companyName}`}
-							className="object-cover aspect-video w-full h-full"
+							className="aspect-video h-full w-full object-cover"
 						/>
 					)}
 					{role === ROLES.ADMIN && (
@@ -159,7 +159,7 @@ export default function ProtectedSidebar({ role }: Props) {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="absolute top-0 right-0 hover:bg-transparent hover:text-tertiary hover:cursor-pointer z-50"
+									className="absolute top-0 right-0 z-50 hover:cursor-pointer hover:bg-transparent hover:text-tertiary"
 								>
 									<SquarePen className="h-4 w-4" />
 								</Button>
@@ -176,18 +176,18 @@ export default function ProtectedSidebar({ role }: Props) {
 									maxFiles={1}
 									maxSize={2 * 1024 * 1024}
 								>
-									<FileUploadDropzone className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg">
+									<FileUploadDropzone className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6">
 										<FileUploadTrigger asChild>
 											<Button variant="outline" type="button">
 												<Upload className="mr-2 h-4 w-4" />
 												Seleccionar Imagen
 											</Button>
 										</FileUploadTrigger>
-										<p className="text-sm text-muted-foreground mt-2">
+										<p className="mt-2 text-muted-foreground text-sm">
 											JPG o PNG, máximo 2MB
 										</p>
 										{selectedFile && (
-											<p className="text-sm font-medium mt-2">
+											<p className="mt-2 font-medium text-sm">
 												{selectedFile.name}
 											</p>
 										)}
@@ -241,7 +241,7 @@ export default function ProtectedSidebar({ role }: Props) {
 											</SidebarMenuButton>
 										</CollapsibleTrigger>
 										<CollapsibleContent>
-											<SidebarMenuSub className="pr-0 mr-0">
+											<SidebarMenuSub className="mr-0 pr-0">
 												{item.items.map((subItem) => {
 													const isSubItemActive = pathname === subItem.href;
 

@@ -12,12 +12,12 @@ export function Section({
 	return (
 		<div
 			className={cn(
-				"rounded-lg border shadow-sm bg-card overflow-hidden",
+				"overflow-hidden rounded-lg border bg-card shadow-sm",
 				className,
 			)}
 		>
-			<div className="bg-tertiary-light px-6 py-3 border-b">
-				<h3 className="text-heading font-semibold">{title}</h3>
+			<div className="border-b bg-tertiary-light px-6 py-3">
+				<h3 className="font-semibold text-heading">{title}</h3>
 			</div>
 			<div className="p-6">{children}</div>
 		</div>
