@@ -15,7 +15,7 @@ interface PropertySurfacesProps {
 
 export default function PropertySurfacesForm({ form }: PropertySurfacesProps) {
 	return (
-		<div className="grid lg:grid-cols-2 lg:gap-10 items-start">
+		<div className="grid items-start lg:grid-cols-2 lg:gap-10">
 			<div className="grid gap-4">
 				<FormField
 					control={form.control}
@@ -60,7 +60,7 @@ export default function PropertySurfacesForm({ form }: PropertySurfacesProps) {
 				/>
 			</div>
 
-			<div className="grid gap-4 items-start">
+			<div className="grid items-start gap-4">
 				<FormField
 					control={form.control}
 					name="surface.semi_covered_area"

@@ -111,23 +111,23 @@ export default function LeadsForm({
 	};
 
 	return (
-		<div className="w-full lg:max-w-2/3 mt-4 p-4 rounded-xl shadow-md/20">
+		<div className="mt-4 w-full rounded-xl p-4 shadow-md/20 lg:max-w-2/3">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<FormField
 							control={form.control}
 							name="first_name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Nombre <span className="text-danger-normal">*</span>
 									</FormLabel>
 									<FormControl>
 										<Input
 											type="text"
 											placeholder="Nombre"
-											className="text-base placeholder:text-grey-light border-input-border/70 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg not-placeholder-shown:border-input-active not-placeholder-shown:border-2 text-primary-normal-active h-12 py-2 shadow-input-border aria-invalid:bg-input-danger aria-invalid:border-danger-normal"
+											className="h-12 rounded-lg border-input-border/70 not-placeholder-shown:border-2 not-placeholder-shown:border-input-active py-2 text-base text-primary-normal-active shadow-input-border placeholder:text-grey-light focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0 aria-invalid:border-danger-normal aria-invalid:bg-input-danger"
 											{...field}
 										/>
 									</FormControl>
@@ -141,14 +141,14 @@ export default function LeadsForm({
 							name="last_name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Apellido <span className="text-danger-normal">*</span>
 									</FormLabel>
 									<FormControl>
 										<Input
 											type="text"
 											placeholder="Apellido"
-											className="text-base placeholder:text-grey-light border-input-border/70 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg not-placeholder-shown:border-input-active not-placeholder-shown:border-2 text-primary-normal-active h-12 py-2 shadow-input-border aria-invalid:bg-input-danger aria-invalid:border-danger-normal"
+											className="h-12 rounded-lg border-input-border/70 not-placeholder-shown:border-2 not-placeholder-shown:border-input-active py-2 text-base text-primary-normal-active shadow-input-border placeholder:text-grey-light focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0 aria-invalid:border-danger-normal aria-invalid:bg-input-danger"
 											{...field}
 										/>
 									</FormControl>
@@ -158,13 +158,13 @@ export default function LeadsForm({
 						/>
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<FormField
 							control={form.control}
 							name="phone"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Teléfono <span className="text-danger-normal">*</span>
 									</FormLabel>
 									<FormControl>
@@ -172,7 +172,7 @@ export default function LeadsForm({
 											defaultCountry="AR"
 											countries={["AR", "UY", "CL", "BR", "PY"]}
 											placeholder="Ingresá un número de teléfono"
-											className="text-base [&_input]:placeholder:text-grey-light [&_input]:border-input-border/70 [&_input]:focus-visible:border-input-active [&_input]:focus-visible:shadow-input-active [&_input]:focus-visible:border-2 [&_input]:focus-visible:ring-0 [&_input]:rounded-r-lg [&_button]:rounded-l-lg [&_input]:not-placeholder-shown:border-input-active [&_input]:not-placeholder-shown:border-2 [&_input]:text-primary-normal-active [&_input]:h-12 [&_input]:py-2 [&_input]:shadow-input-border [&_input]:aria-invalid:bg-input-danger [&_input]:aria-invalid:border-danger-normal [&_button]:not-placeholder-shown:border-input-active [&_button]:not-placeholder-shown:border-2"
+											className="text-base [&_button]:rounded-l-lg [&_button]:not-placeholder-shown:border-2 [&_button]:not-placeholder-shown:border-input-active [&_input]:h-12 [&_input]:rounded-r-lg [&_input]:border-input-border/70 [&_input]:not-placeholder-shown:border-2 [&_input]:not-placeholder-shown:border-input-active [&_input]:py-2 [&_input]:text-primary-normal-active [&_input]:shadow-input-border [&_input]:placeholder:text-grey-light [&_input]:focus-visible:border-2 [&_input]:focus-visible:border-input-active [&_input]:focus-visible:shadow-input-active [&_input]:focus-visible:ring-0 [&_input]:aria-invalid:border-danger-normal [&_input]:aria-invalid:bg-input-danger"
 											{...field}
 										/>
 									</FormControl>
@@ -185,14 +185,14 @@ export default function LeadsForm({
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Email <span className="text-danger-normal">*</span>
 									</FormLabel>
 									<FormControl>
 										<Input
 											type="email"
 											placeholder="email@email.com"
-											className="text-base placeholder:text-grey-light border-input-border/70 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg not-placeholder-shown:border-input-active not-placeholder-shown:border-2 text-primary-normal-active h-12 py-2 shadow-input-border aria-invalid:bg-input-danger aria-invalid:border-danger-normal"
+											className="h-12 rounded-lg border-input-border/70 not-placeholder-shown:border-2 not-placeholder-shown:border-input-active py-2 text-base text-primary-normal-active shadow-input-border placeholder:text-grey-light focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0 aria-invalid:border-danger-normal aria-invalid:bg-input-danger"
 											{...field}
 										/>
 									</FormControl>
@@ -202,13 +202,13 @@ export default function LeadsForm({
 						/>
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<FormField
 							control={form.control}
 							name="consultation_type_id"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Tipo de consulta
 									</FormLabel>
 									<Select
@@ -216,7 +216,7 @@ export default function LeadsForm({
 										onValueChange={(value) => field.onChange(Number(value))}
 									>
 										<FormControl>
-											<SelectTrigger className="w-full text-base data-placeholder:text-grey-light border-input-border/70 focus:border-input-active focus:shadow-input-active focus:border-2 focus:ring-0 rounded-lg text-primary-normal-active h-12 shadow-input-border not-placeholder-shown:border-input-active not-placeholder-shown:border-2">
+											<SelectTrigger className="h-12 w-full rounded-lg border-input-border/70 not-placeholder-shown:border-2 not-placeholder-shown:border-input-active text-base text-primary-normal-active shadow-input-border focus:border-2 focus:border-input-active focus:shadow-input-active focus:ring-0 data-placeholder:text-grey-light">
 												<SelectValue placeholder="Seleccione tipo de consulta" />
 											</SelectTrigger>
 										</FormControl>
@@ -236,7 +236,7 @@ export default function LeadsForm({
 							name="property_id"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Propiedad de interés
 									</FormLabel>
 									<FormControl>
@@ -248,7 +248,7 @@ export default function LeadsForm({
 											availableProperties={availableProperties}
 											operationTypes={[1, 2]}
 											placeholder="Av. Santa Fe 1234"
-											className="aria-invalid:bg-input-danger aria-invalid:border-danger-normal"
+											className="aria-invalid:border-danger-normal aria-invalid:bg-input-danger"
 										/>
 									</FormControl>
 									<FormMessageWithIcon className="text-xs" />
@@ -263,20 +263,20 @@ export default function LeadsForm({
 							name="notes"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-secondary-dark font-semibold">
+									<FormLabel className="font-semibold text-secondary-dark">
 										Agregar nota (opcional)
 									</FormLabel>
 									<FormControl>
 										<Textarea
 											placeholder="Agregar notas adicionales..."
-											className="text-base border-input-border/70 placeholder:text-grey-light focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg not-placeholder-shown:border-input-active not-placeholder-shown:border-2 text-primary-normal-active py-4 shadow-input-border aria-invalid:bg-input-danger aria-invalid:border-danger-normal resize-none min-h-[100px]"
+											className="min-h-[100px] resize-none rounded-lg border-input-border/70 not-placeholder-shown:border-2 not-placeholder-shown:border-input-active py-4 text-base text-primary-normal-active shadow-input-border placeholder:text-grey-light focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0 aria-invalid:border-danger-normal aria-invalid:bg-input-danger"
 											maxLength={300}
 											{...field}
 										/>
 									</FormControl>
-									<div className="flex justify-between items-center">
+									<div className="flex items-center justify-between">
 										<FormMessageWithIcon className="text-xs" />
-										<span className="text-sm text-gray-500">
+										<span className="text-gray-500 text-sm">
 											{field.value?.length || 0}/300
 										</span>
 									</div>
@@ -285,7 +285,7 @@ export default function LeadsForm({
 						/>
 					</div>
 
-					<div className="flex gap-3 justify-end pt-4">
+					<div className="flex justify-end gap-3 pt-4">
 						<Button
 							type="button"
 							size={"lg"}

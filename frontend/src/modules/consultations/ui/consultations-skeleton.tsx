@@ -6,10 +6,10 @@ export default function ConsultationsSkeleton() {
 		<div className="space-y-3">
 			{Array.from({ length: 6 }).map((_, i) => (
 				<Card key={i} className="mb-3">
-					<CardContent className="p-0 w-full">
+					<CardContent className="w-full p-0">
 						<div className="flex items-center justify-between px-4 py-3">
-							<div className="flex items-center gap-4 flex-1">
-								<div className="text-left flex-1 min-w-0 space-y-3">
+							<div className="flex flex-1 items-center gap-4">
+								<div className="min-w-0 flex-1 space-y-3 text-left">
 									{/* Nombre */}
 									<Skeleton className="h-5 w-[180px]" />
 
@@ -32,7 +32,7 @@ export default function ConsultationsSkeleton() {
 							</div>
 
 							{/* Indicador y menú */}
-							<div className="flex items-center gap-2 shrink-0">
+							<div className="flex shrink-0 items-center gap-2">
 								<Skeleton className="h-2 w-2 rounded-full" />
 								<Skeleton className="h-8 w-8 rounded-md" />
 							</div>

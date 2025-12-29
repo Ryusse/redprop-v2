@@ -37,7 +37,7 @@ export default function DatePickerField({
 }: DatePickerFieldProps) {
 	return (
 		<FormItem className="flex flex-col">
-			<FormLabel className="text-secondary-dark font-semibold">
+			<FormLabel className="font-semibold text-secondary-dark">
 				{label} {required && <span className="text-danger-normal">*</span>}
 			</FormLabel>
 			<Popover>
@@ -46,9 +46,9 @@ export default function DatePickerField({
 						<Button
 							variant="outline"
 							className={cn(
-								"h-12 pl-3 text-left font-normal border-input-border/70 hover:bg-transparent hover:border-input-active focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg py-2 shadow-input-border",
+								"h-12 rounded-lg border-input-border/70 py-2 pl-3 text-left font-normal shadow-input-border hover:border-input-active hover:bg-transparent focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0",
 								value &&
-									"border-input-active border-2 text-primary-normal-active",
+									"border-2 border-input-active text-primary-normal-active",
 								!value && "text-grey-light",
 							)}
 						>
@@ -62,7 +62,7 @@ export default function DatePickerField({
 					</FormControl>
 				</PopoverTrigger>
 				<PopoverContent
-					className="w-full p-0 flex justify-center"
+					className="flex w-full justify-center p-0"
 					align="start"
 					side={side}
 					avoidCollisions={false}

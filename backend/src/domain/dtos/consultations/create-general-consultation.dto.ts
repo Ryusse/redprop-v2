@@ -9,9 +9,9 @@ export class CreateGeneralConsultationDto {
 		public readonly email?: string,
 	) {}
 
-	static create(object: {
-		[key: string]: any;
-	}): [string?, CreateGeneralConsultationDto?] {
+	static create(
+		object: Record<string, unknown>,
+	): [string?, CreateGeneralConsultationDto?] {
 		const { first_name, last_name, phone, email, message } = object;
 
 		if (!first_name) return ["First name is required"];

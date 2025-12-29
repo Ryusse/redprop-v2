@@ -44,7 +44,7 @@ export default function PropertyGallery({ images }: Props) {
 
 	if (!images || images.length === 0) {
 		return (
-			<div className="flex bg-muted h-64 w-full items-center justify-center rounded-lg lg:h-[500px]">
+			<div className="flex h-64 w-full items-center justify-center rounded-lg bg-muted lg:h-[500px]">
 				<p className="">No hay imágenes disponibles</p>
 			</div>
 		);
@@ -53,7 +53,7 @@ export default function PropertyGallery({ images }: Props) {
 	return (
 		<div className="flex w-full flex-col gap-4 lg:h-[500px] lg:flex-row">
 			<div className="relative w-full overflow-hidden rounded-2xl bg-muted lg:h-full">
-				<Carousel setApi={setApi} className="w-full h-full">
+				<Carousel setApi={setApi} className="h-full w-full">
 					<CarouselContent className="h-full">
 						{images.map((image, index) => (
 							<CarouselItem key={image.id}>
@@ -84,12 +84,12 @@ export default function PropertyGallery({ images }: Props) {
 					{images.map((image, index) => (
 						<CarouselItem
 							key={image.id}
-							className={cn("basis-1/3 h-1/3 pt-3 px-1 pb-1")}
+							className={cn("h-1/3 basis-1/3 px-1 pt-3 pb-1")}
 							onClick={() => handleThumbClick(index)}
 						>
 							<figure
 								className={cn(
-									"shadow-none bg-transparent flex items-center justify-center relative overflow-hidden rounded-lg w-full h-full aspect-video outline-transparent outline-4",
+									"relative flex aspect-video h-full w-full items-center justify-center overflow-hidden rounded-lg bg-transparent shadow-none outline-4 outline-transparent",
 									index === current && "outline-tertiary",
 								)}
 							>
@@ -97,7 +97,7 @@ export default function PropertyGallery({ images }: Props) {
 									src={image.file_path}
 									alt={`Thumbnail ${index + 1}`}
 									fill
-									className="object-cover w-full h-full"
+									className="h-full w-full object-cover"
 								/>
 							</figure>
 						</CarouselItem>
@@ -108,7 +108,7 @@ export default function PropertyGallery({ images }: Props) {
 					variant="white"
 				/>
 				<CarouselNext
-					className="absolute bottom-0 right-1/2 -translate-x-1/2"
+					className="absolute right-1/2 bottom-0 -translate-x-1/2"
 					variant="white"
 				/>
 			</Carousel>

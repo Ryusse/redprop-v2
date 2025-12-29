@@ -5,7 +5,6 @@ import type { FileUploadAdapter } from "../../domain/interfaces/file-upload.adap
 export class CompanyServices {
 	constructor(private readonly fileUploadAdapter: FileUploadAdapter) {}
 
-	
 	async getCompanySettings() {
 		try {
 			const settings = await CompanySettingsModel.findSettings();

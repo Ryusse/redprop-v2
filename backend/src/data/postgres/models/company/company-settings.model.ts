@@ -1,5 +1,5 @@
+import type { SqlParams } from "../../../types/sql.types";
 import { PostgresDatabase } from "../../database";
-import { SqlParams } from '../../../types/sql.types';
 
 export interface CompanySettings {
 	id: number;
@@ -10,7 +10,6 @@ export interface CompanySettings {
 }
 
 export class CompanySettingsModel {
-	
 	static async findSettings(): Promise<CompanySettings | null> {
 		const client = PostgresDatabase.getClient();
 
@@ -26,7 +25,6 @@ export class CompanySettingsModel {
 		}
 	}
 
-
 	static async updateLogo(
 		logoUrl: string,
 		updatedByUserId: number,
@@ -35,8 +33,8 @@ export class CompanySettingsModel {
 
 		try {
 			const result = await client.query(
-				`UPDATE company_settings 
-                 SET logo_url = $1, 
+				`UPDATE company_settings
+                 SET logo_url = $1,
                      updated_at = CURRENT_TIMESTAMP,
                      updated_by_user_id = $2
                  WHERE id = 1
@@ -50,7 +48,6 @@ export class CompanySettingsModel {
 			throw error;
 		}
 	}
-
 
 	static async updateSettings(
 		data: {
@@ -85,7 +82,7 @@ export class CompanySettingsModel {
 
 		try {
 			const result = await client.query(
-				`UPDATE company_settings 
+				`UPDATE company_settings
                  SET ${updates.join(", ")}
                  WHERE id = 1
                  RETURNING *`,

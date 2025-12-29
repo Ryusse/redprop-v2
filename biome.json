@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
@@ -22,7 +22,7 @@
 		"indentWidth": 2,
 		"formatWithErrors": true,
 		"lineWidth": 80,
-		"lineEnding": "crlf"
+		"lineEnding": "lf"
 	},
 	"linter": {
 		"enabled": true,
@@ -48,11 +48,11 @@
 			},
 			"nursery": {
 				"useSortedClasses": {
-					"level": "off",
+					"level": "error",
 					"fix": "safe",
 					"options": {
-						"attributes": ["className"],
-						"functions": ["cn", "clsx", "cva", "tw", "tw.*"]
+						"attributes": ["className", "classList", "class", "panelClassName"],
+						"functions": ["cn", "clsx", "cx", "cva", "tw"]
 					}
 				}
 			}
@@ -62,10 +62,21 @@
 			"react": "recommended"
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["backend/**/*"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noStaticOnlyClass": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double",
-			"lineEnding": "crlf"
+			"quoteStyle": "double"
 		}
 	},
 	"css": {

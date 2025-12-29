@@ -14,19 +14,19 @@ export default async function ProtectedHeader() {
 	const user = await getCurrentUser();
 
 	return (
-		<header className="px-4 bg-sidebar sticky top-0 z-50 min-h-(--admin-header-height-mobile) lg:min-h-(--admin-header-height) grid grid-cols-2 items-center gap-4">
+		<header className="sticky top-0 z-50 grid min-h-(--admin-header-height-mobile) grid-cols-2 items-center gap-4 bg-sidebar px-4 lg:min-h-(--admin-header-height)">
 			<div className="flex items-center gap-4">
 				<div className="lg:hidden">
 					<SidebarTrigger />
 				</div>
 				<Button
 					variant="link"
-					className="w-[160px] md:w-[271px] h-full md:h-[64px] p-0! mr-auto justify-start"
+					className="mr-auto h-full w-[160px] justify-start p-0! md:h-[64px] md:w-[271px]"
 					asChild
 				>
 					<Link href={paths.agent.properties.index()}>
 						<svg
-							className="w-full! h-full!"
+							className="h-full! w-full!"
 							width="271"
 							height="64"
 							viewBox="0 0 271 64"
@@ -48,7 +48,7 @@ export default async function ProtectedHeader() {
 					</Link>
 				</Button>
 			</div>
-			<div className="justify-self-end flex items-center gap-12">
+			<div className="flex items-center gap-12 justify-self-end">
 				<div className="hidden md:block">
 					{user?.role === ROLES.AGENT ? (
 						<ActionDropdown />

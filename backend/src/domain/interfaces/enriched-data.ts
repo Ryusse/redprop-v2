@@ -1,4 +1,3 @@
-
 export interface CurrencyInfo {
 	id: number | undefined;
 	name: string;
@@ -71,7 +70,6 @@ export interface ContactCategoryInfo {
 	id: number | undefined;
 	name: string;
 }
-
 
 export interface EnrichedPropertyPrice {
 	id?: number;
@@ -224,12 +222,14 @@ export interface PropertyDetails {
 	bedrooms?: number;
 	bathrooms?: number;
 	garage: boolean;
-	address: (EnrichedPropertyAddress & {
-		location?: {
-			latitude: number | null;
-			longitude: number | null;
-		};
-	}) | null;
+	address:
+		| (EnrichedPropertyAddress & {
+				location?: {
+					latitude: number | null;
+					longitude: number | null;
+				};
+		  })
+		| null;
 	prices: Array<{
 		amount: number;
 		currency: CurrencyInfo | null;
@@ -289,4 +289,3 @@ export interface RentedPropertyWithDetails extends EnrichedPropertyWithDetails {
 export interface OwnedPropertyWithDetails extends EnrichedPropertyWithDetails {
 	publication_date?: Date;
 }
-

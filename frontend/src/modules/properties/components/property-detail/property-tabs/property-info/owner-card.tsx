@@ -15,11 +15,11 @@ export default function OwnerCard({
 	if (!owner) {
 		return (
 			<Section title="Propietario">
-				<div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-8 text-center bg-card">
+				<div className="flex flex-col items-center justify-center rounded-lg border border-border border-dashed bg-card py-8 text-center">
 					<div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
 						<UserCircleIcon className="h-8 w-8" />
 					</div>
-					<p className="text-sm font-medium text-muted-foreground">
+					<p className="font-medium text-muted-foreground text-sm">
 						Sin propietario asignado
 					</p>
 				</div>
@@ -36,7 +36,7 @@ export default function OwnerCard({
 					</div>
 					<div>
 						<p className="font-medium text-foreground">{owner.name || "-"}</p>
-						<p className="text-sm text-muted-foreground">ID: #PRO-{owner.id}</p>
+						<p className="text-muted-foreground text-sm">ID: #PRO-{owner.id}</p>
 					</div>
 				</div>
 				<div className="space-y-3">

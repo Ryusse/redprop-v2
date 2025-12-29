@@ -91,7 +91,7 @@ export function TenantsList({ tenants, itemsPerPage = 10 }: TenantsListProps) {
 
 	if (filteredTenants.length === 0) {
 		return (
-			<div className="text-center py-8 text-slate-500">
+			<div className="py-8 text-center text-slate-500">
 				No hay inquilinos disponibles
 			</div>
 		);

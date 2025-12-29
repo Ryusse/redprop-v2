@@ -39,7 +39,7 @@ const tabsListVariants = cva(
 			variant: {
 				default: "bg-muted text-muted-foreground",
 				blue: "bg-transparent px-0",
-				underline: "bg-transparent p-0 gap-6",
+				underline: "gap-6 bg-transparent p-0",
 			},
 			size: {
 				default: "h-10 w-fit p-1",
@@ -70,15 +70,15 @@ function TabsList({
 }
 
 const tabsTriggerVariants = cva(
-	"inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+	"inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium text-sm transition-[color,box-shadow] focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 	{
 		variants: {
 			variant: {
 				default:
-					"data-[state=active]:bg-card text-foreground border border-transparent data-[state=active]:shadow-sm",
-				blue: "bg-tertiary text-tertiary-foreground rounded-none border border-transparent data-[state=active]:border-b-card border-b-2 border-b-transparent first:rounded-tl-lg last:rounded-tr-lg",
+					"border border-transparent text-foreground data-[state=active]:bg-card data-[state=active]:shadow-sm",
+				blue: "rounded-none border border-transparent border-b-2 border-b-transparent bg-tertiary text-tertiary-foreground first:rounded-tl-lg last:rounded-tr-lg data-[state=active]:border-b-card",
 				underline:
-					"rounded-none border-b-2 border-transparent bg-transparent shadow-none data-[state=active]:border-primary data-[state=active]:text-foreground text-muted-foreground hover:text-foreground",
+					"rounded-none border-transparent border-b-2 bg-transparent text-muted-foreground shadow-none hover:text-foreground data-[state=active]:border-primary data-[state=active]:text-foreground",
 			},
 			size: {
 				default: "h-full flex-1 px-2 py-1",

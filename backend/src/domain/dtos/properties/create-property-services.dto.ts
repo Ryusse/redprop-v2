@@ -1,8 +1,3 @@
-
 export interface CreatePropertyServicesDto {
-    services?: string[];
+	services?: string[];
 }
-
-
-
-

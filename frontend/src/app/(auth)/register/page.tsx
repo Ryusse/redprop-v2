@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
 	return (
-		<section className="min-h-screen flex flex-col bg-primary-foreground">
-			<main className="flex-1 flex items-center justify-center m-auto w-full z-10 relative">
+		<section className="flex min-h-screen flex-col bg-primary-foreground">
+			<main className="relative z-10 m-auto flex w-full flex-1 items-center justify-center">
 				<RegisterForm />
 			</main>
 		</section>

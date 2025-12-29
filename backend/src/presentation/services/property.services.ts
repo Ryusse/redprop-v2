@@ -25,9 +25,9 @@ import {
 	RentalModel,
 	VisibilityStatusModel,
 } from "../../data/postgres/models";
+import type { PropertyPrice } from "../../data/postgres/models/properties/property-price.model";
 import type { PropertyService } from "../../data/postgres/models/properties/property-service.model";
 import type { Expense } from "../../data/postgres/models/shared/expense.model";
-import type { PropertyPrice } from "../../data/postgres/models/properties/property-price.model";
 import { TransactionHelper } from "../../data/postgres/transaction.helper";
 import { CustomError } from "../../domain";
 import type {
@@ -35,21 +35,16 @@ import type {
 	CreatePropertyGroupedDto,
 	UpdatePropertyGroupedDto,
 } from "../../domain/dtos/properties";
-import type { FileUploadAdapter } from "../../domain/interfaces/file-upload.adapter";
-import type { 
-	PropertyPriceRow, 
-	PropertyAddressRow, 
-	PropertyServiceRow, 
-	ExpenseRow,
-	PropertyRow 
-} from '../../domain/interfaces/database-rows';
 import type {
-	EnrichedPropertyPrice,
+	PropertyAddressRow,
+	PropertyPriceRow,
+} from "../../domain/interfaces/database-rows";
+import type {
 	EnrichedPropertyAddress,
-	EnrichedExpense,
-	PropertyListItem
-} from '../../domain/interfaces/enriched-data';
-
+	EnrichedPropertyPrice,
+	PropertyListItem,
+} from "../../domain/interfaces/enriched-data";
+import type { FileUploadAdapter } from "../../domain/interfaces/file-upload.adapter";
 
 export class PropertyServices {
 	constructor(private readonly fileUploadAdapter: FileUploadAdapter) {}
@@ -67,13 +62,13 @@ export class PropertyServices {
 				createPropertyDto.owner_id !== null
 			) {
 				const ownerIdNumber = Number(createPropertyDto.owner_id);
-				
-				if (isNaN(ownerIdNumber) || ownerIdNumber <= 0) {
+
+				if (Number.isNaN(ownerIdNumber) || ownerIdNumber <= 0) {
 					throw CustomError.badRequest(
 						`Invalid owner_id: must be a valid positive number`,
 					);
 				}
-				
+
 				const ownerClient = await ClientModel.findById(ownerIdNumber);
 				if (!ownerClient) {
 					throw CustomError.badRequest(
@@ -91,7 +86,7 @@ export class PropertyServices {
 			await this.checkDuplicateAddress(
 				geography.cityId,
 				createPropertyDto.address.street,
-				createPropertyDto.address.number
+				createPropertyDto.address.number,
 			);
 
 			const fullAddress = this.buildFullAddress(createPropertyDto.address);
@@ -220,9 +215,13 @@ export class PropertyServices {
 				throw CustomError.internalServerError("Failed to create property");
 			}
 
+			if (!address.id) {
+				throw CustomError.internalServerError("Failed to create address");
+			}
+
 			await PropertyAddressModel.create({
 				property_id: property.id,
-				address_id: address.id!,
+				address_id: address.id,
 			});
 
 			const prices = [];
@@ -293,7 +292,8 @@ export class PropertyServices {
 						multimediaRecords.push(multimedia);
 					}
 				} catch (error: unknown) {
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+					const errorMessage =
+						error instanceof Error ? error.message : "Unknown error";
 					for (const url of uploadedImages) {
 						try {
 							await this.fileUploadAdapter.deleteFile(url);
@@ -310,17 +310,13 @@ export class PropertyServices {
 				}
 			}
 
-			const [
-				propertyType,
-				propertyStatus,
-				visibilityStatus,
-				addressCity,
-			] = await Promise.all([
-				PropertyTypeModel.findById(propertyTypeId),
-				PropertyStatusModel.findById(propertyStatusId),
-				VisibilityStatusModel.findById(visibilityStatusId),
-				CityModel.findById(geography.cityId),
-			]);
+			const [propertyType, propertyStatus, visibilityStatus, addressCity] =
+				await Promise.all([
+					PropertyTypeModel.findById(propertyTypeId),
+					PropertyStatusModel.findById(propertyStatusId),
+					VisibilityStatusModel.findById(visibilityStatusId),
+					CityModel.findById(geography.cityId),
+				]);
 
 			const addressProvince = addressCity
 				? await ProvinceModel.findById(addressCity.province_id)
@@ -503,91 +499,95 @@ export class PropertyServices {
 			disposition,
 			situation,
 		] = await Promise.all([
-			PropertyTypeModel.findById(property.property_type_id),
-			PropertyStatusModel.findById(property.property_status_id),
-			VisibilityStatusModel.findById(property.visibility_status_id),
+			PropertyTypeModel.findById(Number(property.property_type_id)),
+			PropertyStatusModel.findById(Number(property.property_status_id)),
+			VisibilityStatusModel.findById(Number(property.visibility_status_id)),
 			property.age_id
-				? PropertyAgeModel.findById(property.age_id)
+				? PropertyAgeModel.findById(Number(property.age_id))
 				: Promise.resolve(null),
 			property.orientation_id
-				? OrientationModel.findById(property.orientation_id)
+				? OrientationModel.findById(Number(property.orientation_id))
 				: Promise.resolve(null),
 			property.disposition_id
-				? DispositionModel.findById(property.disposition_id)
+				? DispositionModel.findById(Number(property.disposition_id))
 				: Promise.resolve(null),
 			property.situation_id
-				? PropertySituationModel.findById(property.situation_id)
+				? PropertySituationModel.findById(Number(property.situation_id))
 				: Promise.resolve(null),
 		]);
 
 		const enrichedPrices = await Promise.all(
-			(property.prices || []).map(async (price: PropertyPriceRow) => {
-				const [currency, operationType] = await Promise.all([
-					CurrencyTypeModel.findById(price.currency_type_id),
-					PropertyOperationTypeModel.findById(price.operation_type_id),
-				]);
+			((property.prices as PropertyPriceRow[]) || []).map(
+				async (price: PropertyPriceRow) => {
+					const [currency, operationType] = await Promise.all([
+						CurrencyTypeModel.findById(price.currency_type_id),
+						PropertyOperationTypeModel.findById(price.operation_type_id),
+					]);
 
-				return {
-					id: price.id,
-					property_id: price.property_id,
-					price: price.price,
-					currency: currency
-						? {
-								id: currency.id,
-								name: currency.name,
-								symbol: currency.symbol,
-							}
-						: null,
-					operation_type: operationType
-						? {
-								id: operationType.id,
-								name: operationType.name,
-							}
-						: null,
-					updated_at: price.updated_at,
-				};
-			}),
+					return {
+						id: price.id,
+						property_id: price.property_id,
+						price: price.price,
+						currency: currency
+							? {
+									id: currency.id,
+									name: currency.name,
+									symbol: currency.symbol,
+								}
+							: null,
+						operation_type: operationType
+							? {
+									id: operationType.id,
+									name: operationType.name,
+								}
+							: null,
+						updated_at: price.updated_at,
+					};
+				},
+			),
 		);
 
 		const enrichedAddresses = await Promise.all(
-			(property.addresses || []).map(async (address: PropertyAddressRow) => {
-				if (!address || !address.city_id) return null;
+			((property.addresses as PropertyAddressRow[]) || []).map(
+				async (address: PropertyAddressRow) => {
+					if (!address || !address.city_id) return null;
 
-				const city = await CityModel.findById(address.city_id);
-				if (!city) return address;
+					const city = await CityModel.findById(address.city_id);
+					if (!city) return address;
 
-				const province = await ProvinceModel.findById(city.province_id);
-				const country = province
-					? await CountryModel.findById(province.country_id)
-					: null;
+					const province = await ProvinceModel.findById(city.province_id);
+					const country = province
+						? await CountryModel.findById(province.country_id)
+						: null;
 
-				return {
-					id: address.id,
-					street: address.street || null,
-					number: address.number || null,
-					full_address: address.full_address,
-					...(address.neighborhood && { neighborhood: address.neighborhood }),
-					...(address.postal_code && { postal_code: address.postal_code }),
-					...(address.latitude && { latitude: address.latitude }),
-					...(address.longitude && { longitude: address.longitude }),
-					city: {
-						id: city.id,
-						name: city.name,
-						province: province
-							? {
-									id: province.id,
-									name: province.name,
-									country: country
-										? {
-												id: country.id,
-												name: country.name,
-											}
-										: null,
-								}
-							: null,
-					},
-				};
-			}),
+					return {
+						id: address.id,
+						street: address.street || null,
+						number: address.number || null,
+						full_address: address.full_address,
+						...(address.neighborhood && { neighborhood: address.neighborhood }),
+						...(address.postal_code && { postal_code: address.postal_code }),
+						...(address.latitude && { latitude: address.latitude }),
+						...(address.longitude && { longitude: address.longitude }),
+						city: {
+							id: city.id,
+							name: city.name,
+							province: province
+								? {
+										id: province.id,
+										name: province.name,
+										country: country
+											? {
+													id: country.id,
+													name: country.name,
+												}
+											: null,
+									}
+								: null,
+						},
+					};
+				},
+			),
 		);
 
 		const propertyServices = await PropertyServiceModel.findByPropertyId(id);
@@ -630,11 +630,15 @@ export class PropertyServices {
 
 		let owner = null;
 		if (property.owner_id) {
-			const ownerClient = await ClientModel.findById(property.owner_id);
+			const ownerClient = await ClientModel.findById(Number(property.owner_id));
 			if (ownerClient) {
-				const { ContactCategoryModel } = await import('../../data/postgres/models/clients/contact-category.model');
-				const category = await ContactCategoryModel.findById(ownerClient.contact_category_id);
-				
+				const { ContactCategoryModel } = await import(
+					"../../data/postgres/models/clients/contact-category.model"
+				);
+				const category = await ContactCategoryModel.findById(
+					ownerClient.contact_category_id,
+				);
+
 				owner = {
 					id: ownerClient.id,
 					first_name: ownerClient.first_name,
@@ -644,10 +648,12 @@ export class PropertyServices {
 					phone: ownerClient.phone || null,
 					dni: ownerClient.dni || null,
 					address: ownerClient.address || null,
-					contact_category: category ? {
-						id: category.id,
-						name: category.name
-					} : null
+					contact_category: category
+						? {
+								id: category.id,
+								name: category.name,
+							}
+						: null,
 				};
 			}
 		}
@@ -689,7 +695,7 @@ export class PropertyServices {
 				const clientRental = await ClientRentalModel.findById(
 					rental.client_rental_id,
 				);
-				if (clientRental && clientRental.client_id) {
+				if (clientRental?.client_id) {
 					const tenant = await ClientModel.findById(clientRental.client_id);
 					if (tenant) {
 						const rentalCurrency = await CurrencyTypeModel.findById(
@@ -781,17 +787,20 @@ export class PropertyServices {
 				})),
 				addresses: enrichedAddresses
 					.filter((a) => a !== null)
-					.map((addr: EnrichedPropertyAddress) => ({
-						id: addr.id,
-						street: addr.street || null,
-						number: addr.number || null,
-						full_address: addr.full_address,
-						neighborhood: addr.neighborhood || null,
-						postal_code: addr.postal_code || null,
-						latitude: addr.latitude || null,
-						longitude: addr.longitude || null,
-						city: addr.city || null,
-					})),
+					.map(
+						(addr: any) =>
+							({
+								id: addr.id,
+								street: addr.street || null,
+								number: addr.number || null,
+								full_address: addr.full_address,
+								neighborhood: addr.neighborhood || null,
+								postal_code: addr.postal_code || null,
+								latitude: addr.latitude || null,
+								longitude: addr.longitude || null,
+								city: addr.city || null,
+							}) as EnrichedPropertyAddress,
+					),
 				images: property.images || [],
 				services: enrichedServices.filter((s) => s !== null),
 				documents: documents,
@@ -832,117 +841,119 @@ export class PropertyServices {
 		);
 
 		const enrichedProperties = await Promise.all(
-			properties.map(async (property: PropertyListItem) => {
-				let mainPriceInfo = null;
-				if (
-					property.main_price &&
-					property.main_currency_type_id &&
-					property.main_operation_type_id
-				) {
-					const [currency, operationType] = await Promise.all([
-						CurrencyTypeModel.findById(property.main_currency_type_id),
-						PropertyOperationTypeModel.findById(
-							property.main_operation_type_id,
-						),
-					]);
+			(properties as unknown as PropertyListItem[]).map(
+				async (property: PropertyListItem) => {
+					let mainPriceInfo = null;
+					if (
+						property.main_price &&
+						property.main_currency_type_id &&
+						property.main_operation_type_id
+					) {
+						const [currency, operationType] = await Promise.all([
+							CurrencyTypeModel.findById(property.main_currency_type_id),
+							PropertyOperationTypeModel.findById(
+								property.main_operation_type_id,
+							),
+						]);
 
-					mainPriceInfo = {
-						price: property.main_price,
-						currency: currency
+						mainPriceInfo = {
+							price: property.main_price,
+							currency: currency
+								? {
+										id: currency.id,
+										name: currency.name,
+										symbol: currency.symbol,
+									}
+								: null,
+							operation_type: operationType
+								? {
+										id: operationType.id,
+										name: operationType.name,
+									}
+								: null,
+						};
+					}
+
+					return {
+						id: property.id,
+						title: property.title,
+						description: property.description,
+						publication_date: property.publication_date,
+						featured_web: property.featured_web,
+						property_type: {
+							id: property.property_type_id,
+							name: property.property_type_name,
+						},
+						property_status: {
+							id: property.property_status_id,
+							name: property.property_status_name,
+						},
+						visibility_status: {
+							id: property.visibility_status_id,
+							name: property.visibility_status_name,
+						},
+						owner_id: property.owner_id || null,
+						age: property.age_id
 							? {
-									id: currency.id,
-									name: currency.name,
-									symbol: currency.symbol,
+									id: property.age_id,
+									name: property.property_age_name,
 								}
 							: null,
-						operation_type: operationType
+						orientation: property.orientation_id
 							? {
-									id: operationType.id,
-									name: operationType.name,
+									id: property.orientation_id,
+									name: property.orientation_name,
 								}
 							: null,
+						disposition: property.disposition_id
+							? {
+									id: property.disposition_id,
+									name: property.disposition_name,
+								}
+							: null,
+						situation: property.situation_id
+							? {
+									id: property.situation_id,
+									name: property.situation_name,
+								}
+							: null,
+						bedrooms_count: property.bedrooms_count,
+						bathrooms_count: property.bathrooms_count,
+						rooms_count: property.rooms_count,
+						parking_spaces_count: property.parking_spaces_count,
+						land_area: property.land_area,
+						covered_area: property.covered_area,
+						total_area: property.total_area,
+						main_price: mainPriceInfo,
+						main_address: property.main_address
+							? {
+									full_address: property.main_address,
+									neighborhood: property.main_neighborhood,
+									city: property.main_city_name
+										? {
+												id: property.main_city_id,
+												name: property.main_city_name,
+												province: property.main_province_name
+													? {
+															name: property.main_province_name,
+														}
+													: null,
+											}
+										: null,
+								}
+							: null,
+						primary_image: property.primary_image_path
+							? {
+									id: property.primary_image_id,
+									file_path: property.primary_image_path,
+									is_primary: true,
+								}
+							: null,
+						images_count: property.images_count || 0,
+						updated_at: property.updated_at,
 					};
-				}
-
-				return {
-					id: property.id,
-					title: property.title,
-					description: property.description,
-					publication_date: property.publication_date,
-					featured_web: property.featured_web,
-					property_type: {
-						id: property.property_type_id,
-						name: property.property_type_name,
-					},
-					property_status: {
-						id: property.property_status_id,
-						name: property.property_status_name,
-					},
-					visibility_status: {
-						id: property.visibility_status_id,
-						name: property.visibility_status_name,
-					},
-					owner_id: property.owner_id || null,
-					age: property.age_id
-						? {
-								id: property.age_id,
-								name: property.property_age_name,
-							}
-						: null,
-					orientation: property.orientation_id
-						? {
-								id: property.orientation_id,
-								name: property.orientation_name,
-							}
-						: null,
-					disposition: property.disposition_id
-						? {
-								id: property.disposition_id,
-								name: property.disposition_name,
-							}
-						: null,
-					situation: property.situation_id
-						? {
-								id: property.situation_id,
-								name: property.situation_name,
-							}
-						: null,
-					bedrooms_count: property.bedrooms_count,
-					bathrooms_count: property.bathrooms_count,
-					rooms_count: property.rooms_count,
-					parking_spaces_count: property.parking_spaces_count,
-					land_area: property.land_area,
-					covered_area: property.covered_area,
-					total_area: property.total_area,
-					main_price: mainPriceInfo,
-					main_address: property.main_address
-						? {
-								full_address: property.main_address,
-								neighborhood: property.main_neighborhood,
-								city: property.main_city_name
-									? {
-											id: property.main_city_id,
-											name: property.main_city_name,
-											province: property.main_province_name
-												? {
-														name: property.main_province_name,
-													}
-												: null,
-										}
-									: null,
-							}
-						: null,
-					primary_image: property.primary_image_path
-						? {
-								id: property.primary_image_id,
-								file_path: property.primary_image_path,
-								is_primary: true,
-							}
-						: null,
-					images_count: property.images_count || 0,
-					updated_at: property.updated_at,
-				};
-			}),
+				},
+			),
 		);
 
 		return { properties: enrichedProperties, count: enrichedProperties.length };
@@ -1029,17 +1040,24 @@ export class PropertyServices {
 			}
 			return { message: "Property deleted successfully" };
 		} catch (error: unknown) {
-			if (error && typeof error === 'object' && 'code' in error && error.code === "23503") {
+			if (
+				error &&
+				typeof error === "object" &&
+				"code" in error &&
+				error.code === "23503"
+			) {
 				throw CustomError.badRequest(
 					"Cannot delete property: it has active rentals or sales. Archive it instead.",
 				);
 			}
-			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-			throw CustomError.internalServerError(`Error updating property: ${errorMessage}`);
+			const errorMessage =
+				error instanceof Error ? error.message : "Unknown error";
+			throw CustomError.internalServerError(
+				`Error updating property: ${errorMessage}`,
+			);
 		}
 	}
 
-	
 	async createPropertyGrouped(
 		createPropertyGroupedDto: CreatePropertyGroupedDto,
 		capturedByUserId: number,
@@ -1060,17 +1078,27 @@ export class PropertyServices {
 			} = createPropertyGroupedDto;
 
 			let finalOwnerId: number | undefined;
-			console.log('[PropertyServices] basic.owner_id:', basic.owner_id, 'type:', typeof basic.owner_id);
+			console.log(
+				"[PropertyServices] basic.owner_id:",
+				basic.owner_id,
+				"type:",
+				typeof basic.owner_id,
+			);
 			if (basic.owner_id !== undefined && basic.owner_id !== null) {
 				const ownerIdNumber = Number(basic.owner_id);
-				console.log('[PropertyServices] ownerIdNumber after conversion:', ownerIdNumber, 'isNaN:', isNaN(ownerIdNumber));
-				
-				if (isNaN(ownerIdNumber) || ownerIdNumber <= 0) {
+				console.log(
+					"[PropertyServices] ownerIdNumber after conversion:",
+					ownerIdNumber,
+					"isNaN:",
+					Number.isNaN(ownerIdNumber),
+				);
+
+				if (Number.isNaN(ownerIdNumber) || ownerIdNumber <= 0) {
 					throw CustomError.badRequest(
 						`Invalid owner_id: must be a valid positive number`,
 					);
 				}
-				
+
 				const ownerClient = await ClientModel.findById(ownerIdNumber);
 				if (!ownerClient) {
 					throw CustomError.badRequest(
@@ -1078,9 +1106,9 @@ export class PropertyServices {
 					);
 				}
 				finalOwnerId = ownerIdNumber;
-				console.log('[PropertyServices] finalOwnerId set to:', finalOwnerId);
+				console.log("[PropertyServices] finalOwnerId set to:", finalOwnerId);
 			} else {
-				console.log('[PropertyServices] owner_id is undefined or null');
+				console.log("[PropertyServices] owner_id is undefined or null");
 			}
 
 			const geography = await this.resolveGeography(geoData);
@@ -1088,7 +1116,7 @@ export class PropertyServices {
 			await this.checkDuplicateAddress(
 				geography.cityId,
 				addrData.street,
-				addrData.number
+				addrData.number,
 			);
 
 			const fullAddress = this.buildFullAddressFromGrouped(addrData);
@@ -1173,7 +1201,12 @@ export class PropertyServices {
 				}
 			}
 
-			console.log('[PropertyServices] Creating property with finalOwnerId:', finalOwnerId, 'type:', typeof finalOwnerId);
+			console.log(
+				"[PropertyServices] Creating property with finalOwnerId:",
+				finalOwnerId,
+				"type:",
+				typeof finalOwnerId,
+			);
 			const propertyDataToInsert = {
 				title: basic.title,
 				description: basic.description,
@@ -1213,16 +1246,25 @@ export class PropertyServices {
 				producer_commission_percentage:
 					internal?.producer_commission_percentage,
 			};
-			console.log('[PropertyServices] propertyDataToInsert.owner_id:', propertyDataToInsert.owner_id, 'type:', typeof propertyDataToInsert.owner_id);
+			console.log(
+				"[PropertyServices] propertyDataToInsert.owner_id:",
+				propertyDataToInsert.owner_id,
+				"type:",
+				typeof propertyDataToInsert.owner_id,
+			);
 			const property = await PropertyModel.create(propertyDataToInsert);
 
 			if (!property.id) {
 				throw CustomError.internalServerError("Failed to create property");
 			}
 
+			if (!address.id) {
+				throw CustomError.internalServerError("Failed to create address");
+			}
+
 			await PropertyAddressModel.create({
 				property_id: property.id,
-				address_id: address.id!,
+				address_id: address.id,
 			});
 
 			const prices = [];
@@ -1298,11 +1340,7 @@ export class PropertyServices {
 				}
 			}
 
-			if (
-				servicesData &&
-				servicesData.services &&
-				servicesData.services.length > 0
-			) {
+			if (servicesData?.services && servicesData.services.length > 0) {
 				for (const serviceName of servicesData.services) {
 					if (!serviceName || !serviceName.trim()) continue;
 
@@ -1378,7 +1416,8 @@ export class PropertyServices {
 							console.error("Error deleting uploaded image:", deleteError);
 						}
 					}
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+					const errorMessage =
+						error instanceof Error ? error.message : "Unknown error";
 					throw CustomError.internalServerError(
 						`Error uploading images: ${errorMessage}`,
 					);
@@ -1403,14 +1442,13 @@ export class PropertyServices {
 							);
 						}
 
-						const documentName =
-							documentNames && documentNames[i]
-								? documentNames[i].trim()
-								: document.originalname?.replace(/\.[^/.]+$/, "") ||
-									`Document ${i + 1}`;
+						const documentName = documentNames?.[i]
+							? documentNames[i].trim()
+							: document.originalname?.replace(/\.[^/.]+$/, "") ||
+								`Document ${i + 1}`;
 
 						const publicId = `${documentName}.pdf`;
-						
+
 						const documentUrl = await this.fileUploadAdapter.uploadFile(
 							document.buffer,
 							{
@@ -1438,24 +1476,21 @@ export class PropertyServices {
 							console.error("Error deleting uploaded document:", deleteError);
 						}
 					}
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+					const errorMessage =
+						error instanceof Error ? error.message : "Unknown error";
 					throw CustomError.internalServerError(
 						`Error uploading documents: ${errorMessage}`,
 					);
 				}
 			}
 
-			const [
-				propertyType,
-				propertyStatus,
-				visibilityStatus,
-				addressCity,
-			] = await Promise.all([
-				PropertyTypeModel.findById(propertyTypeId),
-				PropertyStatusModel.findById(propertyStatusId),
-				VisibilityStatusModel.findById(visibilityStatusId),
-				CityModel.findById(geography.cityId),
-			]);
+			const [propertyType, propertyStatus, visibilityStatus, addressCity] =
+				await Promise.all([
+					PropertyTypeModel.findById(propertyTypeId),
+					PropertyStatusModel.findById(propertyStatusId),
+					VisibilityStatusModel.findById(visibilityStatusId),
+					CityModel.findById(geography.cityId),
+				]);
 
 			const addressProvince = addressCity
 				? await ProvinceModel.findById(addressCity.province_id)
@@ -1617,7 +1652,7 @@ export class PropertyServices {
 					prices: enrichedPrices,
 					expenses: enrichedExpenses,
 					services: enrichedServices.filter((s) => s !== null),
-					
+
 					images: multimediaRecords,
 					documents: documentRecords,
 				},
@@ -1654,13 +1689,13 @@ export class PropertyServices {
 			let finalOwnerId: number | undefined = existingProperty.owner_id;
 			if (basic?.owner_id !== undefined && basic.owner_id !== null) {
 				const ownerIdNumber = Number(basic.owner_id);
-				
-				if (isNaN(ownerIdNumber) || ownerIdNumber <= 0) {
+
+				if (Number.isNaN(ownerIdNumber) || ownerIdNumber <= 0) {
 					throw CustomError.badRequest(
 						`Invalid owner_id: must be a valid positive number`,
 					);
 				}
-				
+
 				const ownerClient = await ClientModel.findById(ownerIdNumber);
 				if (!ownerClient) {
 					throw CustomError.badRequest(
@@ -1673,35 +1708,48 @@ export class PropertyServices {
 			let address = null;
 			if (geoData && addrData) {
 				const geography = await this.resolveGeography(geoData);
-				
+
 				await this.checkDuplicateAddress(
 					geography.cityId,
 					addrData.street,
 					addrData.number,
-					id
+					id,
 				);
-				
+
 				const fullAddress = this.buildFullAddressFromGrouped(
-					addrData as CreatePropertyGroupedDto["address"]
+					addrData as CreatePropertyGroupedDto["address"],
 				);
-				
-				const { PropertyAddressModel } = await import('../../data/postgres/models/properties/property-address.model');
-				const existingPropertyAddresses = await PropertyAddressModel.findByPropertyId(id);
-				
-				if (existingPropertyAddresses.length > 0 && existingPropertyAddresses[0].address_id) {
-					const { AddressModel } = await import('../../data/postgres/models/properties/address.model');
-					address = await AddressModel.update(existingPropertyAddresses[0].address_id, {
-						street: addrData.street,
-						number: addrData.number || undefined,
-						full_address: fullAddress,
-						neighborhood: addrData.neighborhood,
-						postal_code: addrData.postal_code,
-						latitude: addrData.latitude,
-						longitude: addrData.longitude,
-						city_id: geography.cityId,
-					});
+
+				const { PropertyAddressModel } = await import(
+					"../../data/postgres/models/properties/property-address.model"
+				);
+				const existingPropertyAddresses =
+					await PropertyAddressModel.findByPropertyId(id);
+
+				if (
+					existingPropertyAddresses.length > 0 &&
+					existingPropertyAddresses[0].address_id
+				) {
+					const { AddressModel } = await import(
+						"../../data/postgres/models/properties/address.model"
+					);
+					address = await AddressModel.update(
+						existingPropertyAddresses[0].address_id,
+						{
+							street: addrData.street,
+							number: addrData.number || undefined,
+							full_address: fullAddress,
+							neighborhood: addrData.neighborhood,
+							postal_code: addrData.postal_code,
+							latitude: addrData.latitude,
+							longitude: addrData.longitude,
+							city_id: geography.cityId,
+						},
+					);
 				} else {
-					const { AddressModel } = await import('../../data/postgres/models/properties/address.model');
+					const { AddressModel } = await import(
+						"../../data/postgres/models/properties/address.model"
+					);
 					address = await AddressModel.create({
 						street: addrData.street,
 						number: addrData.number || undefined,
@@ -1712,10 +1760,14 @@ export class PropertyServices {
 						longitude: addrData.longitude,
 						city_id: geography.cityId,
 					});
-					
+
+					if (!address.id) {
+						throw CustomError.internalServerError("Failed to create address");
+					}
+
 					await PropertyAddressModel.create({
 						property_id: id,
-						address_id: address.id!,
+						address_id: address.id,
 					});
 				}
 			}
@@ -1796,54 +1848,85 @@ export class PropertyServices {
 			const updateData: Record<string, unknown> = {};
 
 			if (basic?.title) updateData.title = basic.title;
-			if (basic?.description !== undefined) updateData.description = basic.description;
-			if (basic?.featured_web !== undefined) updateData.featured_web = basic.featured_web;
+			if (basic?.description !== undefined)
+				updateData.description = basic.description;
+			if (basic?.featured_web !== undefined)
+				updateData.featured_web = basic.featured_web;
 			if (basic?.publication_date !== undefined) {
-				updateData.publication_date = typeof basic.publication_date === 'string' 
-					? new Date(basic.publication_date) 
-					: basic.publication_date;
+				updateData.publication_date =
+					typeof basic.publication_date === "string"
+						? new Date(basic.publication_date)
+						: basic.publication_date;
 			}
-			if (propertyTypeId !== existingProperty.property_type_id) updateData.property_type_id = propertyTypeId;
-			if (propertyStatusId !== existingProperty.property_status_id) updateData.property_status_id = propertyStatusId;
-			if (visibilityStatusId !== existingProperty.visibility_status_id) updateData.visibility_status_id = visibilityStatusId;
-			if (finalOwnerId !== existingProperty.owner_id) updateData.owner_id = finalOwnerId;
+			if (propertyTypeId !== existingProperty.property_type_id)
+				updateData.property_type_id = propertyTypeId;
+			if (propertyStatusId !== existingProperty.property_status_id)
+				updateData.property_status_id = propertyStatusId;
+			if (visibilityStatusId !== existingProperty.visibility_status_id)
+				updateData.visibility_status_id = visibilityStatusId;
+			if (finalOwnerId !== existingProperty.owner_id)
+				updateData.owner_id = finalOwnerId;
 
-			if (characteristics?.bedrooms_count !== undefined) updateData.bedrooms_count = characteristics.bedrooms_count;
-			if (characteristics?.bathrooms_count !== undefined) updateData.bathrooms_count = characteristics.bathrooms_count;
-			if (characteristics?.rooms_count !== undefined) updateData.rooms_count = characteristics.rooms_count;
-			if (characteristics?.toilets_count !== undefined) updateData.toilets_count = characteristics.toilets_count;
-			if (characteristics?.parking_spaces_count !== undefined) updateData.parking_spaces_count = characteristics.parking_spaces_count;
-			if (characteristics?.floors_count !== undefined) updateData.floors_count = characteristics.floors_count;
-			if (situationId !== existingProperty.situation_id) updateData.situation_id = situationId;
+			if (characteristics?.bedrooms_count !== undefined)
+				updateData.bedrooms_count = characteristics.bedrooms_count;
+			if (characteristics?.bathrooms_count !== undefined)
+				updateData.bathrooms_count = characteristics.bathrooms_count;
+			if (characteristics?.rooms_count !== undefined)
+				updateData.rooms_count = characteristics.rooms_count;
+			if (characteristics?.toilets_count !== undefined)
+				updateData.toilets_count = characteristics.toilets_count;
+			if (characteristics?.parking_spaces_count !== undefined)
+				updateData.parking_spaces_count = characteristics.parking_spaces_count;
+			if (characteristics?.floors_count !== undefined)
+				updateData.floors_count = characteristics.floors_count;
+			if (situationId !== existingProperty.situation_id)
+				updateData.situation_id = situationId;
 			if (ageId !== existingProperty.age_id) updateData.age_id = ageId;
-			if (orientationId !== existingProperty.orientation_id) updateData.orientation_id = orientationId;
-			if (dispositionId !== existingProperty.disposition_id) updateData.disposition_id = dispositionId;
+			if (orientationId !== existingProperty.orientation_id)
+				updateData.orientation_id = orientationId;
+			if (dispositionId !== existingProperty.disposition_id)
+				updateData.disposition_id = dispositionId;
 
-			if (surface?.land_area !== undefined) updateData.land_area = surface.land_area;
-			if (surface?.semi_covered_area !== undefined) updateData.semi_covered_area = surface.semi_covered_area;
-			if (surface?.covered_area !== undefined) updateData.covered_area = surface.covered_area;
-			if (surface?.total_built_area !== undefined) updateData.total_built_area = surface.total_built_area;
-			if (surface?.uncovered_area !== undefined) updateData.uncovered_area = surface.uncovered_area;
-			if (surface?.total_area !== undefined) updateData.total_area = surface.total_area;
+			if (surface?.land_area !== undefined)
+				updateData.land_area = surface.land_area;
+			if (surface?.semi_covered_area !== undefined)
+				updateData.semi_covered_area = surface.semi_covered_area;
+			if (surface?.covered_area !== undefined)
+				updateData.covered_area = surface.covered_area;
+			if (surface?.total_built_area !== undefined)
+				updateData.total_built_area = surface.total_built_area;
+			if (surface?.uncovered_area !== undefined)
+				updateData.uncovered_area = surface.uncovered_area;
+			if (surface?.total_area !== undefined)
+				updateData.total_area = surface.total_area;
 			if (surface?.zoning !== undefined) updateData.zoning = surface.zoning;
 
-			if (internal?.branch_name !== undefined) updateData.branch_name = internal.branch_name;
-			if (internal?.appraiser !== undefined) updateData.appraiser = internal.appraiser;
-			if (internal?.producer !== undefined) updateData.producer = internal.producer;
-			if (internal?.maintenance_user !== undefined) updateData.maintenance_user = internal.maintenance_user;
-			if (internal?.keys_location !== undefined) updateData.keys_location = internal.keys_location;
-			if (internal?.internal_comments !== undefined) updateData.internal_comments = internal.internal_comments;
-			if (internal?.social_media_info !== undefined) updateData.social_media_info = internal.social_media_info;
-			if (internal?.operation_commission_percentage !== undefined) updateData.operation_commission_percentage = internal.operation_commission_percentage;
-			if (internal?.producer_commission_percentage !== undefined) updateData.producer_commission_percentage = internal.producer_commission_percentage;
+			if (internal?.branch_name !== undefined)
+				updateData.branch_name = internal.branch_name;
+			if (internal?.appraiser !== undefined)
+				updateData.appraiser = internal.appraiser;
+			if (internal?.producer !== undefined)
+				updateData.producer = internal.producer;
+			if (internal?.maintenance_user !== undefined)
+				updateData.maintenance_user = internal.maintenance_user;
+			if (internal?.keys_location !== undefined)
+				updateData.keys_location = internal.keys_location;
+			if (internal?.internal_comments !== undefined)
+				updateData.internal_comments = internal.internal_comments;
+			if (internal?.social_media_info !== undefined)
+				updateData.social_media_info = internal.social_media_info;
+			if (internal?.operation_commission_percentage !== undefined)
+				updateData.operation_commission_percentage =
+					internal.operation_commission_percentage;
+			if (internal?.producer_commission_percentage !== undefined)
+				updateData.producer_commission_percentage =
+					internal.producer_commission_percentage;
 
-			let property = existingProperty;
 			if (Object.keys(updateData).length > 0) {
 				const updated = await PropertyModel.update(id, updateData);
 				if (!updated) {
 					throw CustomError.internalServerError("Failed to update property");
 				}
-				property = updated;
 			}
 
 			const newPrices = [];
@@ -1851,79 +1934,97 @@ export class PropertyServices {
 				for (const priceDto of values.prices) {
 					let currencyTypeId = priceDto.currency_type_id;
 					if (!currencyTypeId && priceDto.currency_symbol) {
-					const currencyType = await CurrencyTypeModel.findBySymbol(priceDto.currency_symbol);
-					if (!currencyType || !currencyType.id) {
-						throw CustomError.badRequest(`Currency symbol "${priceDto.currency_symbol}" not found`);
+						const currencyType = await CurrencyTypeModel.findBySymbol(
+							priceDto.currency_symbol,
+						);
+						if (!currencyType || !currencyType.id) {
+							throw CustomError.badRequest(
+								`Currency symbol "${priceDto.currency_symbol}" not found`,
+							);
+						}
+						currencyTypeId = currencyType.id;
 					}
-					currencyTypeId = currencyType.id;
-				}
 
-				let operationTypeId = priceDto.operation_type_id;
-				if (!operationTypeId && priceDto.operation_type) {
-					const operationType = await PropertyOperationTypeModel.findByName(priceDto.operation_type);
-					if (!operationType || !operationType.id) {
-						throw CustomError.badRequest(`Operation type "${priceDto.operation_type}" not found`);
+					let operationTypeId = priceDto.operation_type_id;
+					if (!operationTypeId && priceDto.operation_type) {
+						const operationType = await PropertyOperationTypeModel.findByName(
+							priceDto.operation_type,
+						);
+						if (!operationType || !operationType.id) {
+							throw CustomError.badRequest(
+								`Operation type "${priceDto.operation_type}" not found`,
+							);
+						}
+						operationTypeId = operationType.id;
 					}
-					operationTypeId = operationType.id;
-				}
 
-				if (!currencyTypeId || !operationTypeId) {
-					throw CustomError.badRequest("Failed to resolve currency or operation type");
-				}
+					if (!currencyTypeId || !operationTypeId) {
+						throw CustomError.badRequest(
+							"Failed to resolve currency or operation type",
+						);
+					}
 
-				const existingPrice = await PropertyPriceModel.findCurrentByPropertyAndOperation(
-					id,
-					operationTypeId
-				);
+					const existingPrice =
+						await PropertyPriceModel.findCurrentByPropertyAndOperation(
+							id,
+							operationTypeId,
+						);
 
-				if (existingPrice && existingPrice.id) {
-					if (userId && existingPrice.price !== priceDto.price) {
-						await PriceHistoryModel.create({
+					if (existingPrice?.id) {
+						if (userId && existingPrice.price !== priceDto.price) {
+							await PriceHistoryModel.create({
+								property_id: id,
+								previous_price: existingPrice.price,
+								new_price: priceDto.price,
+								currency_type_id: currencyTypeId,
+								operation_type_id: operationTypeId,
+								responsible_user_id: userId,
+							});
+						}
+
+						const updatedPrice = await PropertyPriceModel.update(
+							existingPrice.id,
+							{
+								price: priceDto.price,
+								currency_type_id: currencyTypeId,
+							},
+						);
+						newPrices.push(updatedPrice);
+					} else {
+						const price = await PropertyPriceModel.create({
 							property_id: id,
-							previous_price: existingPrice.price,
-							new_price: priceDto.price,
+							price: priceDto.price,
 							currency_type_id: currencyTypeId,
 							operation_type_id: operationTypeId,
-							responsible_user_id: userId,
 						});
-					}
+						newPrices.push(price);
 
-					const updatedPrice = await PropertyPriceModel.update(existingPrice.id, {
-						price: priceDto.price,
-						currency_type_id: currencyTypeId,
-					});
-					newPrices.push(updatedPrice);
-				} else {
-					const price = await PropertyPriceModel.create({
-						property_id: id,
-						price: priceDto.price,
-						currency_type_id: currencyTypeId,
-						operation_type_id: operationTypeId,
-					});
-					newPrices.push(price);
-
-					if (userId) {
-						await PriceHistoryModel.create({
-							property_id: id,
-							previous_price: undefined,
-							new_price: priceDto.price,
-							currency_type_id: currencyTypeId,
-							operation_type_id: operationTypeId,
-							responsible_user_id: userId,
-						});
+						if (userId) {
+							await PriceHistoryModel.create({
+								property_id: id,
+								previous_price: undefined,
+								new_price: priceDto.price,
+								currency_type_id: currencyTypeId,
+								operation_type_id: operationTypeId,
+								responsible_user_id: userId,
+							});
+						}
 					}
 				}
 			}
-		}
 
 			const newExpenses = [];
 			if (values?.expenses && values.expenses.length > 0) {
 				for (const expenseDto of values.expenses) {
 					let currencyTypeId = expenseDto.currency_type_id;
 					if (!currencyTypeId && expenseDto.currency_symbol) {
-						const currencyType = await CurrencyTypeModel.findBySymbol(expenseDto.currency_symbol);
+						const currencyType = await CurrencyTypeModel.findBySymbol(
+							expenseDto.currency_symbol,
+						);
 						if (!currencyType || !currencyType.id) {
-							throw CustomError.badRequest(`Currency symbol "${expenseDto.currency_symbol}" not found for expense`);
+							throw CustomError.badRequest(
+								`Currency symbol "${expenseDto.currency_symbol}" not found for expense`,
+							);
 						}
 						currencyTypeId = currencyType.id;
 					}
@@ -1942,11 +2043,13 @@ export class PropertyServices {
 				}
 			}
 
-			if (servicesData && servicesData.services && servicesData.services.length > 0) {
+			if (servicesData?.services && servicesData.services.length > 0) {
 				for (const serviceName of servicesData.services) {
 					if (!serviceName || !serviceName.trim()) continue;
 
-					let service = await CatalogServiceModel.findByName(serviceName.trim());
+					let service = await CatalogServiceModel.findByName(
+						serviceName.trim(),
+					);
 					if (!service) {
 						service = await CatalogServiceModel.create({
 							name: serviceName.trim(),
@@ -1954,7 +2057,9 @@ export class PropertyServices {
 					}
 
 					if (!service || !service.id) {
-						throw CustomError.internalServerError(`Failed to resolve service "${serviceName}"`);
+						throw CustomError.internalServerError(
+							`Failed to resolve service "${serviceName}"`,
+						);
 					}
 
 					await PropertyServiceModel.create({
@@ -1970,10 +2075,13 @@ export class PropertyServices {
 				try {
 					for (let i = 0; i < images.length; i++) {
 						const image = images[i];
-						const imageUrl = await this.fileUploadAdapter.uploadFile(image.buffer, {
-							folder: `properties/${id}`,
-							resourceType: "image",
-						});
+						const imageUrl = await this.fileUploadAdapter.uploadFile(
+							image.buffer,
+							{
+								folder: `properties/${id}`,
+								resourceType: "image",
+							},
+						);
 						uploadedImages.push(imageUrl);
 
 						const multimedia = await PropertyMultimediaModel.create({
@@ -1985,7 +2093,8 @@ export class PropertyServices {
 						multimediaRecords.push(multimedia);
 					}
 				} catch (error: unknown) {
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+					const errorMessage =
+						error instanceof Error ? error.message : "Unknown error";
 					for (const url of uploadedImages) {
 						try {
 							await this.fileUploadAdapter.deleteFile(url);
@@ -1993,7 +2102,9 @@ export class PropertyServices {
 							console.error("Error deleting uploaded image:", deleteError);
 						}
 					}
-					throw CustomError.internalServerError(`Error uploading images: ${errorMessage}`);
+					throw CustomError.internalServerError(
+						`Error uploading images: ${errorMessage}`,
+					);
 				}
 			}
 
@@ -2005,33 +2116,40 @@ export class PropertyServices {
 						const document = documents[i];
 
 						if (document.mimetype !== "application/pdf") {
-							throw CustomError.badRequest(`Document ${i + 1} must be a PDF file`);
+							throw CustomError.badRequest(
+								`Document ${i + 1} must be a PDF file`,
+							);
 						}
 
-						const documentName = documentNames && documentNames[i]
+						const documentName = documentNames?.[i]
 							? documentNames[i].trim()
-							: document.originalname?.replace(/\.[^/.]+$/, "") || `Document ${i + 1}`;
+							: document.originalname?.replace(/\.[^/.]+$/, "") ||
+								`Document ${i + 1}`;
 
 						const publicId = `${documentName}.pdf`;
-						
-						const documentUrl = await this.fileUploadAdapter.uploadFile(document.buffer, {
-							folder: `properties/${id}/documents`,
-							resourceType: "raw",
-							mimeType: "application/pdf",
-							publicId: publicId,
-						});
+
+						const documentUrl = await this.fileUploadAdapter.uploadFile(
+							document.buffer,
+							{
+								folder: `properties/${id}/documents`,
+								resourceType: "raw",
+								mimeType: "application/pdf",
+								publicId: publicId,
+							},
+						);
 						uploadedDocuments.push(documentUrl);
 
 						const docRecord = await PropertyDocumentModel.create({
 							property_id: id,
 							client_id: finalOwnerId || undefined,
-					document_name: documentName,
+							document_name: documentName,
 							file_path: documentUrl,
 						});
 						documentRecords.push(docRecord);
 					}
 				} catch (error: unknown) {
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+					const errorMessage =
+						error instanceof Error ? error.message : "Unknown error";
 					for (const url of uploadedDocuments) {
 						try {
 							await this.fileUploadAdapter.deleteFile(url);
@@ -2039,25 +2157,30 @@ export class PropertyServices {
 							console.error("Error deleting uploaded document:", deleteError);
 						}
 					}
-					throw CustomError.internalServerError(`Error uploading documents: ${errorMessage}`);
+					throw CustomError.internalServerError(
+						`Error uploading documents: ${errorMessage}`,
+					);
 				}
 			}
 
 			if (imageOrder && imageOrder.length > 0) {
-				const existingImages = await PropertyMultimediaModel.findByPropertyId(id);
-				const existingImageIds = existingImages.map(img => img.id).filter(id => id !== undefined) as number[];
-				
+				const existingImages =
+					await PropertyMultimediaModel.findByPropertyId(id);
+				const existingImageIds = existingImages
+					.map((img) => img.id)
+					.filter((id) => id !== undefined) as number[];
+
 				for (const orderItem of imageOrder) {
 					if (!existingImageIds.includes(orderItem.id)) {
 						throw CustomError.badRequest(
-							`Image with ID ${orderItem.id} does not belong to this property`
+							`Image with ID ${orderItem.id} does not belong to this property`,
 						);
 					}
 				}
 
 				await PropertyMultimediaModel.clearPrimaryForProperty(id);
 
-				let primaryImageId: number | undefined = undefined;
+				let primaryImageId: number | undefined;
 				for (let i = 0; i < imageOrder.length; i++) {
 					const orderItem = imageOrder[i];
 					if (i === 0 || orderItem.is_primary === true) {
@@ -2075,7 +2198,6 @@ export class PropertyServices {
 		});
 	}
 
-	
 	private buildFullAddressFromGrouped(
 		address: CreatePropertyGroupedDto["address"],
 	): string {
@@ -2156,7 +2278,7 @@ export class PropertyServices {
 		cityId: number,
 		street: string,
 		number?: string,
-		excludePropertyId?: number
+		excludePropertyId?: number,
 	): Promise<void> {
 		if (!street || !street.trim()) {
 			return;
@@ -2164,46 +2286,51 @@ export class PropertyServices {
 
 		const normalizedStreet = this.normalizeStreet(street);
 		const normalizedNumber = number ? number.trim() : null;
-		
+
 		const existingAddresses = await AddressModel.findByCityId(cityId);
-		
+
 		for (const existingAddr of existingAddresses) {
-			let existingStreet = existingAddr.street || '';
+			let existingStreet = existingAddr.street || "";
 			let existingNumber = existingAddr.number || null;
-			
+
 			if (!existingStreet && existingAddr.full_address) {
 				const parsed = this.parseFullAddress(existingAddr.full_address);
 				existingStreet = parsed.street;
 				existingNumber = parsed.number;
 			}
-			
+
 			if (!existingStreet) continue;
-			
+
 			const normalizedExistingStreet = this.normalizeStreet(existingStreet);
-			
+
 			const streetsMatch = normalizedExistingStreet === normalizedStreet;
-			const numbersMatch = this.compareNumbers(normalizedNumber, existingNumber);
-			
+			const numbersMatch = this.compareNumbers(
+				normalizedNumber,
+				existingNumber,
+			);
+
 			if (streetsMatch && numbersMatch) {
 				if (!existingAddr.id) continue;
-				
-				const propertyAddresses = await PropertyAddressModel.findByAddressId(existingAddr.id);
-				
+
+				const propertyAddresses = await PropertyAddressModel.findByAddressId(
+					existingAddr.id,
+				);
+
 				for (const propAddr of propertyAddresses) {
 					if (excludePropertyId && propAddr.property_id === excludePropertyId) {
 						continue;
 					}
-					
+
 					const property = await PropertyModel.findById(
 						propAddr.property_id,
-						false
+						false,
 					);
-					
+
 					if (property) {
 						throw CustomError.badRequest(
 							`Ya existe una propiedad activa en esta dirección: ${existingAddr.full_address}. ` +
-							`Si esta es una propiedad diferente (por ejemplo, un departamento en el mismo edificio), ` +
-							`asegúrate de que el número incluya el piso/departamento (ej: "4A", "4B").`
+								`Si esta es una propiedad diferente (por ejemplo, un departamento en el mismo edificio), ` +
+								`asegúrate de que el número incluya el piso/departamento (ej: "4A", "4B").`,
 						);
 					}
 				}
@@ -2212,47 +2339,56 @@ export class PropertyServices {
 	}
 
 	private normalizeStreet(street: string): string {
-		if (!street) return '';
-		
+		if (!street) return "";
+
 		return street
 			.toLowerCase()
 			.trim()
-			.replace(/\s+/g, ' ')
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '')
-			.replace(/\bav\.?\s*/g, 'avenida ')
-			.replace(/\bcalle\s+/g, 'calle ')
-			.replace(/\bbv\.?\s*/g, 'boulevard ')
-			.replace(/\bpje\.?\s*/g, 'pasaje ');
+			.replace(/\s+/g, " ")
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.replace(/\bav\.?\s*/g, "avenida ")
+			.replace(/\bcalle\s+/g, "calle ")
+			.replace(/\bbv\.?\s*/g, "boulevard ")
+			.replace(/\bpje\.?\s*/g, "pasaje ");
 	}
 
-	private parseFullAddress(fullAddress: string): { street: string; number: string | null } {
-		if (!fullAddress) return { street: '', number: null };
-		
+	private parseFullAddress(fullAddress: string): {
+		street: string;
+		number: string | null;
+	} {
+		if (!fullAddress) return { street: "", number: null };
+
 		const trimmed = fullAddress.trim();
-		
+
 		const parts = trimmed.split(/\s+/);
 		const numberParts: string[] = [];
 		let foundNumber = false;
-		let streetParts: string[] = [];
-		
+		const streetParts: string[] = [];
+
 		for (let i = 0; i < parts.length; i++) {
 			const part = parts[i];
-			
+
 			if (!foundNumber && /^\d/.test(part)) {
 				foundNumber = true;
 				numberParts.push(part);
-				
+
 				if (i + 1 < parts.length) {
 					const nextPart = parts[i + 1];
-					if (/^[A-Za-z0-9]+$/.test(nextPart) && !/^[A-Z][a-z]+$/.test(nextPart)) {
+					if (
+						/^[A-Za-z0-9]+$/.test(nextPart) &&
+						!/^[A-Z][a-z]+$/.test(nextPart)
+					) {
 						numberParts.push(nextPart);
 						i++;
 					}
 				}
 			} else if (foundNumber && numberParts.length > 0) {
 				const nextPart = part;
-				if (/^[0-9A-Za-z]+$/.test(nextPart) && !/^[A-Z][a-z]+$/.test(nextPart)) {
+				if (
+					/^[0-9A-Za-z]+$/.test(nextPart) &&
+					!/^[A-Z][a-z]+$/.test(nextPart)
+				) {
 					numberParts.push(nextPart);
 				} else {
 					break;
@@ -2261,29 +2397,29 @@ export class PropertyServices {
 				streetParts.push(part);
 			}
 		}
-		
+
 		if (foundNumber && numberParts.length > 0) {
 			return {
-				street: streetParts.join(' '),
-				number: numberParts.join(' ')
+				street: streetParts.join(" "),
+				number: numberParts.join(" "),
 			};
 		}
-		
+
 		return { street: trimmed, number: null };
 	}
 
 	private compareNumbers(num1: string | null, num2: string | null): boolean {
-		if ((!num1 || num1.trim() === '') && (!num2 || num2.trim() === '')) {
+		if ((!num1 || num1.trim() === "") && (!num2 || num2.trim() === "")) {
 			return true;
 		}
-		
-		if (!num1 || num1.trim() === '' || !num2 || num2.trim() === '') {
+
+		if (!num1 || num1.trim() === "" || !num2 || num2.trim() === "") {
 			return false;
 		}
-		
-		const n1 = num1.trim().replace(/\s+/g, ' ');
-		const n2 = num2.trim().replace(/\s+/g, ' ');
-		
+
+		const n1 = num1.trim().replace(/\s+/g, " ");
+		const n2 = num2.trim().replace(/\s+/g, " ");
+
 		return n1 === n2;
 	}
 }

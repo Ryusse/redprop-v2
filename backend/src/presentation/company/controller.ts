@@ -6,7 +6,7 @@ import type { CompanyServices } from "../services/company.services";
 export class CompanyController {
 	constructor(private readonly companyServices: CompanyServices) {}
 
-	getSettings = async (req: Request, res: Response) => {
+	getSettings = async (_req: Request, res: Response) => {
 		try {
 			const settings = await this.companyServices.getCompanySettings();
 			return res.json(settings);

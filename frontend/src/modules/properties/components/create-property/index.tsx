@@ -243,18 +243,18 @@ export default function CreatePropertyForm({
 	}
 
 	return (
-		<section className="grid lg:grid-cols-[1fr_275px] xl:grid-cols-[1fr_275px] gap-4">
-			<div className="grid grid-cols-1 gap-4 lg:gap-8 ">
-				<nav aria-label="Progress" className="w-full max-w-[719px] mx-auto">
+		<section className="grid gap-4 lg:grid-cols-[1fr_275px] xl:grid-cols-[1fr_275px]">
+			<div className="grid grid-cols-1 gap-4 lg:gap-8">
+				<nav aria-label="Progress" className="mx-auto w-full max-w-[719px]">
 					<ol className="flex w-full items-start">
 						{stepper.all.map((step, index, _array) => (
 							<li
 								key={step.id}
 								className={`${
 									index === _array.length - 1 ? "" : "flex-1"
-								} grid grid-cols-[2rem_1fr] grid-rows-[auto] lg:grid-cols-[2.5rem_1fr] lg:grid-rows-[auto_auto] gap-0 lg:gap-y-2`}
+								} grid grid-cols-[2rem_1fr] grid-rows-[auto] gap-0 lg:grid-cols-[2.5rem_1fr] lg:grid-rows-[auto_auto] lg:gap-y-2`}
 							>
-								<span className="hidden lg:flex col-start-1 row-start-1 w-10 justify-center overflow-visible whitespace-nowrap text-center text-sm font-medium">
+								<span className="col-start-1 row-start-1 hidden w-10 justify-center overflow-visible whitespace-nowrap text-center font-medium text-sm lg:flex">
 									{step.subtitle}
 								</span>
 								<Button
@@ -273,7 +273,7 @@ export default function CreatePropertyForm({
 									aria-posinset={index + 1}
 									aria-setsize={steps.length}
 									aria-selected={stepper.current.id === step.id}
-									className="col-start-1 row-start-1 lg:col-start-1 lg:row-start-2 z-10 flex size-8 p-0 lg:size-10 border-2! items-center justify-center rounded-full"
+									className="z-10 col-start-1 row-start-1 flex size-8 items-center justify-center rounded-full border-2! p-0 lg:col-start-1 lg:row-start-2 lg:size-10"
 									onClick={async () => {
 										const valid = await form.trigger();
 										if (!valid) return;
@@ -289,7 +289,7 @@ export default function CreatePropertyForm({
 								</Button>
 								{index < _array.length - 1 && (
 									<Separator
-										className={`col-start-2 row-start-1 lg:col-start-2 lg:row-start-2 h-0.5! w-full self-center ${
+										className={`col-start-2 row-start-1 h-0.5! w-full self-center lg:col-start-2 lg:row-start-2 ${
 											index < currentIndex ? "bg-tertiary" : "bg-border"
 										}`}
 									/>
@@ -363,9 +363,9 @@ export default function CreatePropertyForm({
 										<Badge
 											variant="outline"
 											size="lg"
-											className="text-wrap! grid gap-3 grid-cols-[auto_1fr] h-auto"
+											className="grid h-auto grid-cols-[auto_1fr] gap-3 text-wrap!"
 										>
-											<InfoIcon className="w-4! h-4!" />
+											<InfoIcon className="h-4! w-4!" />
 											La primera imagen en la galería sera usada como imágen
 											principal y se mostrará en el portal
 										</Badge>
@@ -382,8 +382,8 @@ export default function CreatePropertyForm({
 							),
 						})}
 
-						<div className="fixed bottom-0 right-0 left-0 z-10  px-4 py-4 bg-card border-t lg:static lg:mx-0 lg:p-0 lg:bg-transparent lg:border-none lg:mt-8 col-span-full flex flex-col gap-4">
-							<div className="grid grid-cols-2 lg:flex gap-4 justify-between">
+						<div className="fixed right-0 bottom-0 left-0 z-10 col-span-full flex flex-col gap-4 border-t bg-card px-4 py-4 lg:static lg:mx-0 lg:mt-8 lg:border-none lg:bg-transparent lg:p-0">
+							<div className="grid grid-cols-2 justify-between gap-4 lg:flex">
 								<Button
 									type="button"
 									variant="outline"
@@ -424,7 +424,7 @@ export default function CreatePropertyForm({
 									variant="tertiary"
 									onClick={form.handleSubmit(handleSave)}
 									disabled={form.formState.isSubmitting}
-									className="w-full lg:w-fit mx-auto h-10 px-4 lg:h-11 lg:px-8"
+									className="mx-auto h-10 w-full px-4 lg:h-11 lg:w-fit lg:px-8"
 								>
 									{stepper.isLast ? (
 										<>
@@ -443,11 +443,11 @@ export default function CreatePropertyForm({
 				</Form>
 			</div>
 
-			<Alert className="hidden h-fit lg:grid grid-cols-[auto_1fr] gap-4 shadow-md ">
-				<div className="bg-secondary/20 p-2 w-9 text-secondary h-9 grid place-content-center rounded-md">
+			<Alert className="hidden h-fit grid-cols-[auto_1fr] gap-4 shadow-md lg:grid">
+				<div className="grid h-9 w-9 place-content-center rounded-md bg-secondary/20 p-2 text-secondary">
 					<Info />
 				</div>
-				<div className="grid items-start h-fit w-full">
+				<div className="grid h-fit w-full items-start">
 					<AlertTitle className="mb-2">Consejos</AlertTitle>
 					<AlertDescription>
 						Completa todos los campos para tener una publicación más efectiva

@@ -31,7 +31,7 @@ type Props = {
 
 export default function PropertyBasicInfoForm({ form }: Props) {
 	return (
-		<div className="grid lg:grid-cols-2 gap-4  md:gap-10 items-start">
+		<div className="grid items-start gap-4 md:gap-10 lg:grid-cols-2">
 			<div className="grid gap-4">
 				<FormField
 					control={form.control}
@@ -166,7 +166,7 @@ export default function PropertyBasicInfoForm({ form }: Props) {
 				/>
 			</div>
 
-			<div className="grid gap-4 items-start">
+			<div className="grid items-start gap-4">
 				<FormField
 					control={form.control}
 					name="geography.country"

@@ -20,8 +20,8 @@ export default function PropertyCardDefault({ property, href }: Props) {
 	const operationTypeId = property?.main_price?.operation_type?.id || 0;
 
 	return (
-		<Card className="py-0 group flex gap-0 relative transition-[color,box-shadow] hover:outline-none focus-visible:border-ring focus-visible:ring-ring/50  focus-visible:ring-[3px]">
-			<figure className="rounded-t-lg w-full h-[136px] relative aspect-video">
+		<Card className="group relative flex gap-0 py-0 transition-[color,box-shadow] hover:outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50">
+			<figure className="relative aspect-video h-[136px] w-full rounded-t-lg">
 				<Image
 					width={300}
 					height={136}
@@ -30,7 +30,7 @@ export default function PropertyCardDefault({ property, href }: Props) {
 						"https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
 					}
 					alt={property.title}
-					className=" w-full rounded-t-lg object-cover h-full"
+					className="h-full w-full rounded-t-lg object-cover"
 				/>
 				<div className="absolute top-3 left-3 flex gap-2">
 					<Badge variant="secondary" className="bg-card text-secondary">
@@ -44,10 +44,10 @@ export default function PropertyCardDefault({ property, href }: Props) {
 					</Badge>
 				</div>
 			</figure>
-			<CardContent className="py-4 flex flex-col gap-0 p-0">
+			<CardContent className="flex flex-col gap-0 p-0 py-4">
 				<div className="flex flex-col gap-4 p-4">
 					<div className="h-[48px]">
-						<h2 className={cn("text-base font-semibold line-clamp-2")}>
+						<h2 className={cn("line-clamp-2 font-semibold text-base")}>
 							<Link
 								href={
 									href ||
@@ -55,7 +55,7 @@ export default function PropertyCardDefault({ property, href }: Props) {
 										property.slug || property.id.toString(),
 									)
 								}
-								className="outline-none after:content-[''] after:absolute after:inset-0"
+								className="outline-none after:absolute after:inset-0 after:content-['']"
 							>
 								{property.title}
 							</Link>
@@ -68,35 +68,35 @@ export default function PropertyCardDefault({ property, href }: Props) {
 						</p>
 					</div>
 					<div className="flex items-center gap-4">
-						<Badge variant="ghost" className="px-0 text-base gap-2 py-0">
+						<Badge variant="ghost" className="gap-2 px-0 py-0 text-base">
 							<Bed className="size-4!" />
 							{property.rooms_count}
 						</Badge>
-						<Badge variant="ghost" className="px-0 text-base gap-2 py-0">
+						<Badge variant="ghost" className="gap-2 px-0 py-0 text-base">
 							<Bath className="size-4!" />
 							{property.bathrooms_count}
 						</Badge>
-						<Badge variant="ghost" className="px-0 text-base gap-2 py-0">
+						<Badge variant="ghost" className="gap-2 px-0 py-0 text-base">
 							<Square className="size-4!" /> {property.total_area || 0}m²
 						</Badge>
 					</div>
 				</div>
 				<Separator />
-				<div className="flex gap-3 justify-between flex-col xl:flex-row items-center p-4">
-					<p className="font-semibold text-sm lg:text-base text-foreground">
+				<div className="flex flex-col items-center justify-between gap-3 p-4 xl:flex-row">
+					<p className="font-semibold text-foreground text-sm lg:text-base">
 						{price?.currency?.symbol || "USD"}{" "}
 						{Number(price?.price || 0).toLocaleString()}
 					</p>
 					<Badge
 						variant={isAvailable ? "success" : "outline"}
 						className={cn(
-							"gap-2.5  bg-transparent border-transparent h-7 text-sm",
+							"h-7 gap-2.5 border-transparent bg-transparent text-sm",
 							!isAvailable && "text-amber-600",
 						)}
 					>
 						<div
 							className={cn(
-								"w-2 h-2 rounded-full",
+								"h-2 w-2 rounded-full",
 								isAvailable ? "bg-success-foreground" : "bg-amber-600",
 							)}
 						></div>

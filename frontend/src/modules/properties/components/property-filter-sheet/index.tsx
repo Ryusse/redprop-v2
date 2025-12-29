@@ -290,7 +290,7 @@ export default function PropertyFilterSheet() {
 							</form>
 						</Form>
 					</SheetBody>
-					<SheetFooter className="grid gap-4 grid-cols-2 lg:gap-5">
+					<SheetFooter className="grid grid-cols-2 gap-4 lg:gap-5">
 						<Button variant="outline" size={buttonSize} onClick={handleOnClear}>
 							Limpiar filtros
 						</Button>

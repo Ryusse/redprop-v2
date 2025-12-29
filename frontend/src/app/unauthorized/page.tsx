@@ -23,18 +23,18 @@ export default async function UnauthorizedPage() {
 		: paths.auth.login();
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-background p-4">
+		<div className="flex min-h-screen items-center justify-center bg-background p-4">
 			<Card className="w-full max-w-md">
-				<CardHeader className="text-center space-y-4">
-					<div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center">
-						<ShieldAlert className="w-8 h-8 text-destructive" />
+				<CardHeader className="space-y-4 text-center">
+					<div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
+						<ShieldAlert className="h-8 w-8 text-destructive" />
 					</div>
 					<CardTitle className="text-2xl">Acceso No Autorizado</CardTitle>
 					<CardDescription className="text-base">
 						No tienes permisos para acceder a esta página
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="text-center text-sm text-muted-foreground">
+				<CardContent className="text-center text-muted-foreground text-sm">
 					{user ? (
 						<p>
 							Tu rol actual ({user.role}) no tiene acceso a este recurso.

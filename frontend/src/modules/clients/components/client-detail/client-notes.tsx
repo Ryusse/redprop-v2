@@ -55,7 +55,7 @@ export function ClientNotes({
 	return (
 		<Card>
 			<CardContent className="px-4 py-1">
-				<h3 className="font-semibold text-lg text-slate-900 mb-4 flex items-center gap-2">
+				<h3 className="mb-4 flex items-center gap-2 font-semibold text-lg text-slate-900">
 					<FileText className="h-5 w-5" />
 					Notas
 				</h3>
@@ -68,7 +68,7 @@ export function ClientNotes({
 								<FormItem>
 									<FormControl>
 										<Textarea
-											className="text-sm bg-slate-50 border-none text-slate-700 leading-relaxed whitespace-pre-wrap max-h-[40px]"
+											className="max-h-[40px] whitespace-pre-wrap border-none bg-slate-50 text-slate-700 text-sm leading-relaxed"
 											placeholder="Escribe una nota..."
 											{...field}
 											onClick={() => setIsInputActive(true)}
@@ -80,7 +80,7 @@ export function ClientNotes({
 						<div className="flex">
 							<Button
 								type="submit"
-								className="text-sm bg-inherit border-secondary border text-secondary shadow-xs rounded-md py-3! px-6! h-8! mt-4 hover:bg-outline-hover disabled:opacity-50 disabled:cursor-not-allowed"
+								className="mt-4 h-8! rounded-md border border-secondary bg-inherit px-6! py-3! text-secondary text-sm shadow-xs hover:bg-outline-hover disabled:cursor-not-allowed disabled:opacity-50"
 								disabled={!isInputActive || form.formState.isSubmitting}
 							>
 								{form.formState.isSubmitting && <Spinner />}

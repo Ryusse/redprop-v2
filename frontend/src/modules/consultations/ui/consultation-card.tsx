@@ -66,14 +66,14 @@ export function ConsultationCard({
 
 	return (
 		<Card
-			className={`mb-3 cursor-pointer hover:bg-slate-50 transition-colors ${
-				isSelected ? "ring-2 ring-blue-500 bg-blue-50" : ""
+			className={`mb-3 cursor-pointer transition-colors hover:bg-slate-50 ${
+				isSelected ? "bg-blue-50 ring-2 ring-blue-500" : ""
 			}`}
 			onClick={onClick}
 		>
-			<CardContent className="p-0 w-full">
+			<CardContent className="w-full p-0">
 				<div className="flex items-start justify-between px-4 py-1">
-					<div className="flex items-center gap-4 flex-1">
+					<div className="flex flex-1 items-center gap-4">
 						{isSelectionMode && (
 							<Checkbox
 								checked={isSelected}
@@ -83,13 +83,13 @@ export function ConsultationCard({
 							/>
 						)}
 
-						<div className="text-left flex-1 min-w-0">
-							<div className="flex items-center gap-2 mb-1">
-								<span className="font-semibold text-slate-900 text-lg">
+						<div className="min-w-0 flex-1 text-left">
+							<div className="mb-1 flex items-center gap-2">
+								<span className="font-semibold text-lg text-slate-900">
 									{contactName}
 								</span>
 							</div>
-							<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-600 mb-1">
+							<div className="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-600 text-sm">
 								<div className="flex items-center gap-1">
 									{consultation.consultation_type && (
 										<div className="font-medium">
@@ -104,7 +104,7 @@ export function ConsultationCard({
 									)}
 								</div>
 							</div>
-							<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500">
+							<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-500 text-sm">
 								<div className="flex items-center gap-1">
 									<MailIcon className="h-3.5 w-3.5" />
 									<span className="truncate">{contactEmail}</span>
@@ -115,17 +115,17 @@ export function ConsultationCard({
 									<span>{contactPhone}</span>
 								</div>
 							</div>
-							<div className="flex items-center gap-1 text-xs text-slate-400 mt-2">
+							<div className="mt-2 flex items-center gap-1 text-slate-400 text-xs">
 								<Clock className="h-3 w-3" />
 								<span>{formattedDate}</span>
 							</div>
 						</div>
 					</div>
 
-					<div className="flex items-center gap-2 shrink-0">
+					<div className="flex shrink-0 items-center gap-2">
 						{!consultation.is_read && (
-							<div className="bg-secondary-light/30 w-8 h-8 flex items-center justify-center rounded-sm">
-								<span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+							<div className="flex h-8 w-8 items-center justify-center rounded-sm bg-secondary-light/30">
+								<span className="h-2 w-2 rounded-full bg-blue-600"></span>
 							</div>
 						)}
 

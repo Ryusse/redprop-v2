@@ -19,14 +19,14 @@ type Props = {
 export default function PropertyInfo({ property }: Props) {
 	if (!property) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center bg-card">
+			<div className="flex flex-col items-center justify-center rounded-lg border border-border border-dashed bg-card py-16 text-center">
 				<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted text-muted-foreground">
 					<HomeIcon className="h-8 w-8" />
 				</div>
-				<h3 className="mb-1 text-lg font-medium text-foreground">
+				<h3 className="mb-1 font-medium text-foreground text-lg">
 					Sin información de la propiedad
 				</h3>
-				<p className="text-sm text-muted-foreground max-w-sm">
+				<p className="max-w-sm text-muted-foreground text-sm">
 					No se ha podido cargar la información detallada de esta propiedad.
 				</p>
 			</div>
@@ -37,13 +37,13 @@ export default function PropertyInfo({ property }: Props) {
 
 	return (
 		<>
-			<section className="grid grid-cols-1 md:grid-cols-[1fr_0.6fr] gap-4">
+			<section className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_0.6fr]">
 				<Card>
-					<CardContent className="grid grid-cols-1 flex-col gap-6 md:grid-cols-2 gap-y-8 gap-x-">
+					<CardContent className="grid grid-cols-1 flex-col gap-6 gap-x- gap-y-8 md:grid-cols-2">
 						<div className="flex items-start gap-3">
 							<MapPinIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Dirección</p>
+								<p className="text-sm">Dirección</p>
 								<Heading variant="subtitle4" weight="medium">
 									{address?.full_address || "-"}
 								</Heading>
@@ -52,7 +52,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<MapPinIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Barrio</p>
+								<p className="text-sm">Barrio</p>
 								<Heading variant="subtitle4" weight="medium">
 									{address?.neighborhood || address?.city?.name || "-"}
 								</Heading>
@@ -61,7 +61,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<TagIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Tipo de operación</p>
+								<p className="text-sm">Tipo de operación</p>
 								<Heading variant="subtitle4" weight="medium">
 									{property.prices
 										.map((p) => p.operation_type.name)
@@ -72,7 +72,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<HomeIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Tipo de propiedad</p>
+								<p className="text-sm">Tipo de propiedad</p>
 								<Heading variant="subtitle4" weight="medium">
 									{property.property_type.name}
 								</Heading>
@@ -81,7 +81,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<HomeIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Ambientes</p>
+								<p className="text-sm">Ambientes</p>
 								<Heading variant="subtitle4" weight="medium">
 									{property.rooms_count} ambientes ({property.bedrooms_count}{" "}
 									dormitorios)
@@ -91,7 +91,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<Square2StackIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Superficie total</p>
+								<p className="text-sm">Superficie total</p>
 								<Heading variant="subtitle4" weight="medium">
 									{property.total_area} m²
 								</Heading>
@@ -100,7 +100,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<Square2StackIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Superficie cubierta</p>
+								<p className="text-sm">Superficie cubierta</p>
 								<Heading variant="subtitle4" weight="medium">
 									{property.covered_area} m²
 								</Heading>
@@ -110,7 +110,7 @@ export default function PropertyInfo({ property }: Props) {
 						<div className="flex items-start gap-3">
 							<CheckCircleIcon className="h-6 w-6 text-tertiary" />
 							<div>
-								<p className="text-sm ">Estado</p>
+								<p className="text-sm">Estado</p>
 								<p className="font-medium text-green-500">
 									{property.property_status.name}
 								</p>
@@ -120,10 +120,10 @@ export default function PropertyInfo({ property }: Props) {
 				</Card>
 				<PropertyValueCard prices={property.prices} className="lg:col-span-1" />
 			</section>
-			<section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-				<div className="lg:col-span-3 grid gap-4">
+			<section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+				<div className="grid gap-4 lg:col-span-3">
 					<Section title="Información básica">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+						<div className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
 							<div className="space-y-2">
 								<InfoRow label="Ambientes" value={property.rooms_count} />
 								<InfoRow label="Dormitorios" value={property.bedrooms_count} />
@@ -160,7 +160,7 @@ export default function PropertyInfo({ property }: Props) {
 					</Section>
 
 					<Section title="Superficies">
-						<div className="grid grid-cols-2 md:grid-cols-2 gap-y-6 gap-x-12">
+						<div className="grid grid-cols-2 gap-x-12 gap-y-6 md:grid-cols-2">
 							<SurfaceItem label="Terreno" value={property.land_area} />
 							<SurfaceItem
 								label="Semicubierta"
@@ -181,7 +181,7 @@ export default function PropertyInfo({ property }: Props) {
 
 					<Section title="Servicios">
 						{property.services && property.services.length > 0 ? (
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 								{property.services.map((service) => (
 									<div key={service.id} className="flex items-center gap-2">
 										<span className="text-foreground">{service.name}</span>
@@ -196,8 +196,8 @@ export default function PropertyInfo({ property }: Props) {
 					</Section>
 
 					<Section title="Descripción">
-						<div className="rounded-md border p-4 bg-white min-h-[100px]">
-							<p className="text-muted-foreground whitespace-pre-wrap">
+						<div className="min-h-[100px] rounded-md border bg-white p-4">
+							<p className="whitespace-pre-wrap text-muted-foreground">
 								{property.description || "Sin descripción."}
 							</p>
 						</div>
@@ -216,8 +216,8 @@ function InfoRow({
 	value: string | number | null | undefined;
 }) {
 	return (
-		<div className="flex justify-between items-center py-1">
-			<span className="text-foreground font-medium">{label}:</span>
+		<div className="flex items-center justify-between py-1">
+			<span className="font-medium text-foreground">{label}:</span>
 			<span className="text-muted-foreground">{value || "--"}</span>
 		</div>
 	);
@@ -232,8 +232,8 @@ function SurfaceItem({
 }) {
 	return (
 		<div>
-			<p className="text-heading font-medium">{label}</p>
-			<p className="text-heading font-bold text-lg">{value || "--"}</p>
+			<p className="font-medium text-heading">{label}</p>
+			<p className="font-bold text-heading text-lg">{value || "--"}</p>
 		</div>
 	);
 }

@@ -35,7 +35,7 @@ export default function PropertyDocumentsForm({ form }: Props) {
 				name="documents.files"
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel className="text-base font-semibold text-primary">
+						<FormLabel className="font-semibold text-base text-primary">
 							Documentación (opcional)
 						</FormLabel>
 						<FormControl>
@@ -60,11 +60,11 @@ export default function PropertyDocumentsForm({ form }: Props) {
 								multiple
 							>
 								<div className="grid gap-6">
-									<FileUploadDropzone className="border-none bg-transparent p-0 w-fit">
+									<FileUploadDropzone className="w-fit border-none bg-transparent p-0">
 										<FileUploadTrigger asChild>
 											<Button
 												variant="outline-blue-normal"
-												className="gap-2 h-11 px-4"
+												className="h-11 gap-2 px-4"
 											>
 												<Upload className="size-4" />
 												Subir archivo
@@ -72,33 +72,33 @@ export default function PropertyDocumentsForm({ form }: Props) {
 										</FileUploadTrigger>
 									</FileUploadDropzone>
 
-									<FileUploadList className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+									<FileUploadList className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 										{field.value?.map((file, index) => (
 											<FileUploadItem
 												key={`${file.name}-${index}`}
 												value={file}
-												className="relative flex items-center p-4 gap-3 border rounded-xl bg-card shadow-sm transition-all hover:shadow-md"
+												className="relative flex items-center gap-3 rounded-xl border bg-card p-4 shadow-sm transition-all hover:shadow-md"
 											>
 												<div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-tertiary">
 													<FileText className="size-5" />
 												</div>
 												<div className="flex flex-1 flex-col gap-0.5 overflow-hidden">
-													<span className="text-sm font-medium leading-none truncate pr-6">
+													<span className="truncate pr-6 font-medium text-sm leading-none">
 														{file.name}
 													</span>
-													<span className="text-xs text-muted-foreground truncate">
+													<span className="truncate text-muted-foreground text-xs">
 														{(file.size / 1024 / 1024).toFixed(2)} MB
 													</span>
 												</div>
 												<div className="flex items-center gap-2">
-													<span className="rounded bg-gray-100 px-2 py-1 text-[10px] font-semibold uppercase text-gray-500">
+													<span className="rounded bg-gray-100 px-2 py-1 font-semibold text-[10px] text-gray-500 uppercase">
 														{file.type.split("/")[1] || "FILE"}
 													</span>
 													<FileUploadItemDelete asChild>
 														<Button
 															variant="ghost"
 															size="icon"
-															className="size-6 text-muted-foreground hover:text-destructive lg:absolute top-2 right-2 sm:relative sm:top-0 sm:right-0 sm:size-8"
+															className="top-2 right-2 size-6 text-muted-foreground hover:text-destructive sm:relative sm:top-0 sm:right-0 sm:size-8 lg:absolute"
 														>
 															<Trash2 className="size-4" />
 															<span className="sr-only">Eliminar</span>
@@ -124,7 +124,7 @@ export default function PropertyDocumentsForm({ form }: Props) {
 				render={({ field }) => (
 					<FormItem className="flex flex-row items-center justify-between">
 						<div className="space-y-1">
-							<FormLabel className="lg:text-xl font-semibold text-primary">
+							<FormLabel className="font-semibold text-primary lg:text-xl">
 								Publicar en la web
 							</FormLabel>
 							<FormDescription className="text-base">

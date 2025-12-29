@@ -30,7 +30,7 @@ export default function SectionHeading({
 
 	return (
 		<>
-			<section className="flex items-center gap-4 justify-between h-10">
+			<section className="flex h-10 items-center justify-between gap-4">
 				<div className="flex items-center gap-2">
 					{showBackButton && (
 						<Button variant="ghost" size="icon" onClick={() => router.back()}>
@@ -42,7 +42,7 @@ export default function SectionHeading({
 							{title}
 						</Heading>
 						{description && (
-							<p className="text-sm text-muted-foreground">{description}</p>
+							<p className="text-muted-foreground text-sm">{description}</p>
 						)}
 					</div>
 				</div>

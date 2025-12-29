@@ -23,7 +23,7 @@ export default function PropertyPublicationStatus({ form }: Props) {
 				render={({ field }) => (
 					<FormItem className="flex flex-row items-center justify-between">
 						<div className="space-y-0.5">
-							<FormLabel className="text-base font-semibold text-foreground">
+							<FormLabel className="font-semibold text-base text-foreground">
 								{field.value
 									? "La propiedad está destacada en la web"
 									: "La propiedad no está destacada"}

@@ -1,7 +1,3 @@
 export interface CreatePropertyDocumentDto {
-    document_name: string;
+	document_name: string;
 }
-
-
-
-

@@ -17,8 +17,8 @@ export default function PropertyCardPublic({ property, href }: Props) {
 	const operationTypeId = property.main_price.operation_type.id;
 
 	return (
-		<Card className="py-0 group flex flex-col gap-0 relative overflow-hidden">
-			<figure className="w-full aspect-video h-[250px] relative">
+		<Card className="group relative flex flex-col gap-0 overflow-hidden py-0">
+			<figure className="relative aspect-video h-[250px] w-full">
 				<Image
 					fill
 					src={
@@ -34,21 +34,21 @@ export default function PropertyCardPublic({ property, href }: Props) {
 					</Badge>
 				</div>
 			</figure>
-			<CardContent className="flex flex-col justify-between p-4 gap-4 bg-card">
-				<div className="flex justify-between items-start gap-2">
+			<CardContent className="flex flex-col justify-between gap-4 bg-card p-4">
+				<div className="flex items-start justify-between gap-2">
 					<div className="flex items-center gap-1.5 text-muted-foreground">
 						<MapPin className="size-4" />
-						<p className="text-sm font-medium">
+						<p className="font-medium text-sm">
 							{property.main_address.city.name}
 						</p>
 					</div>
-					<p className="font-semibold text-sm text-foreground tracking-tight">
+					<p className="font-semibold text-foreground text-sm tracking-tight">
 						{price?.currency?.symbol || "USD"}{" "}
 						{Number(price?.price || 0).toLocaleString()}
 					</p>
 				</div>
 
-				<h3 className="text-lg font-medium text-heading line-clamp-1">
+				<h3 className="line-clamp-1 font-medium text-heading text-lg">
 					<Link
 						href={
 							href ||
@@ -56,28 +56,28 @@ export default function PropertyCardPublic({ property, href }: Props) {
 								property.slug || property.id.toString(),
 							)
 						}
-						className="outline-none after:content-[''] after:absolute after:inset-0"
+						className="outline-none after:absolute after:inset-0 after:content-['']"
 					>
 						{property.title}
 					</Link>
 				</h3>
 
-				<div className="flex items-center gap-4 ">
+				<div className="flex items-center gap-4">
 					<div className="flex items-center gap-2">
 						<Bed className="size-5 stroke-[1.5]" />
-						<span className="text-sm font-medium">
+						<span className="font-medium text-sm">
 							{property.bedrooms_count}
 						</span>
 					</div>
 					<div className="flex items-center gap-2">
 						<Bath className="size-5 stroke-[1.5]" />
-						<span className="text-sm font-medium">
+						<span className="font-medium text-sm">
 							{property.bathrooms_count}
 						</span>
 					</div>
 					<div className="flex items-center gap-2">
 						<Square className="size-5 stroke-[1.5]" />
-						<span className="text-sm font-medium">
+						<span className="font-medium text-sm">
 							{property.total_area || 0}m²
 						</span>
 					</div>

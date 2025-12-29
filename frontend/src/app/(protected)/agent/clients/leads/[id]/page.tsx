@@ -24,7 +24,7 @@ export default async function LeadDetailPage({
 
 	if (!responseData || !responseData.client) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
+			<div className="flex min-h-screen items-center justify-center">
 				<p className="text-lg text-slate-600">
 					No se encontró el propietario solicitado
 				</p>
@@ -94,8 +94,8 @@ export default async function LeadDetailPage({
 					editPath={paths.agent.clients.leads.edit(id)}
 					consultationTypeName={consultationTypeName}
 				/>
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-					<div className="lg:col-span-1 space-y-6">
+				<div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+					<div className="space-y-6 lg:col-span-1">
 						<ClientContactInfo
 							phone={client.phone}
 							email={client.email}

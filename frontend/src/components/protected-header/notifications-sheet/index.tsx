@@ -39,7 +39,7 @@ export default function NotificationsSheet() {
 							<Button
 								variant="ghost-blue"
 								size="icon-lg"
-								className="p-0 border-none"
+								className="border-none p-0"
 							>
 								<Bell className="size-6" />
 							</Button>

@@ -105,7 +105,7 @@ function FormLabel({
 			{...props}
 		>
 			{children}
-			{required && <span className="text-danger-normal -ml-1">*</span>}
+			{required && <span className="-ml-1 text-danger-normal">*</span>}
 		</Label>
 	);
 }
@@ -174,7 +174,7 @@ function FormMessageWithIcon({
 	}
 
 	return (
-		<div className="flex items-center gap-1.5 pointer-events-none">
+		<div className="pointer-events-none flex items-center gap-1.5">
 			<Info className="text-danger-normal" />
 			<p
 				data-slot="form-message"

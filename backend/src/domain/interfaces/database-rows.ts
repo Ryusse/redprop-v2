@@ -1,4 +1,3 @@
-
 export interface PropertyPriceRow {
 	id: number;
 	property_id: number;

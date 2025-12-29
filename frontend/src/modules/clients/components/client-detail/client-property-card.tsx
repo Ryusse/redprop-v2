@@ -33,11 +33,11 @@ export function ClientPropertyCard({ property }: ClientPropertyCardProps) {
 	return (
 		<Card
 			key={property.id}
-			className="hover:shadow-md transition-shadow overflow-visible"
+			className="overflow-visible transition-shadow hover:shadow-md"
 		>
-			<CardContent className="px-4 py-1 overflow-visible">
+			<CardContent className="overflow-visible px-4 py-1">
 				<div className="flex gap-4 overflow-visible">
-					<div className="w-32 h-32 bg-slate-200 rounded-lg shrink-0 overflow-hidden relative">
+					<div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-lg bg-slate-200">
 						{property.image ? (
 							<Image
 								src={property.image}
@@ -51,40 +51,40 @@ export function ClientPropertyCard({ property }: ClientPropertyCardProps) {
 					</div>
 
 					<div className="flex-1">
-						<div className="flex items-start justify-between mb-2 lg:mb-6">
+						<div className="mb-2 flex items-start justify-between lg:mb-6">
 							<div>
-								<h4 className="font-semibold text-slate-900 mb-1">
+								<h4 className="mb-1 font-semibold text-slate-900">
 									{property.address}
 								</h4>
-								<div className="text-xs lg:text-sm text-slate-500">
+								<div className="text-slate-500 text-xs lg:text-sm">
 									{property.city} · {property.type}
 								</div>
 							</div>
-							<div className="flex-col items-center hidden lg:flex">
-								<div className="text-xs text-slate-500">Antigüedad</div>
-								<div className="text-lg font-bold text-slate-900">
+							<div className="hidden flex-col items-center lg:flex">
+								<div className="text-slate-500 text-xs">Antigüedad</div>
+								<div className="font-bold text-lg text-slate-900">
 									{property.age}
 								</div>
 							</div>
 						</div>
 
 						<div className="flex items-center justify-between">
-							<div className="grid-cols-3 gap-4 mb-3 hidden lg:grid">
+							<div className="mb-3 hidden grid-cols-3 gap-4 lg:grid">
 								<div>
-									<div className="text-xs text-slate-500">Ambientes</div>
-									<div className="text-sm font-medium text-slate-900">
+									<div className="text-slate-500 text-xs">Ambientes</div>
+									<div className="font-medium text-slate-900 text-sm">
 										{property.rooms}
 									</div>
 								</div>
 								<div>
-									<div className="text-xs text-slate-500">Baños</div>
-									<div className="text-sm font-medium text-slate-900">
+									<div className="text-slate-500 text-xs">Baños</div>
+									<div className="font-medium text-slate-900 text-sm">
 										{property.bathrooms}
 									</div>
 								</div>
 								<div>
-									<div className="text-xs text-slate-500">Superficie</div>
-									<div className="text-sm font-medium text-slate-900">
+									<div className="text-slate-500 text-xs">Superficie</div>
+									<div className="font-medium text-slate-900 text-sm">
 										{property.surface} m²
 									</div>
 								</div>

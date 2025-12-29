@@ -21,7 +21,7 @@ export default async function PropertiesList() {
 	);
 
 	return (
-		<MainLayout size="lg" className="py-10 lg:py-20 grid gap-8">
+		<MainLayout size="lg" className="grid gap-8 py-10 lg:py-20">
 			<Heading variant="h3" className="text-center">
 				Propiedades disponibles
 			</Heading>
@@ -29,7 +29,7 @@ export default async function PropertiesList() {
 			<Tabs defaultValue="sales" className="grid gap-8">
 				<TabsList
 					variant="underline"
-					className="justify-center mx-auto w-[336px] gap-0"
+					className="mx-auto w-[336px] justify-center gap-0"
 					size="lg"
 				>
 					<TabsTrigger
@@ -53,7 +53,7 @@ export default async function PropertiesList() {
 				</TabsList>
 				<TabsContent value="sales" suppressHydrationWarning>
 					{salesProperties.length > 0 ? (
-						<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+						<section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 							{salesProperties.map((property) => (
 								<PropertyCard
 									key={property.id}
@@ -73,7 +73,7 @@ export default async function PropertiesList() {
 				</TabsContent>
 				<TabsContent value="rent" suppressHydrationWarning>
 					{rentProperties.length > 0 ? (
-						<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+						<section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 							{rentProperties.map((property) => (
 								<PropertyCard
 									key={property.id}

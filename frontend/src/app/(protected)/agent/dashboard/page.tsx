@@ -38,12 +38,12 @@ export default async function DashboardPage({ searchParams }: Props) {
 	return (
 		<>
 			<InfoList />
-			<section className="shadow-consultations p-4 rounded-md">
-				<div className="flex justify-between items-center">
+			<section className="rounded-md p-4 shadow-consultations">
+				<div className="flex items-center justify-between">
 					<Heading
 						variant="subtitle1"
 						weight="medium"
-						className="text-secondary-dark-active mb-2"
+						className="mb-2 text-secondary-dark-active"
 					>
 						Nuevas Consultas
 					</Heading>

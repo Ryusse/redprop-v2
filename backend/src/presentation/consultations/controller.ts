@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 
 import { CustomError } from "../../domain";
-import { CreatePropertyConsultationDto } from "../../domain/dtos/consultations/create-property-consultation.dto";
 import { CreateGeneralConsultationDto } from "../../domain/dtos/consultations/create-general-consultation.dto";
+import { CreatePropertyConsultationDto } from "../../domain/dtos/consultations/create-property-consultation.dto";
 import { DeleteMultipleConsultationsDto } from "../../domain/dtos/consultations/delete-multiple-consultations.dto";
 import type { PropertyConsultationServices } from "../services/property-consultation.services";
 
@@ -84,10 +84,10 @@ export class ConsultationController {
 			} = req.query;
 
 			const filters = {
-				limit: limit ? parseInt(limit as string) : undefined,
-				offset: offset ? parseInt(offset as string) : undefined,
+				limit: limit ? parseInt(limit as string, 10) : undefined,
+				offset: offset ? parseInt(offset as string, 10) : undefined,
 				consultation_type_id: consultation_type_id
-					? parseInt(consultation_type_id as string)
+					? parseInt(consultation_type_id as string, 10)
 					: undefined,
 				start_date: start_date as string,
 				end_date: end_date as string,
@@ -113,9 +113,9 @@ export class ConsultationController {
 			}
 
 			const { id } = req.params;
-			const consultationId = parseInt(id);
+			const consultationId = parseInt(id, 10);
 
-			if (isNaN(consultationId) || consultationId <= 0) {
+			if (Number.isNaN(consultationId) || consultationId <= 0) {
 				return res.status(400).json({
 					message: "Invalid consultation ID",
 				});
@@ -170,9 +170,9 @@ export class ConsultationController {
 			}
 
 			const { id } = req.params;
-			const consultationId = parseInt(id);
+			const consultationId = parseInt(id, 10);
 
-			if (isNaN(consultationId) || consultationId <= 0) {
+			if (Number.isNaN(consultationId) || consultationId <= 0) {
 				return res.status(400).json({
 					message: "Invalid consultation ID",
 				});
@@ -196,15 +196,16 @@ export class ConsultationController {
 			}
 
 			const { id } = req.params;
-			const consultationId = parseInt(id);
+			const consultationId = parseInt(id, 10);
 
-			if (isNaN(consultationId) || consultationId <= 0) {
+			if (Number.isNaN(consultationId) || consultationId <= 0) {
 				return res.status(400).json({
 					message: "Invalid consultation ID",
 				});
 			}
 
-			const result = await this.consultationServices.markAsUnread(consultationId);
+			const result =
+				await this.consultationServices.markAsUnread(consultationId);
 
 			return res.status(200).json(result);
 		} catch (error) {
@@ -222,9 +223,9 @@ export class ConsultationController {
 			}
 
 			const { id } = req.params;
-			const consultationId = parseInt(id);
+			const consultationId = parseInt(id, 10);
 
-			if (isNaN(consultationId) || consultationId <= 0) {
+			if (Number.isNaN(consultationId) || consultationId <= 0) {
 				return res.status(400).json({
 					message: "Invalid consultation ID",
 				});

@@ -9,11 +9,11 @@ import { paths } from "@src/lib/paths";
 
 export default function Banner() {
 	return (
-		<section className="py-40 relative">
+		<section className="relative py-40">
 			<Image
 				src={BannerImage}
 				fill
-				className="absolute w-full h-full object-cover aspect-video"
+				className="absolute aspect-video h-full w-full object-cover"
 				alt="Banner"
 			/>
 			<MainLayout className="relative z-10 flex flex-col gap-6">
@@ -24,7 +24,7 @@ export default function Banner() {
 					size="lg"
 					variant="default"
 					asChild
-					className="w-full max-w-[167px] mx-auto"
+					className="mx-auto w-full max-w-[167px]"
 				>
 					<Link href={paths.public.contact()}>Contáctanos</Link>
 				</Button>

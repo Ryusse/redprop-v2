@@ -24,24 +24,24 @@ function ClientsLayoutContent({ children, activeTab }: ClientsLayoutProps) {
 
 			{/* Search and Navigation Tabs */}
 			<div className="w-full">
-				<div className="flex flex-col items-center lg:flex-row my-4 gap-4 lg:gap-1">
+				<div className="my-4 flex flex-col items-center gap-4 lg:flex-row lg:gap-1">
 					<div className="w-full lg:max-w-2/3">
 						<div className="relative">
-							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+							<Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-slate-400" />
 							<Input
 								type="text"
 								placeholder="Buscar por nombre, DNI o dirección..."
-								className="pl-10 h-7"
+								className="h-7 pl-10"
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
 							/>
 						</div>
 					</div>
 
-					<div className="justify-start gap-2 w-full rounded-none bg-transparent px-0 lg:px-5 text-black flex">
+					<div className="flex w-full justify-start gap-2 rounded-none bg-transparent px-0 text-black lg:px-5">
 						<Link
 							href={paths.agent.clients.leads.index()}
-							className={`px-3 py-1.5 rounded-md transition-colors ${
+							className={`rounded-md px-3 py-1.5 transition-colors ${
 								activeTab === "leads"
 									? "bg-tertiary text-primary-foreground"
 									: "bg-tertiary-light hover:bg-tertiary/30 hover:text-primary-foreground"
@@ -51,7 +51,7 @@ function ClientsLayoutContent({ children, activeTab }: ClientsLayoutProps) {
 						</Link>
 						<Link
 							href={paths.agent.clients.inquilinos.index()}
-							className={`px-3 py-1.5 rounded-md transition-colors ${
+							className={`rounded-md px-3 py-1.5 transition-colors ${
 								activeTab === "inquilinos"
 									? "bg-tertiary text-primary-foreground"
 									: "bg-tertiary-light hover:bg-tertiary/30 hover:text-primary-foreground"
@@ -61,7 +61,7 @@ function ClientsLayoutContent({ children, activeTab }: ClientsLayoutProps) {
 						</Link>
 						<Link
 							href={paths.agent.clients.owners.index()}
-							className={`px-3 py-1.5 rounded-md transition-colors ${
+							className={`rounded-md px-3 py-1.5 transition-colors ${
 								activeTab === "propietarios"
 									? "bg-tertiary text-primary-foreground"
 									: "bg-tertiary-light hover:bg-tertiary/30 hover:text-primary-foreground"

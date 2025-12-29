@@ -147,7 +147,7 @@ export default function GeneralContactForm({
 
 						<Button
 							type="submit"
-							className="w-full mt-3"
+							className="mt-3 w-full"
 							size="lg"
 							disabled={isSubmitting}
 						>

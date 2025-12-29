@@ -38,12 +38,12 @@ export default function NotificationCard({
 
 	return (
 		<Card
-			className={`grid gap-3 p-3 items-start shadow-none ${
+			className={`grid items-start gap-3 p-3 shadow-none ${
 				IconComponent ? "grid-cols-[2rem_1fr]" : "grid-cols-1"
 			}`}
 		>
 			{IconComponent && (
-				<div className="bg-muted w-8 h-8 rounded-sm grid place-content-center p-1">
+				<div className="grid h-8 w-8 place-content-center rounded-sm bg-muted p-1">
 					<IconComponent className="h-4 w-4" />
 				</div>
 			)}
@@ -59,7 +59,7 @@ export default function NotificationCard({
 					</Heading>
 				)}
 				{schedule && (
-					<div className="grid grid-cols-[0.75rem_1fr] gap-1 items-center">
+					<div className="grid grid-cols-[0.75rem_1fr] items-center gap-1">
 						<Clock className="size-3" />
 						<p className="text-foreground text-xs">{schedule}</p>
 					</div>

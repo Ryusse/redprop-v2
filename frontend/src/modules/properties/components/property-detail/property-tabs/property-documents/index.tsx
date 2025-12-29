@@ -35,14 +35,14 @@ export default function PropertyDocuments({ property }: Props) {
 	return (
 		<div className="space-y-6">
 			{!documents || documents.length === 0 ? (
-				<div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center bg-card">
+				<div className="flex flex-col items-center justify-center rounded-lg border border-border border-dashed bg-card py-16 text-center">
 					<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted text-muted-foreground">
 						<FileText className="h-8 w-8" />
 					</div>
-					<h3 className="mb-1 text-lg font-medium text-foreground">
+					<h3 className="mb-1 font-medium text-foreground text-lg">
 						Sin documentos
 					</h3>
-					<p className="text-sm text-muted-foreground max-w-sm">
+					<p className="max-w-sm text-muted-foreground text-sm">
 						Esta propiedad aún no tiene documentos adjuntos.
 					</p>
 				</div>
@@ -58,21 +58,21 @@ export default function PropertyDocuments({ property }: Props) {
 									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-tertiary">
 										<FileText className="h-5 w-5" />
 									</div>
-									<div className="overflow-hidden grid gap-3">
+									<div className="grid gap-3 overflow-hidden">
 										<h4
-											className="truncate text-sm font-semibold text-foreground"
+											className="truncate font-semibold text-foreground text-sm"
 											title={doc.document_name}
 										>
 											{doc.document_name || `Documento ${index + 1}`}
 										</h4>
-										<p className="line-clamp-2 text-xs text-muted-foreground">
+										<p className="line-clamp-2 text-muted-foreground text-xs">
 											Documento adjunto el {formatDate(doc.uploaded_at)}
 										</p>
 									</div>
 								</div>
 								<Separator />
 								<div className="space-y-2 p-6">
-									<div className="flex items-center gap-2 text-xs text-muted-foreground">
+									<div className="flex items-center gap-2 text-muted-foreground text-xs">
 										<Calendar className="h-3 w-3" />
 										<span>{formatDate(doc.uploaded_at)}</span>
 									</div>

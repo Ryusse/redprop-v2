@@ -53,7 +53,7 @@ export default function NotificationSidebar() {
 				</SidebarGroup>
 
 				<SidebarGroup className="gap-4 py-0">
-					<Button variant="link" className="gap-0 ml-auto px-0!">
+					<Button variant="link" className="ml-auto gap-0 px-0!">
 						Ver todos los eventos
 						<ArrowRight className="ml-2 h-4 w-4" />
 					</Button>

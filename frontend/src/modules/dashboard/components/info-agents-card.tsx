@@ -11,11 +11,11 @@ export function InfoAgentsCard({
 	return (
 		<article
 			className={cn(
-				"shadow-consultations h-40  w-full py-6 pl-6 pb-[17px] space-y-4 rounded-md",
+				"h-40 w-full space-y-4 rounded-md py-6 pb-[17px] pl-6 shadow-consultations",
 				className,
 			)}
 		>
-			<Icon className="rounded-md w-12 h-12 p-3" />
+			<Icon className="h-12 w-12 rounded-md p-3" />
 			<div>
 				<Heading variant="h3" weight={"medium"} className="text-black">
 					{title}

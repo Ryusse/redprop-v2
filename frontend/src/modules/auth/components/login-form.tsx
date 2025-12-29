@@ -84,14 +84,14 @@ export default function LoginForm({
 	};
 
 	return (
-		<div className="bg-primary-foreground grid items-center gap-y-4 rounded-md px-6 py-8">
+		<div className="grid items-center gap-y-4 rounded-md bg-primary-foreground px-6 py-8">
 			<HeadingForm title={title} />
 			{heading && (
 				<Heading
 					align={"center"}
 					variant={"h1"}
 					weight={"semibold"}
-					className="text-secondary mb-7"
+					className="mb-7 text-secondary"
 				>
 					{heading}
 				</Heading>
@@ -107,13 +107,13 @@ export default function LoginForm({
 						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className="text-secondary-dark font-semibold">
+								<FormLabel className="font-semibold text-secondary-dark">
 									Usuario o Email
 								</FormLabel>
 								<FormControl>
 									<Input
 										type="email"
-										className="text-base border-input-border focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:border-2 focus-visible:ring-0 rounded-lg not-placeholder-shown:border-input-active not-placeholder-shown:border-2 text-primary-normal-active md:min-w-[480px] h-10 py-2 shadow-input-border aria-invalid:bg-input-danger aria-invalid:border-danger-normal"
+										className="h-10 rounded-lg border-input-border not-placeholder-shown:border-2 not-placeholder-shown:border-input-active py-2 text-base text-primary-normal-active shadow-input-border focus-visible:border-2 focus-visible:border-input-active focus-visible:shadow-input-active focus-visible:ring-0 aria-invalid:border-danger-normal aria-invalid:bg-input-danger md:min-w-[480px]"
 										placeholder=" "
 										{...field}
 									/>
@@ -128,14 +128,14 @@ export default function LoginForm({
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className="text-secondary-dark font-semibold">
+								<FormLabel className="font-semibold text-secondary-dark">
 									Contraseña
 								</FormLabel>
-								<div className="flex items-center relative">
+								<div className="relative flex items-center">
 									<FormControl>
 										<Input
 											type={showPassword ? "text" : "password"}
-											className="text-base border-input-border focus-visible:border-2 focus-visible:border-input-active focus-visible:ring-0 rounded-lg not-placeholder-shown:border-input-active not-placeholder-shown:border-2 md:min-w-[480px] h-10 py-2 shadow-input-border text-primary-normal-active aria-invalid:bg-input-danger aria-invalid:border-danger-normal"
+											className="h-10 rounded-lg border-input-border not-placeholder-shown:border-2 not-placeholder-shown:border-input-active py-2 text-base text-primary-normal-active shadow-input-border focus-visible:border-2 focus-visible:border-input-active focus-visible:ring-0 aria-invalid:border-danger-normal aria-invalid:bg-input-danger md:min-w-[480px]"
 											placeholder=" "
 											{...field}
 										/>
@@ -162,7 +162,7 @@ export default function LoginForm({
 
 					<Button
 						type="submit"
-						className="w-full text-base rounded-md py-3! px-6! h-12!"
+						className="h-12! w-full rounded-md px-6! py-3! text-base"
 						disabled={form.formState.isSubmitting}
 					>
 						{form.formState.isSubmitting && <Spinner />}
