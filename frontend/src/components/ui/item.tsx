@@ -31,7 +31,14 @@ function ItemSeparator({
 }
 
 const itemVariants = cva(
-	"group/item flex flex-wrap items-center rounded-md border border-transparent text-sm outline-none transition-colors duration-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:transition-colors [a]:hover:bg-accent/50",
+	[
+		// Base
+		"group/item flex flex-wrap items-center rounded-md border border-transparent text-sm outline-none transition-colors duration-100",
+		// Focus
+		"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+		// Link hover
+		"[a]:transition-colors [a]:hover:bg-accent/50",
+	],
 	{
 		variants: {
 			variant: {
@@ -72,7 +79,14 @@ function Item({
 }
 
 const itemMediaVariants = cva(
-	"flex shrink-0 items-center justify-center gap-2 group-has-[[data-slot=item-description]]/item:translate-y-0.5 group-has-[[data-slot=item-description]]/item:self-start [&_svg]:pointer-events-none",
+	[
+		// Base
+		"flex shrink-0 items-center justify-center gap-2",
+		// Group states
+		"group-has-[[data-slot=item-description]]/item:translate-y-0.5 group-has-[[data-slot=item-description]]/item:self-start",
+		// Children
+		"[&_svg]:pointer-events-none",
+	],
 	{
 		variants: {
 			variant: {
@@ -108,7 +122,12 @@ function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
 		<div
 			data-slot="item-content"
 			className={cn(
-				"flex flex-1 flex-col gap-1 [&+[data-slot=item-content]]:flex-none",
+				[
+					// Base
+					"flex flex-1 flex-col gap-1",
+					// Adjacent content
+					"[&+[data-slot=item-content]]:flex-none",
+				],
 				className,
 			)}
 			{...props}
@@ -134,8 +153,12 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
 		<p
 			data-slot="item-description"
 			className={cn(
-				"line-clamp-2 text-balance font-normal text-muted-foreground text-sm leading-normal",
-				"[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+				[
+					// Base
+					"line-clamp-2 text-balance font-normal text-muted-foreground text-sm leading-normal",
+					// Links
+					"[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+				],
 				className,
 			)}
 			{...props}

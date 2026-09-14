@@ -4,14 +4,24 @@ import { cn } from "@src/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const buttonGroupVariants = cva(
-	"flex w-fit items-stretch has-[>[data-slot=button-group]]:gap-2 [&>*]:focus-visible:relative [&>*]:focus-visible:z-10 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+	[
+		// Base
+		"flex w-fit items-stretch",
+		// Children
+		"has-[>[data-slot=button-group]]:gap-2 [&>*]:focus-visible:relative [&>*]:focus-visible:z-10",
+		"has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+	],
 	{
 		variants: {
 			orientation: {
-				horizontal:
+				horizontal: [
+					// Horizontal layout
 					"[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none",
-				vertical:
+				],
+				vertical: [
+					// Vertical layout
 					"flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none",
+				],
 			},
 		},
 		defaultVariants: {
@@ -48,7 +58,12 @@ function ButtonGroupText({
 	return (
 		<Comp
 			className={cn(
-				"flex items-center gap-2 rounded-md border bg-muted px-4 font-medium text-sm shadow-xs [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
+				[
+					// Base
+					"flex items-center gap-2 rounded-md border bg-muted px-4 font-medium text-sm shadow-xs",
+					// Icons
+					"[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
+				],
 				className,
 			)}
 			{...props}

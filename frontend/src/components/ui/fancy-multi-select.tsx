@@ -9,6 +9,7 @@ import {
 	CommandItem,
 	CommandList,
 } from "@src/components/ui/command";
+import { cn } from "@src/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { X } from "lucide-react";
 
@@ -100,11 +101,15 @@ export function FancyMultiSelect({
 			className="overflow-visible bg-transparent"
 		>
 			<div
-				className={
-					className
-						? `${className} group rounded-md border border-input-border px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2`
-						: "group rounded-md border border-input-border px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-				}
+				className={cn(
+					[
+						// Base
+						"group rounded-md border border-input-border px-3 py-2 text-sm ring-offset-background",
+						// Focus
+						"focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+					],
+					className,
+				)}
 			>
 				<div className="flex flex-wrap gap-1">
 					{selected.map((option) => {
@@ -145,7 +150,11 @@ export function FancyMultiSelect({
 			<div className="relative mt-2">
 				<CommandList>
 					{open && selectables.length > 0 ? (
-						<div className="absolute top-0 z-10 w-full animate-in rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
+						<div
+							className={cn(
+								"absolute top-0 z-10 w-full animate-in rounded-md border bg-popover text-popover-foreground shadow-md outline-none",
+							)}
+						>
 							<CommandGroup className="h-full max-h-60 overflow-auto">
 								{selectables.map((option) => {
 									return (

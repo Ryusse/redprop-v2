@@ -33,7 +33,10 @@ function Tabs({
 }
 
 const tabsListVariants = cva(
-	"inline-flex items-center justify-center rounded-md",
+	[
+		// Base
+		"inline-flex items-center justify-center rounded-md",
+	],
 	{
 		variants: {
 			variant: {
@@ -70,15 +73,41 @@ function TabsList({
 }
 
 const tabsTriggerVariants = cva(
-	"inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium text-sm transition-[color,box-shadow] focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+	[
+		// Base
+		"inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium text-sm transition-[color,box-shadow]",
+		// Focus
+		"focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+		// Disabled
+		"disabled:pointer-events-none disabled:opacity-50",
+		// Children
+		"[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+	],
 	{
 		variants: {
 			variant: {
-				default:
-					"border border-transparent text-foreground data-[state=active]:bg-card data-[state=active]:shadow-sm",
-				blue: "rounded-none border border-transparent border-b-2 border-b-transparent bg-tertiary text-tertiary-foreground first:rounded-tl-lg last:rounded-tr-lg data-[state=active]:border-b-card",
-				underline:
-					"rounded-none border-transparent border-b-2 bg-transparent text-muted-foreground shadow-none hover:text-foreground data-[state=active]:border-primary data-[state=active]:text-foreground",
+				default: [
+					// Base
+					"border border-transparent text-foreground",
+					// Active
+					"data-[state=active]:bg-card data-[state=active]:shadow-sm",
+				],
+				blue: [
+					// Base
+					"rounded-none border border-transparent border-b-2 border-b-transparent bg-tertiary text-tertiary-foreground",
+					// Siblings
+					"first:rounded-tl-lg last:rounded-tr-lg",
+					// Active
+					"data-[state=active]:border-b-card",
+				],
+				underline: [
+					// Base
+					"rounded-none border-transparent border-b-2 bg-transparent text-muted-foreground shadow-none",
+					// Hover
+					"hover:text-foreground",
+					// Active
+					"data-[state=active]:border-primary data-[state=active]:text-foreground",
+				],
 			},
 			size: {
 				default: "h-full flex-1 px-2 py-1",
@@ -108,16 +137,22 @@ function TabsTrigger({
 	);
 }
 
-const tabsContentVariants = cva("flex-1 outline-none", {
-	variants: {
-		variant: {
-			default: "",
+const tabsContentVariants = cva(
+	[
+		// Base
+		"flex-1 outline-none",
+	],
+	{
+		variants: {
+			variant: {
+				default: "",
+			},
+		},
+		defaultVariants: {
+			variant: "default",
 		},
 	},
-	defaultVariants: {
-		variant: "default",
-	},
-});
+);
 
 function TabsContent({
 	className,

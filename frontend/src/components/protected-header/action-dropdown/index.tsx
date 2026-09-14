@@ -17,7 +17,7 @@ import { Building2, ChevronDown, Plus, User } from "lucide-react";
 export default function ActionDropdown() {
 	return (
 		<ButtonGroup>
-			<Button asChild variant="tertiary" size="default" className="mr-0.5 w-27">
+			<Button asChild size="default" className="mr-0.5 w-27">
 				<Link href={paths.agent.properties.new()} className="flex items-center">
 					<Plus />
 					Crear
@@ -25,7 +25,7 @@ export default function ActionDropdown() {
 			</Button>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="tertiary" size="icon" aria-label="More Options">
+					<Button size="icon" aria-label="More Options">
 						<ChevronDown />
 					</Button>
 				</DropdownMenuTrigger>

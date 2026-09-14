@@ -458,15 +458,21 @@ function SortableItem(props: SortableItemProps) {
 				ref={composedRef}
 				style={composedStyle}
 				className={cn(
-					"focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1",
-					{
-						"touch-none select-none": asHandle,
-						"cursor-default": context.flatCursor,
-						"data-dragging:cursor-grabbing": !context.flatCursor,
-						"cursor-grab": !isDragging && asHandle && !context.flatCursor,
-						"opacity-50": isDragging,
-						"pointer-events-none opacity-50": disabled,
-					},
+					[
+						// Base
+						"focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1",
+						// Handle
+						asHandle && "touch-none select-none",
+						// Cursor
+						context.flatCursor
+							? "cursor-default"
+							: "data-dragging:cursor-grabbing",
+						!isDragging && asHandle && !context.flatCursor && "cursor-grab",
+						// Dragging
+						isDragging && "opacity-50",
+						// Disabled
+						disabled && "pointer-events-none opacity-50",
+					],
 					className,
 				)}
 			/>
@@ -508,10 +514,14 @@ function SortableItemHandle(props: SortableItemHandleProps) {
 			{...(isDisabled ? {} : itemContext.listeners)}
 			ref={composedRef}
 			className={cn(
-				"select-none disabled:pointer-events-none disabled:opacity-50",
-				context.flatCursor
-					? "cursor-default"
-					: "cursor-grab data-dragging:cursor-grabbing",
+				[
+					// Base
+					"select-none disabled:pointer-events-none disabled:opacity-50",
+					// Cursor
+					context.flatCursor
+						? "cursor-default"
+						: "cursor-grab data-dragging:cursor-grabbing",
+				],
 				className,
 			)}
 			disabled={isDisabled}
@@ -557,7 +567,10 @@ function SortableOverlay(props: SortableOverlayProps) {
 		<DragOverlay
 			dropAnimation={dropAnimation}
 			modifiers={context.modifiers}
-			className={cn(!context.flatCursor && "cursor-grabbing")}
+			className={cn([
+				// Cursor
+				!context.flatCursor && "cursor-grabbing",
+			])}
 			{...overlayProps}
 		>
 			<SortableOverlayContext.Provider value={true}>

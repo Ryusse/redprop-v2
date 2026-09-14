@@ -15,7 +15,10 @@ export function ImagePlaceholder({
 	return (
 		<div
 			className={cn(
-				"flex h-full w-full items-center justify-center rounded-lg border border-primary bg-white text-primary",
+				[
+					// Base
+					"flex h-full w-full items-center justify-center rounded-lg border border-primary bg-white text-primary",
+				],
 				className,
 			)}
 			{...props}

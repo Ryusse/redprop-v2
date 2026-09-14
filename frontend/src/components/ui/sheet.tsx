@@ -38,7 +38,12 @@ function SheetOverlay({
 		<SheetPrimitive.Overlay
 			data-slot="sheet-overlay"
 			className={cn(
-				"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=open]:animate-in",
+				[
+					// Base
+					"fixed inset-0 z-50 bg-black/50",
+					// Animations
+					"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=open]:animate-in",
+				],
 				className,
 			)}
 			{...props}
@@ -60,15 +65,26 @@ function SheetContent({
 			<SheetPrimitive.Content
 				data-slot="sheet-content"
 				className={cn(
-					"fixed z-50 flex flex-col rounded-l-none bg-card shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:duration-300 data-[state=open]:duration-500",
-					side === "right" &&
-						"data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
-					side === "left" &&
-						"data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
-					side === "top" &&
-						"data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
-					side === "bottom" &&
-						"data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
+					[
+						// Base
+						"fixed z-50 flex flex-col rounded-l-none bg-card shadow-lg transition ease-in-out",
+						// Animations
+						"data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:duration-300 data-[state=open]:duration-500",
+					],
+					[
+						// Right
+						side === "right" &&
+							"data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+						// Left
+						side === "left" &&
+							"data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
+						// Top
+						side === "top" &&
+							"data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
+						// Bottom
+						side === "bottom" &&
+							"data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
+					],
 					className,
 				)}
 				{...props}
@@ -84,7 +100,10 @@ function SheetHeader({ className, children }: React.ComponentProps<"div">) {
 		<div
 			data-slot="sheet-header"
 			className={cn(
-				"sticky top-0 flex items-start justify-between gap-5 bg-card px-4 pt-4 pb-4 lg:px-6 lg:pt-6",
+				[
+					// Base
+					"sticky top-0 flex items-start justify-between gap-5 bg-card px-4 pt-4 pb-4 lg:px-6 lg:pt-6",
+				],
 				className,
 			)}
 		>
@@ -102,7 +121,10 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
 		<div
 			data-slot="sheet-footer"
 			className={cn(
-				"sticky bottom-0 mt-auto flex flex-col gap-2 bg-card px-6 pt-4 pb-6",
+				[
+					// Base
+					"sticky bottom-0 mt-auto flex flex-col gap-2 bg-card px-6 pt-4 pb-6",
+				],
 				className,
 			)}
 			{...props}
@@ -115,7 +137,10 @@ function SheetBody({ className, ...props }: React.ComponentProps<"div">) {
 		<div
 			data-slot="sheet-body"
 			className={cn(
-				"grid h-fit flex-1 auto-rows-min gap-6 overflow-y-auto px-6",
+				[
+					// Base
+					"grid h-fit flex-1 auto-rows-min gap-6 overflow-y-auto px-6",
+				],
 				className,
 			)}
 			{...props}
@@ -131,7 +156,10 @@ function SheetTitle({
 		<SheetPrimitive.Title
 			data-slot="sheet-title"
 			className={cn(
-				"font-semibold text-foreground",
+				[
+					// Base
+					"font-semibold text-foreground",
+				],
 				headingVariants({ variant: "subtitle2", weight: "semibold" }),
 				className,
 			)}
@@ -147,7 +175,13 @@ function SheetDescription({
 	return (
 		<SheetPrimitive.Description
 			data-slot="sheet-description"
-			className={cn("text-muted-foreground text-sm", className)}
+			className={cn(
+				[
+					// Base
+					"text-muted-foreground text-sm",
+				],
+				className,
+			)}
 			{...props}
 		/>
 	);

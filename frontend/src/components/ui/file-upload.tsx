@@ -603,7 +603,13 @@ function FileUploadRoot(props: FileUploadRootProps) {
 					data-slot="file-upload"
 					dir={dir}
 					{...rootProps}
-					className={cn("relative flex flex-col gap-2", className)}
+					className={cn(
+						[
+							// Base
+							"relative flex flex-col gap-2",
+						],
+						className,
+					)}
 				>
 					{children}
 					<input
@@ -812,7 +818,18 @@ function FileUploadDropzone(props: FileUploadDropzoneProps) {
 			tabIndex={context.disabled ? undefined : 0}
 			{...dropzoneProps}
 			className={cn(
-				"relative flex select-none flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-6 outline-none transition-colors hover:bg-accent/30 focus-visible:border-ring/50 data-disabled:pointer-events-none data-dragging:border-primary/30 data-invalid:border-destructive data-dragging:bg-accent/30 data-invalid:ring-destructive/20",
+				[
+					// Base
+					"relative flex select-none flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-6 outline-none transition-colors",
+					// Interaction
+					"hover:bg-accent/30 focus-visible:border-ring/50",
+					// Disabled
+					"data-disabled:pointer-events-none",
+					// Dragging
+					"data-dragging:border-primary/30 data-dragging:bg-accent/30",
+					// Invalid
+					"data-invalid:border-destructive data-invalid:ring-destructive/20",
+				],
 				className,
 			)}
 			onClick={onClick}
@@ -894,8 +911,16 @@ function FileUploadList(props: FileUploadListProps) {
 			dir={context.dir}
 			{...listProps}
 			className={cn(
-				"data-[state=inactive]:fade-out-0 data-[state=active]:fade-in-0 data-[state=inactive]:slide-out-to-top-2 data-[state=active]:slide-in-from-top-2 flex flex-col gap-2 data-[state=active]:animate-in data-[state=inactive]:animate-out",
-				orientation === "horizontal" && "flex-row overflow-x-auto p-1.5",
+				[
+					// Base
+					"flex flex-col gap-2",
+					// Animation
+					"data-[state=active]:animate-in data-[state=inactive]:animate-out",
+					"data-[state=inactive]:fade-out-0 data-[state=active]:fade-in-0",
+					"data-[state=inactive]:slide-out-to-top-2 data-[state=active]:slide-in-from-top-2",
+					// Orientation
+					orientation === "horizontal" && "flex-row overflow-x-auto p-1.5",
+				],
 				className,
 			)}
 		/>
@@ -983,7 +1008,10 @@ function FileUploadItem(props: FileUploadItemProps) {
 				dir={context.dir}
 				{...itemProps}
 				className={cn(
-					"relative flex items-center gap-2.5 rounded-md border p-3",
+					[
+						// Base
+						"relative flex items-center gap-2.5 rounded-md border p-3",
+					],
 					className,
 				)}
 			>
@@ -1110,7 +1138,12 @@ function FileUploadItemPreview(props: FileUploadItemPreviewProps) {
 			data-slot="file-upload-preview"
 			{...previewProps}
 			className={cn(
-				"relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded border bg-accent/50 [&>svg]:size-10",
+				[
+					// Base
+					"relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded border bg-accent/50",
+					// Children
+					"[&>svg]:size-10",
+				],
 				className,
 			)}
 		>
@@ -1146,25 +1179,35 @@ function FileUploadItemMetadata(props: FileUploadItemMetadataProps) {
 			data-slot="file-upload-metadata"
 			dir={context.dir}
 			{...metadataProps}
-			className={cn("flex min-w-0 flex-1 flex-col", className)}
+			className={cn(
+				[
+					// Base
+					"flex min-w-0 flex-1 flex-col",
+				],
+				className,
+			)}
 		>
 			{children ?? (
 				<>
 					<span
 						id={itemContext.nameId}
-						className={cn(
+						className={cn([
+							// Base
 							"truncate font-medium text-sm",
+							// Size
 							size === "sm" && "font-normal text-[13px] leading-snug",
-						)}
+						])}
 					>
 						{itemContext.fileState.file.name}
 					</span>
 					<span
 						id={itemContext.sizeId}
-						className={cn(
+						className={cn([
+							// Base
 							"truncate text-muted-foreground text-xs",
+							// Size
 							size === "sm" && "text-[11px] leading-snug",
-						)}
+						])}
 					>
 						{formatBytes(itemContext.fileState.file.size)}
 					</span>
@@ -1225,7 +1268,10 @@ function FileUploadItemProgress(props: FileUploadItemProgressProps) {
 					data-slot="file-upload-progress"
 					{...progressProps}
 					className={cn(
-						"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+						[
+							// Base
+							"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+						],
 						className,
 					)}
 				>
@@ -1275,7 +1321,10 @@ function FileUploadItemProgress(props: FileUploadItemProgressProps) {
 					data-slot="file-upload-progress"
 					{...progressProps}
 					className={cn(
-						"absolute inset-0 bg-primary/50 transition-[clip-path] duration-300 ease-linear",
+						[
+							// Base
+							"absolute inset-0 bg-primary/50 transition-[clip-path] duration-300 ease-linear",
+						],
 						className,
 					)}
 					style={{
@@ -1297,7 +1346,10 @@ function FileUploadItemProgress(props: FileUploadItemProgressProps) {
 					data-slot="file-upload-progress"
 					{...progressProps}
 					className={cn(
-						"relative h-1.5 w-full overflow-hidden rounded-full bg-primary/20",
+						[
+							// Base
+							"relative h-1.5 w-full overflow-hidden rounded-full bg-primary/20",
+						],
 						className,
 					)}
 				>

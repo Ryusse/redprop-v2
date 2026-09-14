@@ -7,12 +7,27 @@ import { cn } from "@src/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const switchVariants = cva(
-	"peer inline-flex shrink-0 items-center rounded-full border border-transparent shadow-xs outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-normal data-[state=unchecked]:bg-grey-light",
+	[
+		// Base
+		"peer inline-flex shrink-0 items-center rounded-full border border-transparent shadow-xs outline-none transition-all",
+		// Focus
+		"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+		// Disabled
+		"disabled:cursor-not-allowed disabled:opacity-50",
+		// State
+		"data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted",
+	],
 	{
 		variants: {
 			size: {
-				default: "h-7 w-12",
-				sm: "h-[14px] w-7",
+				default: [
+					// Base
+					"h-7 w-12",
+				],
+				sm: [
+					// Base
+					"h-[14px] w-7",
+				],
 			},
 		},
 		defaultVariants: {
@@ -22,13 +37,25 @@ const switchVariants = cva(
 );
 
 const switchThumbVariants = cva(
-	"pointer-events-none block rounded-full bg-card shadow-lg ring-0 transition-transform",
+	[
+		// Base
+		"pointer-events-none block rounded-full bg-card shadow-lg ring-0 transition-transform",
+	],
 	{
 		variants: {
 			size: {
-				default:
-					"size-5 data-[state=checked]:translate-x-6 data-[state=unchecked]:translate-x-1",
-				sm: "size-3 data-[state=checked]:translate-x-3.5 data-[state=unchecked]:translate-x-0.5",
+				default: [
+					// Base
+					"size-5",
+					// State
+					"data-[state=checked]:translate-x-6 data-[state=unchecked]:translate-x-1",
+				],
+				sm: [
+					// Base
+					"size-3",
+					// State
+					"data-[state=checked]:translate-x-3.5 data-[state=unchecked]:translate-x-0.5",
+				],
 			},
 		},
 		defaultVariants: {
